@@ -132,11 +132,11 @@ class NVE {
                 this.push(Number(this.pop()>this.pop()));
             break;
             // 単項ビット演算
-            case 21: // not
+            case 21: // notb
                 this.push(~this.pop());
             break;
             // 単項論理演算
-            case 22: // notb
+            case 22: // not
                 this.push(Number(!this.pop()));
             break;
 

@@ -166,10 +166,10 @@ void next() {
         case 20: // greater
             push(pop()>pop());
         break;
-        case 21: // enot
+        case 21: // notb
             push(~pop());
         break;
-        case 22: // notb
+        case 22: // not
             push(!pop());
         break;
         case 23: // out

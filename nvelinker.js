@@ -67,7 +67,7 @@ function readFile(tns) {
 }
 
 function NVAparse(program,tns) {
-    let ins = ["push","pop","call","ret","fram","setvar","getvar","setgvar","getgvar","setdata","getdata","jmp","ifjmp","add","addc","and","or","xor","equal","less","greater","not","notb","out"];
+    let ins = ["push","pop","call","ret","fram","setvar","getvar","setgvar","getgvar","setdata","getdata","jmp","ifjmp","add","addc","and","or","xor","equal","less","greater","notb","not","out"];
     // m memory; i immeddiate; p memory-pointer; x result; a,b args;
     let lines = program.replace(/\r/g,"").split("\n");
     //console.log("lines",lines)

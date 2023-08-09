@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 function NVEASM(program) { // テキストを数値の配列に変換する
-    let ins = ["push","pop","call","ret","fram","setvar","getvar","setgvar","getgvar","setdata","getdata","jmp","ifjmp","add","addc","and","or","xor","equal","less","greater","not","notb","out"];
+    let ins = ["push","pop","call","ret","fram","setvar","getvar","setgvar","getgvar","setdata","getdata","jmp","ifjmp","add","addc","and","or","xor","equal","less","greater","notb","not","out"];
     let icnt = 0;
     // m memory; i immeddiate; p memory-pointer; x result; a,b args;
     let lines = program.replace(/\r/g,"").split("\n");
