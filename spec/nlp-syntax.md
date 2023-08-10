@@ -39,28 +39,24 @@
 
 ## 文
 ```bnf
-<stat> ::= ( <stat-var-declaration> | <stat-var-declaration-assign> | <stat-var-assign> | <stat-run-expr> ) ';'
+<stat> ::= ( <stat-var-declaration> | <stat-var-declaration-assign> | <stat-var-assign> | <expr> ) [ <space> ] ';'
 ```
 ### 変数の宣言
 ```bnf
-<stat-var-declaration> ::= '!' [ <space> ] <var-type> ':' [ <space> ] <var-name> [ <space> ]
+<stat-var-declaration> ::= '!' [ <space> ] <var-type> ':' [ <space> ] <var-name>
 ```
 ### 初期化付の変数の宣言
 ```bnf
-<stat-var-declaration-assign> ::= <expr> [ <space> ] ':>' [ <space> ] '!' [ <space> ] <var-type> ':' [ <space> ] <var-name> [ <space> ]
+<stat-var-declaration-assign> ::= <expr> [ <space> ] ':>' [ <space> ] '!' [ <space> ] <var-type> ':' [ <space> ] <var-name>
 ```
 ### 変数への代入
 ```bnf
-<stat-var-assign> ::= <expr> [ <space> ]  ':>' [ <space> ]  <var-name> [ <space> ]
-```
-### 式を実行
-```bnf
-<stat-run-expr> ::= <expr> [ <space> ]
+<stat-var-assign> ::= <expr> [ <space> ]  ':>' [ <space> ]  <var-name>
 ```
 
 ## 式
 ```bnf
-<value> ::= <value> <space> <value> <space> <operator> | <value> <space> <operator> | <immediate>
+<value> ::= <literal> | <func-call>
 <expr> ::= <value>
 ```
 
@@ -80,7 +76,7 @@
 ## 制御構造
 ```bnf
 <control> ::= '!' [ <space> ] 'ctrl:(' <condition> '):' ( <struct-if> | <struct-while> )
-<condition> ::= ( <stat-var-declaration> | <stat-var-assign> | <stat-run-expr> )
+<condition> ::= <expr>
 <struct-if> ::= 'if' [ <space> ] '{' <block> '}'
 <struct-while> ::= 'while' [ <space> ] '{' <block> '}'
 ```
