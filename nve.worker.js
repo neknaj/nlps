@@ -9,7 +9,7 @@ class NVE {
         console.log("Size:",this.size.toString(10))
         this.#memr = new Uint32Array(2**32); // 実行用スタック
         this.#progcnt = 0;
-        this.#stackp = 0;
+        this.#stackp = 1;
         this.#framp = 0;
     }
     prog(i) {
@@ -67,6 +67,9 @@ class NVE {
             case 3: // ret 関数から返るとき
                 this.#progcnt = this.pop();
                 this.#framp = this.pop();
+                for (let i=0;i<this.imme(this.#progcnt);i++) {
+                    this.pop();
+                }
             break;
             case 4: // fram m 局所変数の領域を確保する 0埋めする
                 for (let i=0;i<this.imme(this.#progcnt);i++) {
@@ -126,10 +129,10 @@ class NVE {
                 this.push(Number(this.pop()==this.pop()));
             break;
             case 19: // less
-                this.push(Number(this.pop()<this.pop()));
+                this.push(Number(this.pop()>this.pop()));
             break;
             case 20: // greater
-                this.push(Number(this.pop()>this.pop()));
+                this.push(Number(this.pop()<this.pop()));
             break;
             // 単項ビット演算
             case 21: // notb
