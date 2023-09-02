@@ -11,8 +11,14 @@
 
 ## コード
 ```bnf
-<toplevel-member> ::= <func>
+<toplevel-member> ::= <func> | <include> | <using>
 <code> ::= <toplevel-member> { <blank-lines> <toplevel-member> }
+```
+
+### 取り込み
+```bnf
+<inlcude> ::= '#include' [ <space> ] <filename_filename>
+<using> ::= '#include' [ <space> ] <filename_filename>
 ```
 
 ## 関数の定義

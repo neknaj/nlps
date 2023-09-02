@@ -1,9 +1,14 @@
+
+const fs = require('fs');
+
 class NLPparse {
-    constructor(code,libfuncs=[]) {
+    constructor(filename) {
+
+        var code = fs.readFileSync(filename,'utf8');
         this.code = code+"\0";
         this.delete_comments();
         console.log(this.code)
-        this.names = libfuncs;
+        this.names = [];
         this.functions = {};
         this.globalvars = {};
         this.toplevel_parse();
@@ -101,6 +106,7 @@ class NLPparse {
                 // [ <space> ]
                 i++;
                 while (i<this.code.length&&this.code[i]==" ") {i++;}
+                // '#'
                 // 'fn:'
                 if (this.code.startsWith('fn:',i)) {
                     //<func> ::= '!' [ <space> ] 'fn:' [ <space> ] <var-type> ':(' <func-arg-def> '):' [ <space> ] <func-name> { ( <space> | <eol> ) } '{' <block> '}'
@@ -669,47 +675,7 @@ class NLPparse {
 // }
 
 {
-let testcode = `
-!void:fn:main(){
-    10;
-}
-
-! int:fn: sub(int:x) {
-    10;
-    "";
-    "abc";
-    "\\n\\n";
-    "ab\\0c\\{aaa" "{" +;
-}
-
-! int:fn: add(int:x,int:y){
-    return;
-}
-`
-testcode = `
-!fn:void:():main {
-    100 run;
-}
-!fn:void:(int:max):run {
-    !int: x;
-    !int: y;
-    !int: z;
-    1 :> x;
-    1 :> y;
-    1 :> z;
-    !ctrl:(x max <):while {
-        x out;
-        y x + :> z;
-        y :> x;
-        z :> y;
-    }
-}
-!fn:void:(int:a,int:b,int:c):aaa {
-    100 run;
-}
-`
-
-var parsed = new NLPparse(testcode,[]);
-
+var parsed = new NLPparse("./alloc.nlp");
+console.log(parsed)
 //new NLPcompile_NVE(testcode);
 }
