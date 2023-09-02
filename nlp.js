@@ -4,7 +4,7 @@ const fs = require('fs');
 class NLPparse {
     constructor(filename) {
 
-        var code = fs.readFileSync(filename,'utf8');
+        var code = fs.readFileSync(filename,'utf8').replace(/\r\n/g,"\n");
         this.code = code+"\0";
         this.delete_comments();
         console.log(this.code)
@@ -102,11 +102,37 @@ class NLPparse {
         // <code> ::= { <blank-lines> <func> <blank-lines> }
         let i = 0;
         while (i<this.code.length) {
-            if (this.code[i]=='!') { // '!'
-                // [ <space> ]
+            // blank-lines
+            while (i<this.code.length&&(this.code[i]==" "||this.code[i]=="\n")) {i++;}
+            if (this.code[i]=="#") {
                 i++;
-                while (i<this.code.length&&this.code[i]==" ") {i++;}
                 // '#'
+                if (this.code.startsWith('include',i)) {
+                    i+=7;
+                    if (this.code[i]!=" ") {
+                        this.error(i,this.code,["Includeに問題があります","ファイル名との間にスペースがありません"]);
+                    }
+                    i++;
+                    let filename = "";
+                    while (i<this.code.length&&(this.code[i]!=" "&&this.code[i]!="\n")) {
+                        filename += this.code[i];
+                        i++;
+                    }
+                    var filetext = fs.readFileSync(filename,'utf8');
+                    var filelines = filetext.toString().split('\n');
+                    for (var line of filelines) {
+                        if (line.startsWith(".func")) {
+                            console.log(line.split(" ").slice(0,2))
+                        }
+                    }
+                }
+                else if (this.code.startsWith('#using',i)) {
+                }
+            }
+            else if (this.code[i]=='!') { // '!'
+                i++;
+                // space
+                while (i<this.code.length&&(this.code[i]==" ")) {i++;}
                 // 'fn:'
                 if (this.code.startsWith('fn:',i)) {
                     //<func> ::= '!' [ <space> ] 'fn:' [ <space> ] <var-type> ':(' <func-arg-def> '):' [ <space> ] <func-name> { ( <space> | <eol> ) } '{' <block> '}'
