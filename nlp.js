@@ -122,7 +122,11 @@ class NLPparse {
                     var filelines = filetext.toString().split('\n');
                     for (var line of filelines) {
                         if (line.startsWith(".func")) {
-                            console.log(line.split(" ").slice(0,2))
+                            let sp = line.split(" ");
+                            let arg = sp[1].split(":");
+                            let func = {kind:"function",name:arg[0],return:arg[1],args:arg[2].split("(")[1].split(")")[0]}
+                            console.log(func)
+                            this.toplevel_names.push(func)
                         }
                     }
                 }
