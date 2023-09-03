@@ -11,7 +11,10 @@ class NLPparse {
         this.names = [];
         this.functions = {};
         this.globalvars = {};
-        this.toplevel_parse();
+        let imports = this.toplevel_parse();
+        console.log(imports)
+        this.names = this.names.concat(imports)
+        console.log("thisnames",this.names)
         this.parsed = {};
         console.log(this.functions)
         console.log(this.globalvars)
@@ -22,7 +25,8 @@ class NLPparse {
             let varnames = [];
             let args = this.args_parse(this.functions[name].args,varnames);
             let block = this.block_parse(this.functions[name].block,varnames);
-            console.log(block)
+            //console.log(block)
+            console.log(JSON.stringify(block))
             this.parsed[name] = {block:block,args:args};
             if (block==false) {
                 return false;
@@ -33,8 +37,9 @@ class NLPparse {
             this.info([name,"関数の名前を解決します"]);
             let block = this.name_resolutions(this.parsed[name].block,this.toplevel_names.concat(this.parsed[name].args));
         }
-        console.log("names",this.names)
-        console.log("toplevel names",this.toplevel_names)
+       // console.log("names",this.names)
+       // console.log("toplevel names",this.toplevel_names)
+        console.log("toplevel names",JSON.stringify(this.toplevel_names))
         return this.parsed;
     }
     error(i,level,msg) {
@@ -99,6 +104,7 @@ class NLPparse {
         this.code = code;
     }
     toplevel_parse() {
+        let imports = [];
         // <code> ::= { <blank-lines> <func> <blank-lines> }
         let i = 0;
         while (i<this.code.length) {
@@ -124,9 +130,9 @@ class NLPparse {
                         if (line.startsWith(".func")) {
                             let sp = line.split(" ");
                             let arg = sp[1].split(":");
-                            let func = {kind:"function",name:arg[0],return:arg[1],args:arg[2].split("(")[1].split(")")[0]}
+                            let func = {kind:"function",name:arg[0],return:arg[1],args:arg[2].split("(")[1].split(")")[0],identifier:imports.length}
                             console.log(func)
-                            this.toplevel_names.push(func)
+                            imports.push(func)
                         }
                     }
                 }
@@ -301,6 +307,8 @@ class NLPparse {
             }
             i++;
         }
+        console.log("imports",imports)
+        return imports;
     }
     args_parse(argstxt,varnames) {
         let args = [];
@@ -618,11 +626,14 @@ class NLPparse {
         token.type = "int";
     }
     name_resolution(token,namelist) {
+        console.log("nameresolution",token,namelist)
         for (let i=namelist.length-1;i>=0;i--) {
             if (token.name==namelist[i].name) {
                 token.identifier = namelist[i].identifier;
                 token.kind = namelist[i].kind;
                 token.type = namelist[i].type;
+                token.return = namelist[i].return;
+                //console.log("Found",token)
                 return;
             }
         }
