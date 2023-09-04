@@ -155,7 +155,28 @@ class NLPparse {
                         }
                     }
                 }
-                else if (this.code.startsWith('#using',i)) {
+                else if (this.code.startsWith('using',i)) {
+                    i+=5;
+                    if (this.code[i]!=" ") {
+                        this.error(i,this.code,["Usingに問題があります","ファイル名との間にスペースがありません"]);
+                    }
+                    i++;
+                    let filename = "";
+                    while (i<this.code.length&&(this.code[i]!=" "&&this.code[i]!="\n")) {
+                        filename += this.code[i];
+                        i++;
+                    }
+                    var filetext = fRead(filename+".nlpo");
+                    var filelines = filetext.toString().split('\n');
+                    for (var line of filelines) {
+                        if (line.startsWith(".func")) {
+                            let sp = line.split(" ");
+                            let arg = sp[1].split(":");
+                            let func = {kind:"function",name:arg[0],return:arg[1],args:arg[2].split("(")[1].split(")")[0],identifier:this.names.length}
+                            console.log(func)
+                            this.names.push(func)
+                        }
+                    }
                 }
             }
             else if (this.code[i]=='!') { // '!'
@@ -740,7 +761,7 @@ class NLPparse {
 // }
 
 {
-var parsed = new NLPparse("./test.nlp");
+var parsed = new NLPparse("./alloc.nlp");
 console.log(parsed)
 //new NLPcompile_NVE(testcode);
 }
