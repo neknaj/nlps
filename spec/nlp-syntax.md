@@ -45,7 +45,7 @@
 
 ## 文
 ```bnf
-<stat> ::= ( <stat-var-declaration> | <stat-var-declaration-assign> | <stat-var-assign> | <expr> ) [ <space> ] ';'
+<stat> ::= ( <stat-var-declaration> | <stat-var-declaration-assign> | <stat-var-assign> | <stat-return> | <expr> ) [ <space> ] ';'
 ```
 ### 変数の宣言
 ```bnf
@@ -58,6 +58,10 @@
 ### 変数への代入
 ```bnf
 <stat-var-assign> ::= <expr> [ <space> ]  ':>' [ <space> ]  <var-name>
+```
+### Return
+```bnf
+<stat-return> ::= <expr> [ <space> ]  ':>' [ <space> ]  "return"
 ```
 
 ## 式
