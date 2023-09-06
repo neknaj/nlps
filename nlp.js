@@ -23,7 +23,7 @@ else {
     console.log(fRead)
 }
 
-class NLPparse {
+class NLPtool {
     constructor(filename) {
         var code = fRead(filename);
         this.code = code+"\0";
@@ -52,7 +52,6 @@ class NLPparse {
                 return false;
             }
         }
-       // this.check_identifier()
         for (let name of this.functionnames) {
             this.info([name,"関数の名前を解決します"]);
             let block = this.name_resolutions(this.parsed[name].block,this.toplevel_names.concat(this.parsed[name].args).concat([ {kind:"return",name:"return",type:this.functions[name].return} ]));
@@ -149,6 +148,7 @@ class NLPparse {
                         if (line.startsWith(".func")) {
                             let sp = line.split(" ");
                             let arg = sp[1].split(":");
+                            this.check_identifier(arg[0])
                             let func = {kind:"function",name:filename+"."+arg[0],return:arg[1],args:arg[2].split("(")[1].split(")")[0],identifier:this.names.length}
                            // console.log(func)
                             this.names.push(func)
@@ -172,6 +172,7 @@ class NLPparse {
                         if (line.startsWith(".func")) {
                             let sp = line.split(" ");
                             let arg = sp[1].split(":");
+                            this.check_identifier(arg[0])
                             let func = {kind:"function",name:arg[0],return:arg[1],args:arg[2].split("(")[1].split(")")[0],identifier:this.names.length}
                           //  console.log(func)
                             this.names.push(func)
@@ -282,6 +283,7 @@ class NLPparse {
                         func.block += this.code[i];
                         i++;
                     }
+                    this.check_identifier(func.name)
                     if (this.functions[func.name]!=null) {
                         this.error(i,this.code,["関数の定義に問題があります1","同じ名前の関数は定義できません",func.name]);
                         return false;
@@ -323,6 +325,7 @@ class NLPparse {
                     if (this.code[i]!=";") {
                         this.error(i,this.code,["グローバル変数の定義に問題があります"]);
                     }
+                    this.check_identifier(global.name)
                     if (this.globalvars[global.name]!=null) {
                         this.error(i,this.code,["グローバル変数の定義に問題があります1","同じ名前のグローバル変数は定義できません",global.name]);
                         return false;
@@ -497,6 +500,7 @@ class NLPparse {
                         decl.name += block_code[i];
                         i++;
                     }
+                    this.check_identifier(decl.name)
                     if (varnames.indexOf(decl.name)!=-1) {
                         this.error(i,block_code,["変数の定義に問題があります","同じブロック内で、同じ名前の変数は定義できません",decl.name]);
                         return false;
@@ -558,10 +562,7 @@ class NLPparse {
                             decl.name += stat.assign[si];
                             si++;
                         }
-                        if (decl.name=="return") {
-                            this.error(i,block_code,["変数の定義に問題があります","returnという名前の変数は定義できません"]);
-                            return false;
-                        }
+                        this.check_identifier(decl.name)
                         if (varnames.indexOf(decl.name)!=-1) {
                             this.error(i,block_code,["変数の定義に問題があります","同じブロック内で、同じ名前の変数は定義できません",decl.name]);
                             return false;
@@ -648,23 +649,26 @@ class NLPparse {
         // }
         return list;
     }
-    // check_identifier() {
-    //     let numbers = ["0","1","2","3","4","5","6","7","8","9"];
-    //     let forbiddensigns = ["!","{","}","(",")","[","]","\\","\"","'","`",":",";",","];
+    check_identifier(ident) {
+        let reserved = ["True","False","true","false","return"];
+        let numbers = ["0","1","2","3","4","5","6","7","8","9"];
+        let forbiddensigns = ["!","{","}","(",")","[","]","\\","\"","'","`",":",";",",","."];
 
-    //     for (let ident of this.names) {
-    //         let name = ident.name;
-    //         if (numbers.indexOf(name[0])!=-1) {
-    //             this.error(-1,"",["関数名・変数名の先頭に数字[0-9]は使えません",name])
-    //         }
-    //         for (let fbs of forbiddensigns) {
-    //             if (name.indexOf(fbs)!=-1) {
-    //                 this.error(-1,"",["関数名・変数名に記号[ ! { } ( ) [ ] \\ \" ' ` : , ]は使えません",name])
-    //             }
-    //         }
-    //     }
-    //     return true;
-    // }
+        if (reserved.indexOf(ident)!=-1) {
+            this.error(-1,null,["この名前は予約されています",ident])
+        }
+
+        let name = ident;
+        if (numbers.indexOf(name[0])!=-1) {
+            this.error(-1,"",["関数名・変数名の先頭に数字[0-9]は使えません",name])
+        }
+        for (let fbs of forbiddensigns) {
+            if (name.indexOf(fbs)!=-1) {
+                this.error(-1,"",["関数名・変数名に記号[ ! { } ( ) [ ] \\ \" ' ` : , . ]は使えません",name])
+            }
+        }
+        return true;
+    }
     literal(token) {
         if ( new RegExp(/[+-]?[0-9]+/).test(token.name) ) {
             token.type = "4.int";
@@ -678,8 +682,8 @@ class NLPparse {
         else {
             return false;
         }
-        token.identifier = "literal";
-        console.log("literal",token);
+        token.kind = "literal";
+       // console.log("literal",token);
         return true;
     }
     name_resolution(token,namelist) {
@@ -690,6 +694,7 @@ class NLPparse {
                 token.kind = namelist[i].kind;
                 token.type = namelist[i].type;
                 token.return = namelist[i].return;
+                token.args = namelist[i].args;
                 //console.log("Found",token)
                 return;
             }
@@ -711,6 +716,7 @@ class NLPparse {
                 for (let i=0;i<instats.stat.length;i++) {
                     this.name_resolution(instats.stat[i],newnamelist);
                 }
+                this.checkStat(instats.stat,newnamelist);
             }
             else if (instats.type=="while") {
                 //console.log("while",instats)
@@ -726,56 +732,51 @@ class NLPparse {
         }
         //console.log("--",block)
     }
+
+    checkStat(stat,namelist) {
+        //console.log("checkStat",stat)
+        let init = [];
+        let comm = [];
+        for (let elm of stat) {
+            if (elm.kind=="function") {
+                init.push([elm.return,elm.args.split(",").map((x)=>{return x.split(":")[0]})])
+                for (let i of elm.args.split(",").map((x)=>{return x.split(":")[0]})) {
+                    comm.push(["pop",i])
+                }
+                comm.push(["push",elm.return])
+            }
+            else {
+                init.push(elm.type)
+                comm.push(["push",elm.type])
+            }
+        }
+        //console.log(JSON.stringify(init))
+        //console.log(comm.map((x)=>{return x.join(" ")}))
+        let evalstack = [];
+        for (let com of comm) {
+            if (com[0]=="push") {
+                evalstack.push(com[1])
+            }
+            else if (com[0]=="pop") {
+                if (evalstack.length==0) {
+                    this.error(-1,null,["引数が不足しています"])
+                }
+                let pop = evalstack.pop()
+                if (pop!=com[1]) {
+                    this.error(-1,null,["引数の型が一致していません"])
+                }
+            }
+            //console.log(evalstack)
+        }
+        if (evalstack.length!=1) {
+            this.error(-1,null,["式の最後の値が1個になりません"])
+        }
+        //console.log(evalstack)
+    }
 }
 
-// class NLPcompile_NVE {
-//     constructor(code) {
-//         this.parsed = new NLPparse(code,[{kind:"function",name:"out",return:"void",args:"int",identifier:0},{kind:"function",name:">",return:"int",args:"int,int",identifier:1},{kind:"function",name:"<",return:"int",args:"int,int",identifier:2},{kind:"function",name:"+",return:"int",args:"int,int",identifier:3}]);
-//         console.log(this.parsed)
-//         if (this.parsed==false) {
-//             console.log("Error");
-//             return false;
-//         }
-//         console.log(this.parsed);
-//         console.log(JSON.stringify(this.parsed))
-//         //this.nameeval();
-//     }
-//     nameeval() {
-//         let functionnames = Object.keys(this.parsed);
-//         for (let name of functionnames) {
-//             console.log("関数:",name);
-//             let block = this.parsed[name];
-//             console.log(block)
-//             let vars = Object.keys(block.var);
-//             console.log("変数:",vars);
-//         }
-//     }
-//     makecode() {
-//         this.code = [];
-//         this.code.push(["jmp","#callmain"]);
-//         this.code.push(["fram",0]);
-
-//         // library files
-//         //
-
-//         let functionnames = Object.keys(this.parsed);
-//         for (let name of functionnames) {
-//             let block = this.parsed[name].block;
-//             console.log(block)
-//             this.code.push([name+":"]);
-//             let vars = Object.keys(block.var);
-//             console.log("変数:",vars);
-//             this.code.push(["fram",vars.length]);
-//             this.code.push(["pop",vars.length]);
-//         }
-//         this.code.push(["#callmain"+":"]);
-//         this.code.push(["pop",0]);
-//         console.log(this.code)
-//     }
-// }
-
 {
-var parsed = new NLPparse("./test4.nlp");
+var parsed = new NLPtool("./test4.nlp");
 console.log(parsed)
 //new NLPcompile_NVE(testcode);
 }
