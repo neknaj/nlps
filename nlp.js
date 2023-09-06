@@ -150,7 +150,7 @@ class NLPparse {
                             let sp = line.split(" ");
                             let arg = sp[1].split(":");
                             let func = {kind:"function",name:filename+"."+arg[0],return:arg[1],args:arg[2].split("(")[1].split(")")[0],identifier:this.names.length}
-                            console.log(func)
+                           // console.log(func)
                             this.names.push(func)
                         }
                     }
@@ -173,7 +173,7 @@ class NLPparse {
                             let sp = line.split(" ");
                             let arg = sp[1].split(":");
                             let func = {kind:"function",name:arg[0],return:arg[1],args:arg[2].split("(")[1].split(")")[0],identifier:this.names.length}
-                            console.log(func)
+                          //  console.log(func)
                             this.names.push(func)
                         }
                     }
@@ -666,12 +666,24 @@ class NLPparse {
     //     return true;
     // }
     literal(token) {
-        console.log("literal",token);
+        if ( new RegExp(/[+-]?[0-9]+/).test(token.name) ) {
+            token.type = "4.int";
+        }
+        else if ( new RegExp(/"(.*)"/).test(token.name) ) {
+            token.type = "12.str";
+        }
+        else if ( new RegExp(/True|False|true|false/).test(token.name) ) {
+            token.type = "4.bool";
+        }
+        else {
+            return false;
+        }
         token.identifier = "literal";
-        token.type = "4.int";
+        console.log("literal",token);
+        return true;
     }
     name_resolution(token,namelist) {
-        console.log("nameresolution",token,namelist)
+        //console.log("nameresolution",token,namelist)
         for (let i=namelist.length-1;i>=0;i--) {
             if (token.name==namelist[i].name) {
                 token.identifier = namelist[i].identifier;
@@ -682,7 +694,9 @@ class NLPparse {
                 return;
             }
         }
-        this.literal(token);
+        if (!this.literal(token)) {
+            this.error(-1,null,["名前の解決に失敗しました。",token.name])
+        }
         //console.log("Not Found",token)
     }
     name_resolutions(block,namelist) {
@@ -761,7 +775,7 @@ class NLPparse {
 // }
 
 {
-var parsed = new NLPparse("./alloc.nlp");
+var parsed = new NLPparse("./test4.nlp");
 console.log(parsed)
 //new NLPcompile_NVE(testcode);
 }
