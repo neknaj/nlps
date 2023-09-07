@@ -40,7 +40,13 @@ class NLPtool {
         console.log(this.functions)
         console.log(this.globalvars)
         this.toplevel_names = this.names.concat();
-        this.functionnames = Object.keys(this.functions);
+        this.functionnames = [];
+        for (let name of Object.keys(this.functions)) {
+            if (this.functions[name].space=="this") {
+                this.functionnames.push(name);
+            }
+        }
+        console.log(this.functionnames)
         for (let name of this.functionnames) {
             this.info([name,"関数の内容を読み込みます"]);
             let varnames = [];
@@ -149,9 +155,26 @@ class NLPtool {
                             let sp = line.split(" ");
                             let arg = sp[1].split(":");
                             this.check_identifier(arg[0])
-                            let func = {kind:"function",name:filename+"."+arg[0],return:arg[1],args:arg[2].split("(")[1].split(")")[0],identifier:this.names.length}
+                            let arg1 = [arg[1].split("(")[0],arg[1].split("(")[1].split(")")[0]]
+                            let func_fn = {kind:"function",name:filename+"."+arg[0]+`(${arg1[1]})`,return:arg1[0],args:arg1[1],identifier:this.names.length,space:"include"}
                            // console.log(func)
-                            this.names.push(func)
+                            if (this.functions[func_fn.name]!=null) {
+                                this.error(i,this.code,["関数の定義に問題があります1","同じ名前の関数は定義できません",func_fn.name]);
+                                return false;
+                            }
+                            this.names.push(func_fn);
+                            let func = {kind:"function_sn",name:filename+"."+arg[0],return:[arg1[0]],args:[arg1[1]],identifier:this.names.length,space:["include"]}
+                            this.functions[func_fn.name] = func_fn;
+                            if (this.functions[func.name]!=null) {
+                                this.info(i,this.code,["同じ略名の関数が読み込まれました",func_fn.name]);
+                                this.functions[func.name].return.push(func.return)
+                                this.functions[func.name].args.push(func.args)
+                                this.functions[func.name].space.push(func.space)
+                            }
+                            else {
+                                this.names.push(func);
+                            }
+                            this.info([func_fn.name,"関数を読み込みました"]);
                         }
                     }
                 }
@@ -173,9 +196,26 @@ class NLPtool {
                             let sp = line.split(" ");
                             let arg = sp[1].split(":");
                             this.check_identifier(arg[0])
-                            let func = {kind:"function",name:arg[0],return:arg[1],args:arg[2].split("(")[1].split(")")[0],identifier:this.names.length}
-                          //  console.log(func)
-                            this.names.push(func)
+                            let arg1 = [arg[1].split("(")[0],arg[1].split("(")[1].split(")")[0]]
+                            let func_fn = {kind:"function",name:arg[0]+`(${arg1[1]})`,return:arg1[0],args:arg1[1],identifier:this.names.length,space:"using"}
+                           // console.log(func)
+                            if (this.functions[func_fn.name]!=null) {
+                                this.error(i,this.code,["関数の定義に問題があります1","同じ名前の関数は定義できません",func_fn.name]);
+                                return false;
+                            }
+                            this.names.push(func_fn);
+                            let func = {kind:"function_sn",name:arg[0],return:[arg1[0]],args:[arg1[1]],identifier:this.names.length,space:["include"]}
+                            this.functions[func_fn.name] = func_fn;
+                            if (this.functions[func.name]!=null) {
+                                this.info(i,this.code,["同じ略名の関数が読み込まれました",func_fn.name]);
+                                this.functions[func.name].return.push(func.return)
+                                this.functions[func.name].args.push(func.args)
+                                this.functions[func.name].space.push(func.space)
+                            }
+                            else {
+                                this.names.push(func);
+                            }
+                            this.info([func_fn.name,"関数を読み込みました"]);
                         }
                     }
                 }
@@ -188,11 +228,12 @@ class NLPtool {
                 if (this.code.startsWith('fn:',i)) {
                     //<func> ::= '!' [ <space> ] 'fn:' [ <space> ] <var-type> ':(' <func-arg-def> '):' [ <space> ] <func-name> { ( <space> | <eol> ) } '{' <block> '}'
                     let func = {
-                        kind: "function",
+                        kind: "function_sn",
                         name: "",
                         return: "",
                         args: "",
                         block: "",
+                        space: "this",
                     };
                     i+=3
                     // [ <space> ]
@@ -284,13 +325,31 @@ class NLPtool {
                         i++;
                     }
                     this.check_identifier(func.name)
-                    if (this.functions[func.name]!=null) {
-                        this.error(i,this.code,["関数の定義に問題があります1","同じ名前の関数は定義できません",func.name]);
+                    let func_fn = {
+                        kind: "function",
+                        name: `${func.name}(${func.args.split(",").map((x)=>{return x.split(":")[0]})})`,
+                        return: func.return,
+                        args: func.args,
+                        block: func.block,
+                        space: "this"
+                    };
+                    if (this.functions[func_fn.name]!=null) {
+                        this.error(i,this.code,["関数の定義に問題があります1","同じ名前の関数は定義できません",func_fn.name]);
                         return false;
                     }
-                    this.functions[func.name] = func;
-                    func.identifier = this.names.length;
-                    this.names.push(func);
+                    func_fn.identifier = this.names.length;
+                    this.functions[func_fn.name] = func_fn;
+                    this.names.push(func_fn);
+                    if (this.functions[func.name]!=null) {
+                        this.info(i,this.code,["同じ略名の関数が読み込まれました",func_fn.name]);
+                        this.functions[func.name].return.push(func.return)
+                        this.functions[func.name].args.push(func.args)
+                        this.functions[func.name].space.push(func.space)
+                    }
+                    else {
+                        func.identifier = this.names.length;
+                        this.names.push({kind:"function_sn",name:func.name,return:[func.return],args:[func.args],space:func.space});
+                    }
                     this.info([func.name,"関数を読み込みました"]);
                 }
                 else if (this.code.startsWith('global:',i)) {
@@ -734,10 +793,11 @@ class NLPtool {
     }
 
     checkStat(stat,namelist) {
-        //console.log("checkStat",stat)
+        console.log("checkStat",stat)
         let init = [];
         let comm = [];
-        for (let elm of stat) {
+        for (let i in stat) {
+            let elm = stat[i]
             if (elm.kind=="function") {
                 init.push([elm.return,elm.args.split(",").map((x)=>{return x.split(":")[0]})])
                 for (let i of elm.args.split(",").map((x)=>{return x.split(":")[0]})) {
@@ -745,19 +805,34 @@ class NLPtool {
                 }
                 comm.push(["push",elm.return])
             }
+            else if (elm.kind=="function_sn") {
+                init.push([elm.return,elm.args])
+                comm.push(["pop2",elm.args,i])
+                comm.push(["push2",elm.return,i])
+            }
             else {
                 init.push(elm.type)
                 comm.push(["push",elm.type])
             }
         }
         //console.log(JSON.stringify(init))
-        //console.log(comm.map((x)=>{return x.join(" ")}))
+        console.log(comm.map((x)=>{return x.join(" ")}))
+        console.log(comm)
         let evalstack = [];
         for (let com of comm) {
             if (com[0]=="push") {
                 evalstack.push(com[1])
             }
             else if (com[0]=="pop") {
+                if (evalstack.length==0) {
+                    this.error(-1,null,["引数が不足しています"])
+                }
+                let pop = evalstack.pop()
+                if (pop!=com[1]) {
+                    this.error(-1,null,["引数の型が一致していません"])
+                }
+            }
+            else if (com[0]=="pop2") {
                 if (evalstack.length==0) {
                     this.error(-1,null,["引数が不足しています"])
                 }
