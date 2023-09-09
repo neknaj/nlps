@@ -1,6 +1,7 @@
+/node_modules
 *.nlp
 *.nlpo
 *.nva
 *.nvmc
 *.nlp.js
-*.old.js
+*.old*.*
