@@ -26,108 +26,119 @@ var NLPtool = /** @class */ (function () {
         console.log(this.code);
         this.tokenize();
     }
-    NLPtool.prototype.tokenizeerror = function (message) {
+    NLPtool.prototype.tokenizeerror = function (message, i) {
         // @ts-ignore
         var error = new Error(message, this.filename);
         error.name = "NLP_TokenizeError";
+        var LineAndCol = this.getLineAndCol(i);
         // @ts-ignore
-        error.lineNumber = 5;
-        // @ts-ignore
-        error.columnNumber = 10;
+        error.lineNumber = LineAndCol.line;
+        error.columnNumber = LineAndCol.col;
+        //error.stack = ""
         return error;
     };
+    NLPtool.prototype.getLineAndCol = function (i) {
+        var j = 0;
+        var line = 1;
+        var col = 1;
+        while (j < i) {
+            if (this.code[j] == "\n") {
+                line++;
+                col = 0;
+            }
+            else {
+                col++;
+            }
+            j++;
+        }
+        return { line: line, col: col };
+    };
     NLPtool.prototype.tokenize = function () {
-        var tokenarr = [];
-        var blocknest = 0;
-        var state = "toplevel";
+        var tokenarr = [{ type: "SOF", val: "" }];
+        var state = "TopLevel";
         var i = 0;
-        var nowtoken = "";
+        console.log(tokenarr);
         while (i < this.code.length) {
             switch (state) {
-                case "toplevel":
+                case "TopLevel":
                     if (this.code[i] == "#") {
-                        state = "import_dec";
-                        nowtoken += this.code[i];
-                        tokenarr.push({ type: "import_dec", val: nowtoken, index: i });
-                        nowtoken = "";
+                        state = "ImportStat";
                     }
                     if (this.code[i] == "!") {
                         state = "toplevel_dec";
-                        nowtoken += this.code[i];
-                        tokenarr.push({ type: "toplevel_dec", val: nowtoken, index: i });
-                        nowtoken = "";
                     }
                     break;
-                case "import_dec":
+                case "ImportStat":
                     if (this.code[i] == " ") {
-                        state = "import_blank";
-                        tokenarr.push({ type: "import_type", val: nowtoken, index: i });
-                        if (nowtoken != "include" && nowtoken != "using") {
-                            throw this.tokenizeerror("\u30A4\u30F3\u30DD\u30FC\u30C8\u306E\u30BF\u30A4\u30D7\u306F\"include\"\u304B\"using\"\u3067\u3042\u308B\u5FC5\u8981\u304C\u3042\u308A\u307E\u3059");
-                        }
-                        nowtoken = "";
+                        throw this.tokenizeerror("\u30A4\u30F3\u30DD\u30FC\u30C8\u5BA3\u8A00\u306E\"!\"\u306E\u76F4\u5F8C\u306B\u7A7A\u767D\u3092\u7F6E\u304F\u3053\u3068\u306F\u3067\u304D\u307E\u305B\u3093", i);
                     }
                     else {
-                        nowtoken += this.code[i];
+                        state = "ImportStat.Declaration";
                     }
                     break;
-                case "import_blank":
+                case "ImportStat.Declaration":
+                    if (this.code[i] == " ") {
+                        state = "ImportStat.Blank";
+                    }
+                    // @ts-ignore
+                    else if (tokenarr[tokenarr.length - 1].val == "include" || tokenarr[tokenarr.length - 1].val == "using") {
+                        throw this.tokenizeerror("\u30A4\u30F3\u30DD\u30FC\u30C8\u306E\u30BF\u30A4\u30D7\u306F\"include\"\u304B\"using\"\u306E\u307F\u3067\u3059", i);
+                    }
+                    break;
+                case "ImportStat.Blank":
                     if (this.code[i] != " ") {
-                        i--;
-                        state = "import_file";
+                        state = "ImportStat.Filename";
                     }
                     break;
-                case "import_file":
-                    if (this.code[i] == ";") {
-                        state = "import_semicolon";
-                        tokenarr.push({ type: "import_file", val: nowtoken, index: i });
-                        nowtoken = "";
+                case "ImportStat.Filename":
+                    if (this.code[i] == " ") {
+                        throw this.tokenizeerror("\u30A4\u30F3\u30DD\u30FC\u30C8\u3059\u308B\u30D5\u30A1\u30A4\u30EB\u306E\u540D\u524D\u306B\u7A7A\u767D\u306F\u4F7F\u3048\u307E\u305B\u3093", i);
+                    }
+                    else if (this.code[i] == ";") {
+                        state = "ImportStat.EOStat";
+                    }
+                    break;
+                case "ImportStat.EOStat":
+                    if (this.code[i] == " ") {
+                        state = "ImportStat.AfterBlank";
                     }
                     else if (this.code[i] == "\n") {
-                        throw this.tokenizeerror("\u6587\u306E\u4E2D\u306B\u6539\u884C\u3092\u542B\u3081\u308B\u3053\u3068\u306F\u3067\u304D\u307E\u305B\u3093");
-                    }
-                    else if (this.code[i] == " ") {
-                        throw this.tokenizeerror("\u30D5\u30A1\u30A4\u30EB\u540D\u306B\u7A7A\u767D\u3092\u542B\u3081\u308B\u3053\u3068\u306F\u3067\u304D\u307E\u305B\u3093");
-                    }
-                    else {
-                        nowtoken += this.code[i];
+                        state = "ImportStat.EOL";
                     }
                     break;
-                case "import_semicolon":
-                    if (this.code[i] == "\n") {
-                        state = "toplevel";
-                    }
-                    else if (this.code[i] == " ") {
-                    }
-                    else {
-                        throw this.tokenizeerror("\u30A4\u30F3\u30DD\u30FC\u30C8\u306E\u30BB\u30DF\u30B3\u30ED\u30F3\u306E\u5F8C\u308D\u306F\u7A7A\u767D\u306E\u307F\u304C\u8A31\u3055\u308C\u307E\u3059");
-                    }
-                    break;
-                case "toplevel_dec":
+                case "ImportStat.AfterBlank":
                     if (this.code[i] == " ") {
-                        throw this.tokenizeerror("\u5BA3\u8A00\u306E\u76F4\u5F8C\u306F\u7A2E\u985E\u3067\u3042\u308B\u5FC5\u8981\u304C\u3042\u308A\u307E\u3059");
                     }
-                    else if (this.code[i] == ":") {
-                        tokenarr.push({ type: "toplevel_dectype", val: nowtoken, index: i });
-                        if (nowtoken == "global") {
-                            state = "global_var_dectype";
-                        }
-                        else if (nowtoken == "fn") {
-                            state = "fn_dec_rettype";
-                        }
-                        nowtoken = "";
+                    else if (this.code[i] == "\n") {
+                        state = "ImportStat.EOL";
                     }
                     else {
-                        nowtoken += this.code[i];
+                        throw this.tokenizeerror("\u30A4\u30F3\u30DD\u30FC\u30C8\u6587\u306E\u5F8C\u308D\u306B\u306F\u7A7A\u767D\u4EE5\u5916\u306F\u8A31\u3055\u308C\u307E\u305B\u3093", i);
                     }
+                    break;
+                case "ImportStat.EOL":
+                    state = "TopLevel";
+                    i--;
+                    break;
+            }
+            if (state != "TopLevel") {
+                console.log(i, this.code[i].replace(/\n/g, "\\n"), state);
+                // @ts-ignore
+                if (state != tokenarr[tokenarr.length - 1].type) {
+                    tokenarr.push({ type: state, val: this.code[i], i: i });
+                }
+                else {
+                    // @ts-ignore
+                    tokenarr[tokenarr.length - 1].val += this.code[i];
+                }
+                //console.table(tokenarr)
             }
             i++;
         }
-        console.dir(tokenarr);
     };
     return NLPtool;
 }());
 {
-    var parsed = new NLPtool("./test4.nlp");
+    var parsed = new NLPtool("http://127.0.0.1:5500/test4.nlp");
     console.log(parsed);
 }

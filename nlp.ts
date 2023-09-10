@@ -29,108 +29,118 @@ class NLPtool {
         console.log(this.code)
         this.tokenize();
     }
-    tokenizeerror(message:string): object {
+    tokenizeerror(message:string,i:number): object {
         // @ts-ignore
         let error = new Error(message,this.filename);
         error.name = "NLP_TokenizeError";
+        let LineAndCol:object = this.getLineAndCol(i);
         // @ts-ignore
-        error.lineNumber = 5;
-        // @ts-ignore
-        error.columnNumber = 10;
+        error.lineNumber = LineAndCol.line; error.columnNumber = LineAndCol.col;
+        //error.stack = ""
         return error;
     }
+    getLineAndCol(i:number): object {
+        let j:number = 0;
+        let line:number = 1;
+        let col:number = 1;
+        while (j<i) {
+            if (this.code[j]=="\n") {
+                line++;
+                col = 0;
+            }
+            else {
+                col++;
+            }
+            j++;
+        }
+        return {line:line,col:col};
+    }
     tokenize(): void {
-        let tokenarr:Array<object> = [];
-        let blocknest:number = 0;
-        let state:"toplevel"|"import_dec"|"import_blank"|"import_file"|"import_semicolon"|"toplevel_dec"|"global_var_dectype"|"fn_dec_rettype" = "toplevel";
+        var tokenarr: Array<object> = [{type:"SOF",val:""}];
+        var state = "TopLevel";
         let i:number = 0;
-        let nowtoken:string = "";
+        console.log(tokenarr)
         while (i<this.code.length) {
             switch(state) {
-                case "toplevel":
+                case "TopLevel":
                     if (this.code[i]=="#") {
-                        state = "import_dec";
-                        nowtoken += this.code[i];
-                        tokenarr.push({type:"import_dec",val:nowtoken,index:i});
-                        nowtoken = "";
+                        state = "ImportStat";
                     }
                     if (this.code[i]=="!") {
                         state = "toplevel_dec";
-                        nowtoken += this.code[i];
-                        tokenarr.push({type:"toplevel_dec",val:nowtoken,index:i});
-                        nowtoken = "";
                     }
                     break;
-                case "import_dec":
+                case "ImportStat":
                     if (this.code[i]==" ") {
-                        state = "import_blank";
-                        tokenarr.push({type:"import_type",val:nowtoken,index:i});
-                        if (nowtoken!="include"&&nowtoken!="using") {
-                            throw this.tokenizeerror(`インポートのタイプは"include"か"using"である必要があります`);
-                        }
-                        nowtoken = "";
+                        throw this.tokenizeerror(`インポート宣言の"!"の直後に空白を置くことはできません`,i);
                     }
                     else {
-                        nowtoken += this.code[i];
+                        state = "ImportStat.Declaration";
                     }
                     break;
-                case "import_blank":
+                case "ImportStat.Declaration":
+                    if (this.code[i]==" ") {
+                        state = "ImportStat.Blank";
+                    }
+                    // @ts-ignore
+                    else if (tokenarr[tokenarr.length-1].val=="include"||tokenarr[tokenarr.length-1].val=="using") {
+                        throw this.tokenizeerror(`インポートのタイプは"include"か"using"のみです`,i);
+                    }
+                    break;
+                case "ImportStat.Blank":
                     if (this.code[i]!=" ") {
-                        i--;
-                        state = "import_file";
+                        state = "ImportStat.Filename";
                     }
                     break;
-                case "import_file":
-                    if (this.code[i]==";") {
-                        state = "import_semicolon";
-                        tokenarr.push({type:"import_file",val:nowtoken,index:i});
-                        nowtoken = "";
+                case "ImportStat.Filename":
+                    if (this.code[i]==" ") {
+                        throw this.tokenizeerror(`インポートするファイルの名前に空白は使えません`,i);
+                    }
+                    else if (this.code[i]==";") {
+                        state = "ImportStat.EOStat";
+                    }
+                    break;
+                case "ImportStat.EOStat":
+                    if (this.code[i]==" ") {
+                        state = "ImportStat.AfterBlank";
                     }
                     else if (this.code[i]=="\n") {
-                        throw this.tokenizeerror(`文の中に改行を含めることはできません`);
-                    }
-                    else if (this.code[i]==" ") {
-                        throw this.tokenizeerror(`ファイル名に空白を含めることはできません`);
-                    }
-                    else {
-                        nowtoken += this.code[i];
+                        state = "ImportStat.EOL";
                     }
                     break;
-                case "import_semicolon":
-                    if (this.code[i]=="\n") {
-                        state = "toplevel";
-                    }
-                    else if (this.code[i]==" ") {
-                    }
-                    else {
-                        throw this.tokenizeerror(`インポートのセミコロンの後ろは空白のみが許されます`);
-                    }
-                    break;
-                case "toplevel_dec":
+                case "ImportStat.AfterBlank":
                     if (this.code[i]==" ") {
-                        throw this.tokenizeerror(`宣言の直後は種類である必要があります`);
                     }
-                    else if (this.code[i]==":") {
-                        tokenarr.push({type:"toplevel_dectype",val:nowtoken,index:i});
-                        if (nowtoken=="global") {
-                            state = "global_var_dectype";
-                        }
-                        else if (nowtoken=="fn") {
-                            state = "fn_dec_rettype";
-                        }
-                        nowtoken = "";
+                    else if (this.code[i]=="\n") {
+                        state = "ImportStat.EOL";
                     }
                     else {
-                        nowtoken += this.code[i];
+                        throw this.tokenizeerror(`インポート文の後ろには空白以外は許されません`,i);
                     }
+                    break;
+                case "ImportStat.EOL":
+                    state = "TopLevel";
+                    i--;
+                    break;
+            }
+            if (state!="TopLevel") {
+                console.log(i,this.code[i].replace(/\n/g,"\\n"),state)
+                // @ts-ignore
+                if (state!=tokenarr[tokenarr.length-1].type) {
+                    tokenarr.push({type:state,val:this.code[i],i:i});
+                }
+                else {
+                    // @ts-ignore
+                    tokenarr[tokenarr.length-1].val += this.code[i];
+                }
+                //console.table(tokenarr)
             }
             i++;
         }
-        console.dir(tokenarr);
     }
 }
 
 {
-var parsed = new NLPtool("./test4.nlp");
+var parsed = new NLPtool("http://127.0.0.1:5500/test4.nlp");
 console.log(parsed)
 }
