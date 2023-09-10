@@ -48,7 +48,8 @@ stateDiagram-v2
         TopLevelDef.Declaration --> FunctionDef.Colon1: colon&decl="fn"
         state FunctionDef {
             FunctionDef.Colon1 --> FunctionDef.Blank1: space
-            FunctionDef.Colon1 --> FunctionDef.RetType: !space
+            FunctionDef.Colon1 --> FunctionDef.Error: semicolon
+            FunctionDef.Colon1 --> FunctionDef.RetType: !space&!semicolon
             FunctionDef.Blank1 --> FunctionDef.Blank1: space
             FunctionDef.Blank1 --> FunctionDef.RetType: !space
             FunctionDef.RetType --> FunctionDef.RetType: !space
