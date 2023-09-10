@@ -105,6 +105,9 @@ var NLPtool = /** @class */ (function () {
                     else if (this.code[i] == "\n") {
                         state = "ImportStat.EOL";
                     }
+                    else {
+                        throw this.tokenizeerror("\u30A4\u30F3\u30DD\u30FC\u30C8\u6587\u306E\u5F8C\u308D\u306B\u306F\u7A7A\u767D\u4EE5\u5916\u306F\u8A31\u3055\u308C\u307E\u305B\u3093", i);
+                    }
                     break;
                 case "ImportStat.AfterBlank":
                     if (this.code[i] == " ") {
@@ -135,6 +138,7 @@ var NLPtool = /** @class */ (function () {
             }
             i++;
         }
+        console.table(tokenarr);
     };
     return NLPtool;
 }());

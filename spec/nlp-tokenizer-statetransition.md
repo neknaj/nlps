@@ -10,10 +10,10 @@ stateDiagram-v2
     %% ImportStat.Blank: Blank
     %% ImportStat.Filename: fName
     %% ImportStat.EOS: EOS
-    %% ImportStat.Error: Error
+    ImportStat.Error: Error
 
     %% TopLevelDef.Declaration: Decl
-    %% TopLevelDef.Error: Error
+    TopLevelDef.Error: Error
 
     [*] --> TopLevel: *
     Error --> [*]
@@ -38,9 +38,10 @@ stateDiagram-v2
         ImportStat.Error --> [*]
         ImportStat.EOStat --> ImportStat.AfterBlank: space
         ImportStat.EOStat --> ImportStat.EOL: LF
+        ImportStat.EOStat --> ImportStat.Error: !space&!LF
         ImportStat.AfterBlank --> ImportStat.AfterBlank: space
         ImportStat.AfterBlank --> ImportStat.EOL: LF
-        ImportStat.AfterBlank --> ImportStat.Error: !space&!LF -
+        ImportStat.AfterBlank --> ImportStat.Error: !space&!LF
         ImportStat.EOL --> ImportStat.TopLevel: * -
     }
 
@@ -49,9 +50,15 @@ stateDiagram-v2
         [*] --> TopLevelDef.Declaration: !space
         TopLevelDef.Declaration --> TopLevelDef.Declaration: !space&!colon
         TopLevelDef.Declaration --> TopLevelDef.Error: space
-        TopLevelDef.Declaration --> TopLevelDef.gVarType: colon&decl="global"
-        TopLevelDef.Declaration --> TopLevelDef.RetType: colon&decl="fn"
+        TopLevelDef.Declaration --> gVarDef.gVarType: colon&decl="global"
+        TopLevelDef.Declaration --> FunctionDef.RetType: colon&decl="fn"
         TopLevelDef.Error --> [*]
+        state FunctionDef {
+            FunctionDef.RetType
+        }
+        state gVarDef {
+            gVarDef.gVarType
+        }
     }
 
 ```

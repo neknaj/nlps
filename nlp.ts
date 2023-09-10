@@ -107,6 +107,9 @@ class NLPtool {
                     else if (this.code[i]=="\n") {
                         state = "ImportStat.EOL";
                     }
+                    else {
+                        throw this.tokenizeerror(`インポート文の後ろには空白以外は許されません`,i);
+                    }
                     break;
                 case "ImportStat.AfterBlank":
                     if (this.code[i]==" ") {
@@ -137,6 +140,7 @@ class NLPtool {
             }
             i++;
         }
+        console.table(tokenarr)
     }
 }
 
