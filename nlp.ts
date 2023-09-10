@@ -88,7 +88,10 @@ class NLPtool {
                     }
                     break;
                 case "ImportStat.Blank":
-                    if (this.code[i]!=" ") {
+                    if (this.code[i]!=";") {
+                        throw this.tokenizeerror(`インポートするファイルの名前がありません`,i);
+                    }
+                    else if (this.code[i]!=" ") {
                         state = "ImportStat.Filename";
                     }
                     break;
