@@ -60,6 +60,11 @@ class NLPtool {
         var state = "TopLevel";
         let i:number = 0;
         console.log(tokenarr)
+        const space = " ";
+        const sharp = "#";
+        const exclam = "!";
+        const semicolon = ";";
+        const LF = "\n";
         while (i<this.code.length) {
             switch(state) {
                 case "TopLevel":
