@@ -2,6 +2,7 @@ class NLPtool {
     private code:string;
     private filename:string;
     private fRead:Function;
+    tokenarr:Array<Record<string,string|number>>;
     constructor(filename: string) {
         this.filename = filename;
         { // Define the fRead function
@@ -56,103 +57,94 @@ class NLPtool {
         return {line:line,col:col};
     }
     tokenize(): void {
-        var tokenarr: Array<object> = [{type:"SOF",val:""}];
+        var tokenarr: Array<Record<string,string|number>> = [{type:"SOF",val:"",i:0}];
+        this.tokenarr = tokenarr;
         var state = "TopLevel";
         let i:number = 0;
         console.log(tokenarr)
-        const space = " ";
-        const sharp = "#";
-        const exclam = "!";
-        const semicolon = ";";
-        const LF = "\n";
         while (i<this.code.length) {
-            switch(state) {
-                case "TopLevel":
-                    if (this.code[i]=="#") {
-                        state = "ImportStat";
-                    }
-                    if (this.code[i]=="!") {
-                        state = "toplevel_dec";
-                    }
-                    break;
-                case "ImportStat":
-                    if (this.code[i]==" ") {
-                        throw this.tokenizeerror(`インポート宣言の"!"の直後に空白を置くことはできません`,i);
-                    }
-                    else {
-                        state = "ImportStat.Declaration";
-                    }
-                    break;
-                case "ImportStat.Declaration":
-                    if (this.code[i]==" ") {
-                        state = "ImportStat.Blank";
-                    }
-                    // @ts-ignore
-                    else if (tokenarr[tokenarr.length-1].val=="include"||tokenarr[tokenarr.length-1].val=="using") {
-                        throw this.tokenizeerror(`インポートのタイプは"include"か"using"のみです`,i);
-                    }
-                    break;
-                case "ImportStat.Blank":
-                    if (this.code[i]!=";") {
-                        throw this.tokenizeerror(`インポートするファイルの名前がありません`,i);
-                    }
-                    else if (this.code[i]!=" ") {
-                        state = "ImportStat.Filename";
-                    }
-                    break;
-                case "ImportStat.Filename":
-                    if (this.code[i]==" ") {
-                        throw this.tokenizeerror(`インポートするファイルの名前に空白は使えません`,i);
-                    }
-                    else if (this.code[i]==";") {
-                        state = "ImportStat.EOStat";
-                    }
-                    break;
-                case "ImportStat.EOStat":
-                    if (this.code[i]==" ") {
-                        state = "ImportStat.AfterBlank";
-                    }
-                    else if (this.code[i]=="\n") {
-                        state = "ImportStat.EOL";
-                    }
-                    else {
-                        throw this.tokenizeerror(`インポート文の後ろには空白以外は許されません`,i);
-                    }
-                    break;
-                case "ImportStat.AfterBlank":
-                    if (this.code[i]==" ") {
-                    }
-                    else if (this.code[i]=="\n") {
-                        state = "ImportStat.EOL";
-                    }
-                    else {
-                        throw this.tokenizeerror(`インポート文の後ろには空白以外は許されません`,i);
-                    }
-                    break;
-                case "ImportStat.EOL":
-                    state = "TopLevel";
-                    i--;
-                    break;
+            {
+
+                if (false) {}
+                else if (state=="TopLevel"&&((this.code[i]=="#"))) { state="ImportStat.Sharp" }
+                else if (state=="TopLevel"&&((this.code[i]=="!"))) { state="TopLevelDef.Exclam" }
+                else if (state=="TopLevel"&&((this.code[i]==" "))) { state="TopLevel.Blank" }
+                else if (state=="TopLevel"&&((this.code[i]=="\n"))) { state="TopLevel.EOL" }
+                else if (state=="TopLevel"&&(!(this.code[i]=="#"))&&(!(this.code[i]=="!"))&&(!(this.code[i]==" "))&&(!(this.code[i]=="\n"))) { throw this.tokenizeerror(`TopLevel => Error; !sharp&!exclam&!space&!LF`,i) }
+                else if (state=="TopLevel.Blank"&&((this.code[i]=="\n"))) { state="TopLevel.EOL" }
+                else if (state=="TopLevel.Blank"&&((this.code[i]=="#"))) { state="ImportStat.Sharp" }
+                else if (state=="TopLevel.Blank"&&((this.code[i]=="!"))) { state="TopLevelDef.Exclam" }
+                else if (state=="TopLevel.Blank"&&(!(this.code[i]=="#"))&&(!(this.code[i]=="!"))&&(!(this.code[i]==" "))&&(!(this.code[i]=="\n"))) { throw this.tokenizeerror(`TopLevel.Blank => Error; !sharp&!exclam&!space&!LF`,i) }
+                else if (state=="TopLevel.EOL"&&((this.code[i]==" "))) { state="TopLevel.Blank" }
+                else if (state=="TopLevel.EOL"&&((this.code[i]=="#"))) { state="ImportStat.Sharp" }
+                else if (state=="TopLevel.EOL"&&((this.code[i]=="!"))) { state="TopLevelDef.Exclam" }
+                else if (state=="TopLevel.EOL"&&(!(this.code[i]=="#"))&&(!(this.code[i]=="!"))&&(!(this.code[i]==" "))&&(!(this.code[i]=="\n"))) { throw this.tokenizeerror(`TopLevel.EOL => Error; !sharp&!exclam&!space&!LF`,i) }
+                else if (state=="gVarDef.EOL") { state="TopLevel" }
+                else if (state=="ImportStat.EOL") { state="TopLevel" }
+                else if (state=="ImportStat.Sharp"&&((this.code[i]==" "))) { throw this.tokenizeerror(`ImportStat.Sharp => ImportStat.Error; space`,i) }
+                else if (state=="ImportStat.Sharp"&&(!(this.code[i]==" "))) { state="ImportStat.Declaration" }
+                else if (state=="ImportStat.Declaration"&&((this.code[i]==" "))&&((tokenarr[tokenarr.length-1].val=="include"||tokenarr[tokenarr.length-1].val=="using"))) { state="ImportStat.Blank" }
+                else if (state=="ImportStat.Declaration"&&((this.code[i]==" "))&&(!(tokenarr[tokenarr.length-1].val=="include"||tokenarr[tokenarr.length-1].val=="using"))) { throw this.tokenizeerror(`ImportStat.Declaration => ImportStat.Error; space&!decl=("include"|"using")`,i) }
+                else if (state=="ImportStat.Blank"&&((this.code[i]==";"))) { throw this.tokenizeerror(`ImportStat.Blank => ImportStat.Error; semicolon`,i) }
+                else if (state=="ImportStat.Blank"&&(!(this.code[i]==" "))&&(!(this.code[i]==";"))) { state="ImportStat.Filename" }
+                else if (state=="ImportStat.Filename"&&(!(this.code[i]==" "))&&((this.code[i]==";"))) { state="ImportStat.EOStat" }
+                else if (state=="ImportStat.Filename"&&((this.code[i]==" "))) { throw this.tokenizeerror(`ImportStat.Filename => ImportStat.Error; space`,i) }
+                else if (state=="ImportStat.EOStat"&&((this.code[i]==" "))) { state="ImportStat.AfterBlank" }
+                else if (state=="ImportStat.EOStat"&&(!(this.code[i]==" "))&&(!(this.code[i]=="\n"))) { throw this.tokenizeerror(`ImportStat.EOStat => ImportStat.Error; !space&!LF`,i) }
+                else if (state=="ImportStat.AfterBlank"&&((this.code[i]=="\n"))) { state="ImportStat.EOL" }
+                else if (state=="ImportStat.EOStat"&&((this.code[i]=="\n"))) { state="ImportStat.EOL" }
+                else if (state=="ImportStat.AfterBlank"&&(!(this.code[i]==" "))&&(!(this.code[i]=="\n"))) { throw this.tokenizeerror(`ImportStat.AfterBlank => ImportStat.Error; !space&!LF`,i) }
+                else if (state=="TopLevelDef.Exclam"&&((this.code[i]==" "))) { throw this.tokenizeerror(`TopLevelDef.Exclam => TopLevelDef.Error; space`,i) }
+                else if (state=="TopLevelDef.Exclam"&&(!(this.code[i]==" "))) { state="TopLevelDef.Declaration" }
+                else if (state=="TopLevelDef.Declaration"&&((this.code[i]==" "))) { throw this.tokenizeerror(`TopLevelDef.Declaration => TopLevelDef.Error; space`,i) }
+                else if (state=="TopLevelDef.Declaration"&&((this.code[i]==":"))&&(!(tokenarr[tokenarr.length-1].val=="fn"||tokenarr[tokenarr.length-1].val=="global"))) { throw this.tokenizeerror(`TopLevelDef.Declaration => TopLevelDef.Error; colon&!decl=("fn"|"global")`,i) }
+                else if (state=="TopLevelDef.Declaration"&&((this.code[i]==";"))) { throw this.tokenizeerror(`TopLevelDef.Declaration => TopLevelDef.Error; semicolon`,i) }
+                else if (state=="TopLevelDef.Declaration"&&((this.code[i]==":"))&&((tokenarr[tokenarr.length-1].val=="global"))) { state="gVarDef.Colon1" }
+                else if (state=="TopLevelDef.Declaration"&&((this.code[i]==":"))&&((tokenarr[tokenarr.length-1].val=="fn"))) { state="FunctionDef.Colon1" }
+                else if (state=="FunctionDef.Colon1"&&((this.code[i]==" "))) { state="FunctionDef.Blank1" }
+                else if (state=="FunctionDef.Colon1"&&((this.code[i]==";"))) { throw this.tokenizeerror(`FunctionDef.Colon1 => FunctionDef.Error; semicolon`,i) }
+                else if (state=="FunctionDef.Colon1"&&(!(this.code[i]==" "))&&(!(this.code[i]==";"))) { state="FunctionDef.RetType" }
+                else if (state=="FunctionDef.Blank1"&&(!(this.code[i]==" "))) { state="FunctionDef.RetType" }
+                else if (state=="FunctionDef.RetType"&&((this.code[i]==" "))) { state="FunctionDef.Blank2" }
+                else if (state=="FunctionDef.Blank2"&&(!(this.code[i]==" "))&&(!(this.code[i]==":"))) { throw this.tokenizeerror(`FunctionDef.Blank2 => FunctionDef.Error; !space&!colon`,i) }
+                else if (state=="FunctionDef.Blank2"&&((this.code[i]==":"))) { state="FunctionDef.Colon2" }
+                else if (state=="gVarDef.Colon1"&&((this.code[i]==" "))) { state="gVarDef.Blank1" }
+                else if (state=="gVarDef.Colon1"&&((this.code[i]==";"))) { throw this.tokenizeerror(`gVarDef.Colon1 => gVarDef.Error; semicolon`,i) }
+                else if (state=="gVarDef.Colon1"&&(!(this.code[i]==" "))&&(!(this.code[i]==";"))) { state="gVarDef.gVarType" }
+                else if (state=="gVarDef.Blank1"&&(!(this.code[i]==" "))) { state="gVarDef.gVarType" }
+                else if (state=="gVarDef.gVarType"&&((this.code[i]==" "))) { state="gVarDef.Blank2" }
+                else if (state=="gVarDef.Blank2"&&((this.code[i]==":"))) { state="gVarDef.Colon2" }
+                else if (state=="gVarDef.gVarType"&&((this.code[i]==";"))) { throw this.tokenizeerror(`gVarDef.gVarType => gVarDef.Error; semicolon`,i) }
+                else if (state=="gVarDef.gVarType"&&((this.code[i]==":"))) { state="gVarDef.Colon2" }
+                else if (state=="gVarDef.Blank2"&&(!(this.code[i]==" "))&&(!(this.code[i]==":"))) { throw this.tokenizeerror(`gVarDef.Blank2 => gVarDef.Error; !space&!colon`,i) }
+                else if (state=="gVarDef.Colon2"&&((this.code[i]==" "))) { state="gVarDef.Blank3" }
+                else if (state=="gVarDef.Blank3"&&((this.code[i]==";"))) { throw this.tokenizeerror(`gVarDef.Blank3 => gVarDef.Error; semicolon`,i) }
+                else if (state=="gVarDef.Blank3"&&(!(this.code[i]==" "))&&(!(this.code[i]==";"))) { state="gVarDef.Name" }
+                else if (state=="gVarDef.Name"&&((this.code[i]==";"))) { state="gVarDef.EOStat" }
+                else if (state=="gVarDef.EOStat"&&((this.code[i]==" "))) { state="gVarDef.AfterBlank" }
+                else if (state=="gVarDef.EOStat"&&(!(this.code[i]==" "))&&(!(this.code[i]=="\n"))) { throw this.tokenizeerror(`gVarDef.EOStat => gVarDef.Error; !space&!LF`,i) }
+                else if (state=="gVarDef.AfterBlank"&&((this.code[i]=="\n"))) { state="gVarDef.EOL" }
+                else if (state=="gVarDef.EOStat"&&((this.code[i]=="\n"))) { state="gVarDef.EOL" }
+                else if (state=="gVarDef.AfterBlank"&&(!(this.code[i]==" "))&&(!(this.code[i]=="\n"))) { throw this.tokenizeerror(`gVarDef.AfterBlank => gVarDef.Error; !space&!LF`,i) }
+
             }
             if (state!="TopLevel") {
                 console.log(i,this.code[i].replace(/\n/g,"\\n"),state)
-                // @ts-ignore
                 if (state!=tokenarr[tokenarr.length-1].type) {
                     tokenarr.push({type:state,val:this.code[i],i:i});
                 }
                 else {
-                    // @ts-ignore
                     tokenarr[tokenarr.length-1].val += this.code[i];
                 }
                 //console.table(tokenarr)
-            }
             i++;
+            }
         }
         console.table(tokenarr)
     }
 }
 
-{
-var parsed = new NLPtool("http://127.0.0.1:5500/test4.nlp");
-console.log(parsed)
+
+if (!(typeof require!="undefined")) {
+    var code_res = new NLPtool("./test4.nlp");
 }

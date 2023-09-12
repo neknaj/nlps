@@ -1,4 +1,4 @@
-# 状態遷移
+# トークナイザの状態遷移
 
 ```mermaid
 stateDiagram-v2
@@ -8,27 +8,38 @@ stateDiagram-v2
     FunctionDef.Error: Error
     gVarDef.Error: Error
 
-    [*] --> TopLevel: *
     Return2.TopLevel: TopLevel
-    Return2.TopLevel --> [*]
 
     TopLevel --> ImportStat.Sharp: sharp
     TopLevel --> TopLevelDef.Exclam: exclam
+    TopLevel --> TopLevel.Blank: space
+    TopLevel --> TopLevel.EOL: LF
+    TopLevel --> Error: !sharp&!exclam&!space&!LF
+    TopLevel.Blank --> TopLevel.Blank: space
+    TopLevel.Blank --> TopLevel.EOL: LF
+    TopLevel.Blank --> ImportStat.Sharp: sharp
+    TopLevel.Blank --> TopLevelDef.Exclam: exclam
+    TopLevel.Blank --> Error: !sharp&!exclam&!space&!LF
+    TopLevel.EOL --> TopLevel.Blank: space
+    TopLevel.EOL --> TopLevel.EOL: LF
+    TopLevel.EOL --> ImportStat.Sharp: sharp
+    TopLevel.EOL --> TopLevelDef.Exclam: exclam
+    TopLevel.EOL --> Error: !sharp&!exclam&!space&!LF
 
-    gVarDef.EOL --> Return2.TopLevel: * -
-    ImportStat.EOL --> Return2.TopLevel: * -
+    gVarDef.EOL --> TopLevel: *
+    ImportStat.EOL --> TopLevel: *
 
     state ImportStat {
         ImportStat.Sharp --> ImportStat.Error: space
         ImportStat.Sharp --> ImportStat.Declaration: !space
-        ImportStat.Declaration --> ImportStat.Blank: space&decl=("include","using")
-        ImportStat.Declaration --> ImportStat.Error: space&!decl=("include","using")
+        ImportStat.Declaration --> ImportStat.Blank: space&decl=("include"|"using")
+        ImportStat.Declaration --> ImportStat.Error: space&!decl=("include"|"using")
         ImportStat.Declaration --> ImportStat.Declaration: !space
         ImportStat.Blank --> ImportStat.Blank: space
         ImportStat.Blank --> ImportStat.Error: semicolon
         ImportStat.Blank --> ImportStat.Filename: !space&!semicolon
-        ImportStat.Filename --> ImportStat.Filename: !space
-        ImportStat.Filename --> ImportStat.EOStat: semicolon
+        ImportStat.Filename --> ImportStat.Filename: !space&!semicolon
+        ImportStat.Filename --> ImportStat.EOStat: !space&semicolon
         ImportStat.Filename --> ImportStat.Error: space
         ImportStat.EOStat --> ImportStat.AfterBlank: space
         ImportStat.EOStat --> ImportStat.Error: !space&!LF
