@@ -68,6 +68,28 @@ stateDiagram-v2
             FunctionDef.Blank2 --> FunctionDef.Blank2: space
             FunctionDef.Blank2 --> FunctionDef.Error: !space&!colon
             FunctionDef.Blank2 --> FunctionDef.Colon2: colon
+            FunctionDef.Colon2 --> FunctionDef.Arg.Lparen: lparen
+            FunctionDef.Colon2 --> FunctionDef.Error: !lparen
+            FunctionDef.Arg.Lparen --> FunctionDef.Error: space
+            FunctionDef.Arg.Lparen --> FunctionDef.ArgBody: !space
+            FunctionDef.Arg.Blank --> FunctionDef.Arg.Blank: space
+            FunctionDef.Arg.Blank --> FunctionDef.ArgBody: !space
+            FunctionDef.ArgBody --> FunctionDef.ArgBody: !comma&!rparen
+            FunctionDef.ArgBody --> FunctionDef.Comma: comma
+            FunctionDef.ArgBody --> FunctionDef.Rparen: rparen
+            FunctionDef.Comma --> FunctionDef.Arg.Blank: space
+            FunctionDef.Comma --> FunctionDef.ArgBody: !space
+            FunctionDef.Rparen --> FunctionDef.Colon3: colon
+            FunctionDef.Rparen --> FunctionDef.Error: !colon
+            FunctionDef.Colon3 --> FunctionDef.Blank3: space
+            FunctionDef.Colon3 --> FunctionDef.FName: !space
+            FunctionDef.Blank3 --> FunctionDef.Blank3: space
+            FunctionDef.Blank3 --> FunctionDef.FName: !space
+            FunctionDef.FName --> FunctionDef.FName: !space&!lcurlyb
+            FunctionDef.FName --> FunctionDef.Blank4: space
+            FunctionDef.FName --> BlockTop: lcurlyb
+            FunctionDef.Blank4 --> FunctionDef.Blank4: space
+            FunctionDef.Blank4 --> BlockTop: !space
         }
         state gVarDef {
             gVarDef.Colon1 --> gVarDef.Blank1: space

@@ -49,6 +49,11 @@ let condition = {
     "colon": ":",
     "semicolon": ";",
     "LF": "\\n",
+    "comma": ",",
+    "lparen": "(",
+    "rparen": ")",
+    "lcurlyb": "{",
+    "rcurlyb": "}",
 }
 function procCond(cond) {
     let ret = ""
@@ -65,6 +70,11 @@ function procCond(cond) {
             case "colon":
             case "semicolon":
             case "LF":
+            case "comma":
+            case "lparen":
+            case "rparen":
+            case "lcurlyb":
+            case "rcurlyb":
                 ret += `&&(${r}(tc[i]=="${condition[c]}"))`;
                 break;
             case "decl=(\"include\"|\"using\")":

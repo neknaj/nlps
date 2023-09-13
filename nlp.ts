@@ -65,7 +65,7 @@ class NLPtool {
         let tc = this.code;
         let terr = this.tokenizeerror;
         console.log(tar)
-        this.tokenizerstates = ["TopLevel","ImportStat.Sharp","TopLevelDef.Exclam","TopLevel.Blank","TopLevel.EOL","Error","gVarDef.EOL","ImportStat.EOL","ImportStat.Error","ImportStat.Declaration","ImportStat.Blank","ImportStat.Filename","ImportStat.EOStat","ImportStat.AfterBlank","TopLevelDef.Error","TopLevelDef.Declaration","gVarDef.Colon1","FunctionDef.Colon1","FunctionDef.Blank1","FunctionDef.Error","FunctionDef.RetType","FunctionDef.Blank2","FunctionDef.Colon2","gVarDef.Blank1","gVarDef.Error","gVarDef.gVarType","gVarDef.Blank2","gVarDef.Colon2","gVarDef.Blank3","gVarDef.Name","gVarDef.EOStat","gVarDef.AfterBlank"]
+        this.tokenizerstates = ["TopLevel","ImportStat.Sharp","TopLevelDef.Exclam","TopLevel.Blank","TopLevel.EOL","Error","gVarDef.EOL","ImportStat.EOL","ImportStat.Error","ImportStat.Declaration","ImportStat.Blank","ImportStat.Filename","ImportStat.EOStat","ImportStat.AfterBlank","TopLevelDef.Error","TopLevelDef.Declaration","gVarDef.Colon1","FunctionDef.Colon1","FunctionDef.Blank1","FunctionDef.Error","FunctionDef.RetType","FunctionDef.Blank2","FunctionDef.Colon2","FunctionDef.Arg.Lparen","FunctionDef.ArgBody","FunctionDef.Arg.Blank","FunctionDef.Comma","FunctionDef.Rparen","FunctionDef.Colon3","FunctionDef.Blank3","FunctionDef.FName","FunctionDef.Blank4","FunctionDef.LCurlyB","gVarDef.Blank1","gVarDef.Error","gVarDef.gVarType","gVarDef.Blank2","gVarDef.Colon2","gVarDef.Blank3","gVarDef.Name","gVarDef.EOStat","gVarDef.AfterBlank"]
         var sts = this.tokenizerstates;
         while (i<this.code.length) {
             {
@@ -113,25 +113,42 @@ class NLPtool {
                 else if (state==20 &&((tc[i]==" "))) { state=21 }
                 else if (state==21 &&(!(tc[i]==" "))&&(!(tc[i]==":"))) { throw terr(`${sts[21]} => ${sts[19]}; ${sts[-1]}`,i) }
                 else if (state==21 &&((tc[i]==":"))) { state=22 }
-                else if (state==16 &&((tc[i]==" "))) { state=23 }
-                else if (state==16 &&((tc[i]==";"))) { throw terr(`${sts[16]} => ${sts[24]}; ${sts[-1]}`,i) }
-                else if (state==16 &&(!(tc[i]==" "))&&(!(tc[i]==";"))) { state=25 }
-                else if (state==23 &&(!(tc[i]==" "))) { state=25 }
-                else if (state==25 &&((tc[i]==" "))) { state=26 }
-                else if (state==26 &&((tc[i]==":"))) { state=27 }
-                else if (state==25 &&((tc[i]==";"))) { throw terr(`${sts[25]} => ${sts[24]}; ${sts[-1]}`,i) }
-                else if (state==25 &&((tc[i]==":"))) { state=27 }
-                else if (state==26 &&(!(tc[i]==" "))&&(!(tc[i]==":"))) { throw terr(`${sts[26]} => ${sts[24]}; ${sts[-1]}`,i) }
-                else if (state==27 &&((tc[i]==" "))) { state=28 }
-                else if (state==28 &&((tc[i]==";"))) { throw terr(`${sts[28]} => ${sts[24]}; ${sts[-1]}`,i) }
-                else if (state==28 &&(!(tc[i]==" "))&&(!(tc[i]==";"))) { state=29 }
-                else if (state==29 &&((tc[i]==";"))) { state=30 }
+                else if (state==22 &&((tc[i]=="("))) { state=23 }
+                else if (state==22 &&(!(tc[i]=="("))) { throw terr(`${sts[22]} => ${sts[19]}; ${sts[-1]}`,i) }
+                else if (state==23 &&((tc[i]==" "))) { throw terr(`${sts[23]} => ${sts[19]}; ${sts[-1]}`,i) }
+                else if (state==23 &&(!(tc[i]==" "))) { state=24 }
+                else if (state==25 &&(!(tc[i]==" "))) { state=24 }
+                else if (state==24 &&((tc[i]==","))) { state=26 }
+                else if (state==24 &&((tc[i]==")"))) { state=27 }
+                else if (state==26 &&((tc[i]==" "))) { state=25 }
+                else if (state==26 &&(!(tc[i]==" "))) { state=24 }
+                else if (state==27 &&((tc[i]==":"))) { state=28 }
+                else if (state==27 &&(!(tc[i]==":"))) { throw terr(`${sts[27]} => ${sts[19]}; ${sts[-1]}`,i) }
+                else if (state==28 &&((tc[i]==" "))) { state=29 }
+                else if (state==28 &&(!(tc[i]==" "))) { state=30 }
+                else if (state==29 &&(!(tc[i]==" "))) { state=30 }
                 else if (state==30 &&((tc[i]==" "))) { state=31 }
-                else if (state==30 &&(!(tc[i]==" "))&&(!(tc[i]=="\n"))) { throw terr(`${sts[30]} => ${sts[24]}; ${sts[-1]}`,i) }
-                else if (state==31 &&((tc[i]=="\n"))) { state=6 }
-                else if (state==30 &&((tc[i]=="\n"))) { state=6 }
-                else if (state==31 &&(!(tc[i]==" "))&&(!(tc[i]=="\n"))) { throw terr(`${sts[31]} => ${sts[24]}; ${sts[-1]}`,i) }
-                
+                else if (state==30 &&((tc[i]=="{"))) { state=32 }
+                else if (state==31 &&(!(tc[i]==" "))) { state=32 }
+                else if (state==16 &&((tc[i]==" "))) { state=33 }
+                else if (state==16 &&((tc[i]==";"))) { throw terr(`${sts[16]} => ${sts[34]}; ${sts[-1]}`,i) }
+                else if (state==16 &&(!(tc[i]==" "))&&(!(tc[i]==";"))) { state=35 }
+                else if (state==33 &&(!(tc[i]==" "))) { state=35 }
+                else if (state==35 &&((tc[i]==" "))) { state=36 }
+                else if (state==36 &&((tc[i]==":"))) { state=37 }
+                else if (state==35 &&((tc[i]==";"))) { throw terr(`${sts[35]} => ${sts[34]}; ${sts[-1]}`,i) }
+                else if (state==35 &&((tc[i]==":"))) { state=37 }
+                else if (state==36 &&(!(tc[i]==" "))&&(!(tc[i]==":"))) { throw terr(`${sts[36]} => ${sts[34]}; ${sts[-1]}`,i) }
+                else if (state==37 &&((tc[i]==" "))) { state=38 }
+                else if (state==38 &&((tc[i]==";"))) { throw terr(`${sts[38]} => ${sts[34]}; ${sts[-1]}`,i) }
+                else if (state==38 &&(!(tc[i]==" "))&&(!(tc[i]==";"))) { state=39 }
+                else if (state==39 &&((tc[i]==";"))) { state=40 }
+                else if (state==40 &&((tc[i]==" "))) { state=41 }
+                else if (state==40 &&(!(tc[i]==" "))&&(!(tc[i]=="\n"))) { throw terr(`${sts[40]} => ${sts[34]}; ${sts[-1]}`,i) }
+                else if (state==41 &&((tc[i]=="\n"))) { state=6 }
+                else if (state==40 &&((tc[i]=="\n"))) { state=6 }
+                else if (state==41 &&(!(tc[i]==" "))&&(!(tc[i]=="\n"))) { throw terr(`${sts[41]} => ${sts[34]}; ${sts[-1]}`,i) }
+
             }
             if (state!=0) {
                 console.log(i,this.code[i].replace(/\n/g,"\\n"),sts[state],state)
