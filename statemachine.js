@@ -34,7 +34,7 @@ function main(filename) {
             ret.push(`else if (state==${statenamearr.indexOf(transion[0])} ${procCond(transion[2])}) { state=${statenamearr.indexOf(transion[1])} }`)
         }
         else {
-            ret.push(`else if (state==${statenamearr.indexOf(transion[0])} ${procCond(transion[2])}) { throw this.tokenizeerror(\`\${sts[${statenamearr.indexOf(transion[0])}]} => \${sts[${statenamearr.indexOf(transion[1])}]}; \${sts[${statenamearr.indexOf(transion[2])}]}\`,i) }`)
+            ret.push(`else if (state==${statenamearr.indexOf(transion[0])} ${procCond(transion[2])}) { throw terr(\`\${sts[${statenamearr.indexOf(transion[0])}]} => \${sts[${statenamearr.indexOf(transion[1])}]}; \${sts[${statenamearr.indexOf(transion[2])}]}\`,i) }`)
         }
     }
     //console.table(ret)
@@ -65,19 +65,19 @@ function procCond(cond) {
             case "colon":
             case "semicolon":
             case "LF":
-                ret += `&&(${r}(this.code[i]=="${condition[c]}"))`;
+                ret += `&&(${r}(tc[i]=="${condition[c]}"))`;
                 break;
             case "decl=(\"include\"|\"using\")":
-                ret += `&&(${r}(tokenarr[tokenarr.length-1].val=="include"||tokenarr[tokenarr.length-1].val=="using"))`;
+                ret += `&&(${r}(tar[tar.length-1].val=="include"||tar[tar.length-1].val=="using"))`;
                 break;
             case "decl=(\"fn\"|\"global\")":
-                ret += `&&(${r}(tokenarr[tokenarr.length-1].val=="fn"||tokenarr[tokenarr.length-1].val=="global"))`;
+                ret += `&&(${r}(tar[tar.length-1].val=="fn"||tar[tar.length-1].val=="global"))`;
                 break;
             case "decl=\"fn\"":
-                ret += `&&(${r}(tokenarr[tokenarr.length-1].val=="fn"))`;
+                ret += `&&(${r}(tar[tar.length-1].val=="fn"))`;
                 break;
             case "decl=\"global\"":
-                ret += `&&(${r}(tokenarr[tokenarr.length-1].val=="global"))`;
+                ret += `&&(${r}(tar[tar.length-1].val=="global"))`;
                 break;
             default:
                // throw "errorrrrrrrr"

@@ -54,54 +54,56 @@ var NLPtool = /** @class */ (function () {
         return { line: line, col: col };
     };
     NLPtool.prototype.tokenize = function () {
-        var tokenarr = [];
-        this.tokenarr = tokenarr;
+        var tar = [];
+        this.tokenarr = tar;
         var state = 0;
         var i = 0;
-        console.log(tokenarr);
+        var tc = this.code;
+        var terr = this.tokenizeerror;
+        console.log(tar);
         this.tokenizerstates = ["TopLevel", "ImportStat.Sharp", "TopLevelDef.Exclam", "TopLevel.Blank", "TopLevel.EOL", "Error", "gVarDef.EOL", "ImportStat.EOL", "ImportStat.Error", "ImportStat.Declaration", "ImportStat.Blank", "ImportStat.Filename", "ImportStat.EOStat", "ImportStat.AfterBlank", "TopLevelDef.Error", "TopLevelDef.Declaration", "gVarDef.Colon1", "FunctionDef.Colon1", "FunctionDef.Blank1", "FunctionDef.Error", "FunctionDef.RetType", "FunctionDef.Blank2", "FunctionDef.Colon2", "gVarDef.Blank1", "gVarDef.Error", "gVarDef.gVarType", "gVarDef.Blank2", "gVarDef.Colon2", "gVarDef.Blank3", "gVarDef.Name", "gVarDef.EOStat", "gVarDef.AfterBlank"];
         var sts = this.tokenizerstates;
         while (i < this.code.length) {
             {
                 if (false) { }
-                else if (state == 0 && ((this.code[i] == "#"))) {
+                else if (state == 0 && ((tc[i] == "#"))) {
                     state = 1;
                 }
-                else if (state == 0 && ((this.code[i] == "!"))) {
+                else if (state == 0 && ((tc[i] == "!"))) {
                     state = 2;
                 }
-                else if (state == 0 && ((this.code[i] == " "))) {
+                else if (state == 0 && ((tc[i] == " "))) {
                     state = 3;
                 }
-                else if (state == 0 && ((this.code[i] == "\n"))) {
+                else if (state == 0 && ((tc[i] == "\n"))) {
                     state = 4;
                 }
-                else if (state == 0 && (!(this.code[i] == "#")) && (!(this.code[i] == "!")) && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
-                    throw this.tokenizeerror("".concat(sts[0], " => ").concat(sts[5], "; ").concat(sts[-1]), i);
+                else if (state == 0 && (!(tc[i] == "#")) && (!(tc[i] == "!")) && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
+                    throw terr("".concat(sts[0], " => ").concat(sts[5], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 3 && ((this.code[i] == "\n"))) {
+                else if (state == 3 && ((tc[i] == "\n"))) {
                     state = 4;
                 }
-                else if (state == 3 && ((this.code[i] == "#"))) {
+                else if (state == 3 && ((tc[i] == "#"))) {
                     state = 1;
                 }
-                else if (state == 3 && ((this.code[i] == "!"))) {
+                else if (state == 3 && ((tc[i] == "!"))) {
                     state = 2;
                 }
-                else if (state == 3 && (!(this.code[i] == "#")) && (!(this.code[i] == "!")) && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
-                    throw this.tokenizeerror("".concat(sts[3], " => ").concat(sts[5], "; ").concat(sts[-1]), i);
+                else if (state == 3 && (!(tc[i] == "#")) && (!(tc[i] == "!")) && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
+                    throw terr("".concat(sts[3], " => ").concat(sts[5], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 4 && ((this.code[i] == " "))) {
+                else if (state == 4 && ((tc[i] == " "))) {
                     state = 3;
                 }
-                else if (state == 4 && ((this.code[i] == "#"))) {
+                else if (state == 4 && ((tc[i] == "#"))) {
                     state = 1;
                 }
-                else if (state == 4 && ((this.code[i] == "!"))) {
+                else if (state == 4 && ((tc[i] == "!"))) {
                     state = 2;
                 }
-                else if (state == 4 && (!(this.code[i] == "#")) && (!(this.code[i] == "!")) && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
-                    throw this.tokenizeerror("".concat(sts[4], " => ").concat(sts[5], "; ").concat(sts[-1]), i);
+                else if (state == 4 && (!(tc[i] == "#")) && (!(tc[i] == "!")) && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
+                    throw terr("".concat(sts[4], " => ").concat(sts[5], "; ").concat(sts[-1]), i);
                 }
                 else if (state == 6) {
                     state = 0;
@@ -109,155 +111,155 @@ var NLPtool = /** @class */ (function () {
                 else if (state == 7) {
                     state = 0;
                 }
-                else if (state == 1 && ((this.code[i] == " "))) {
-                    throw this.tokenizeerror("".concat(sts[1], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
+                else if (state == 1 && ((tc[i] == " "))) {
+                    throw terr("".concat(sts[1], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 1 && (!(this.code[i] == " "))) {
+                else if (state == 1 && (!(tc[i] == " "))) {
                     state = 9;
                 }
-                else if (state == 9 && ((this.code[i] == " ")) && ((tokenarr[tokenarr.length - 1].val == "include" || tokenarr[tokenarr.length - 1].val == "using"))) {
+                else if (state == 9 && ((tc[i] == " ")) && ((tar[tar.length - 1].val == "include" || tar[tar.length - 1].val == "using"))) {
                     state = 10;
                 }
-                else if (state == 9 && ((this.code[i] == " ")) && (!(tokenarr[tokenarr.length - 1].val == "include" || tokenarr[tokenarr.length - 1].val == "using"))) {
-                    throw this.tokenizeerror("".concat(sts[9], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
+                else if (state == 9 && ((tc[i] == " ")) && (!(tar[tar.length - 1].val == "include" || tar[tar.length - 1].val == "using"))) {
+                    throw terr("".concat(sts[9], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 10 && ((this.code[i] == ";"))) {
-                    throw this.tokenizeerror("".concat(sts[10], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
+                else if (state == 10 && ((tc[i] == ";"))) {
+                    throw terr("".concat(sts[10], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 10 && (!(this.code[i] == " ")) && (!(this.code[i] == ";"))) {
+                else if (state == 10 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
                     state = 11;
                 }
-                else if (state == 11 && (!(this.code[i] == " ")) && ((this.code[i] == ";"))) {
+                else if (state == 11 && (!(tc[i] == " ")) && ((tc[i] == ";"))) {
                     state = 12;
                 }
-                else if (state == 11 && ((this.code[i] == " "))) {
-                    throw this.tokenizeerror("".concat(sts[11], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
+                else if (state == 11 && ((tc[i] == " "))) {
+                    throw terr("".concat(sts[11], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 12 && ((this.code[i] == " "))) {
+                else if (state == 12 && ((tc[i] == " "))) {
                     state = 13;
                 }
-                else if (state == 12 && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
-                    throw this.tokenizeerror("".concat(sts[12], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
+                else if (state == 12 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
+                    throw terr("".concat(sts[12], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 13 && ((this.code[i] == "\n"))) {
+                else if (state == 13 && ((tc[i] == "\n"))) {
                     state = 7;
                 }
-                else if (state == 12 && ((this.code[i] == "\n"))) {
+                else if (state == 12 && ((tc[i] == "\n"))) {
                     state = 7;
                 }
-                else if (state == 13 && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
-                    throw this.tokenizeerror("".concat(sts[13], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
+                else if (state == 13 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
+                    throw terr("".concat(sts[13], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 2 && ((this.code[i] == " "))) {
-                    throw this.tokenizeerror("".concat(sts[2], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
+                else if (state == 2 && ((tc[i] == " "))) {
+                    throw terr("".concat(sts[2], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 2 && (!(this.code[i] == " "))) {
+                else if (state == 2 && (!(tc[i] == " "))) {
                     state = 15;
                 }
-                else if (state == 15 && ((this.code[i] == " "))) {
-                    throw this.tokenizeerror("".concat(sts[15], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
+                else if (state == 15 && ((tc[i] == " "))) {
+                    throw terr("".concat(sts[15], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 15 && ((this.code[i] == ":")) && (!(tokenarr[tokenarr.length - 1].val == "fn" || tokenarr[tokenarr.length - 1].val == "global"))) {
-                    throw this.tokenizeerror("".concat(sts[15], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
+                else if (state == 15 && ((tc[i] == ":")) && (!(tar[tar.length - 1].val == "fn" || tar[tar.length - 1].val == "global"))) {
+                    throw terr("".concat(sts[15], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 15 && ((this.code[i] == ";"))) {
-                    throw this.tokenizeerror("".concat(sts[15], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
+                else if (state == 15 && ((tc[i] == ";"))) {
+                    throw terr("".concat(sts[15], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 15 && ((this.code[i] == ":")) && ((tokenarr[tokenarr.length - 1].val == "global"))) {
+                else if (state == 15 && ((tc[i] == ":")) && ((tar[tar.length - 1].val == "global"))) {
                     state = 16;
                 }
-                else if (state == 15 && ((this.code[i] == ":")) && ((tokenarr[tokenarr.length - 1].val == "fn"))) {
+                else if (state == 15 && ((tc[i] == ":")) && ((tar[tar.length - 1].val == "fn"))) {
                     state = 17;
                 }
-                else if (state == 17 && ((this.code[i] == " "))) {
+                else if (state == 17 && ((tc[i] == " "))) {
                     state = 18;
                 }
-                else if (state == 17 && ((this.code[i] == ";"))) {
-                    throw this.tokenizeerror("".concat(sts[17], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
+                else if (state == 17 && ((tc[i] == ";"))) {
+                    throw terr("".concat(sts[17], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 17 && (!(this.code[i] == " ")) && (!(this.code[i] == ";"))) {
+                else if (state == 17 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
                     state = 20;
                 }
-                else if (state == 18 && (!(this.code[i] == " "))) {
+                else if (state == 18 && (!(tc[i] == " "))) {
                     state = 20;
                 }
-                else if (state == 20 && ((this.code[i] == " "))) {
+                else if (state == 20 && ((tc[i] == " "))) {
                     state = 21;
                 }
-                else if (state == 21 && (!(this.code[i] == " ")) && (!(this.code[i] == ":"))) {
-                    throw this.tokenizeerror("".concat(sts[21], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
+                else if (state == 21 && (!(tc[i] == " ")) && (!(tc[i] == ":"))) {
+                    throw terr("".concat(sts[21], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 21 && ((this.code[i] == ":"))) {
+                else if (state == 21 && ((tc[i] == ":"))) {
                     state = 22;
                 }
-                else if (state == 16 && ((this.code[i] == " "))) {
+                else if (state == 16 && ((tc[i] == " "))) {
                     state = 23;
                 }
-                else if (state == 16 && ((this.code[i] == ";"))) {
-                    throw this.tokenizeerror("".concat(sts[16], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
+                else if (state == 16 && ((tc[i] == ";"))) {
+                    throw terr("".concat(sts[16], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 16 && (!(this.code[i] == " ")) && (!(this.code[i] == ";"))) {
+                else if (state == 16 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
                     state = 25;
                 }
-                else if (state == 23 && (!(this.code[i] == " "))) {
+                else if (state == 23 && (!(tc[i] == " "))) {
                     state = 25;
                 }
-                else if (state == 25 && ((this.code[i] == " "))) {
+                else if (state == 25 && ((tc[i] == " "))) {
                     state = 26;
                 }
-                else if (state == 26 && ((this.code[i] == ":"))) {
+                else if (state == 26 && ((tc[i] == ":"))) {
                     state = 27;
                 }
-                else if (state == 25 && ((this.code[i] == ";"))) {
-                    throw this.tokenizeerror("".concat(sts[25], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
+                else if (state == 25 && ((tc[i] == ";"))) {
+                    throw terr("".concat(sts[25], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 25 && ((this.code[i] == ":"))) {
+                else if (state == 25 && ((tc[i] == ":"))) {
                     state = 27;
                 }
-                else if (state == 26 && (!(this.code[i] == " ")) && (!(this.code[i] == ":"))) {
-                    throw this.tokenizeerror("".concat(sts[26], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
+                else if (state == 26 && (!(tc[i] == " ")) && (!(tc[i] == ":"))) {
+                    throw terr("".concat(sts[26], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 27 && ((this.code[i] == " "))) {
+                else if (state == 27 && ((tc[i] == " "))) {
                     state = 28;
                 }
-                else if (state == 28 && ((this.code[i] == ";"))) {
-                    throw this.tokenizeerror("".concat(sts[28], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
+                else if (state == 28 && ((tc[i] == ";"))) {
+                    throw terr("".concat(sts[28], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 28 && (!(this.code[i] == " ")) && (!(this.code[i] == ";"))) {
+                else if (state == 28 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
                     state = 29;
                 }
-                else if (state == 29 && ((this.code[i] == ";"))) {
+                else if (state == 29 && ((tc[i] == ";"))) {
                     state = 30;
                 }
-                else if (state == 30 && ((this.code[i] == " "))) {
+                else if (state == 30 && ((tc[i] == " "))) {
                     state = 31;
                 }
-                else if (state == 30 && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
-                    throw this.tokenizeerror("".concat(sts[30], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
+                else if (state == 30 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
+                    throw terr("".concat(sts[30], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 31 && ((this.code[i] == "\n"))) {
+                else if (state == 31 && ((tc[i] == "\n"))) {
                     state = 6;
                 }
-                else if (state == 30 && ((this.code[i] == "\n"))) {
+                else if (state == 30 && ((tc[i] == "\n"))) {
                     state = 6;
                 }
-                else if (state == 31 && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
-                    throw this.tokenizeerror("".concat(sts[31], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
+                else if (state == 31 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
+                    throw terr("".concat(sts[31], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
                 }
             }
             if (state != 0) {
                 console.log(i, this.code[i].replace(/\n/g, "\\n"), sts[state], state);
-                if (tokenarr.length == 0 || state != tokenarr[tokenarr.length - 1].type) {
-                    tokenarr.push({ type: state, val: this.code[i], i: i });
+                if (tar.length == 0 || state != tar[tar.length - 1].type) {
+                    tar.push({ type: state, val: this.code[i], i: i });
                 }
                 else {
-                    tokenarr[tokenarr.length - 1].val += this.code[i];
+                    tar[tar.length - 1].val += this.code[i];
                 }
-                //console.table(tokenarr)
+                //console.table(tar)
                 i++;
             }
         }
-        console.table(tokenarr);
+        console.table(tar);
     };
     return NLPtool;
 }());
