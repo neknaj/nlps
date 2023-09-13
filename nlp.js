@@ -54,198 +54,200 @@ var NLPtool = /** @class */ (function () {
         return { line: line, col: col };
     };
     NLPtool.prototype.tokenize = function () {
-        var tokenarr = [{ type: "SOF", val: "", i: 0 }];
+        var tokenarr = [];
         this.tokenarr = tokenarr;
-        var state = "TopLevel";
+        var state = 0;
         var i = 0;
         console.log(tokenarr);
+        this.tokenizerstates = ["TopLevel", "ImportStat.Sharp", "TopLevelDef.Exclam", "TopLevel.Blank", "TopLevel.EOL", "Error", "gVarDef.EOL", "ImportStat.EOL", "ImportStat.Error", "ImportStat.Declaration", "ImportStat.Blank", "ImportStat.Filename", "ImportStat.EOStat", "ImportStat.AfterBlank", "TopLevelDef.Error", "TopLevelDef.Declaration", "gVarDef.Colon1", "FunctionDef.Colon1", "FunctionDef.Blank1", "FunctionDef.Error", "FunctionDef.RetType", "FunctionDef.Blank2", "FunctionDef.Colon2", "gVarDef.Blank1", "gVarDef.Error", "gVarDef.gVarType", "gVarDef.Blank2", "gVarDef.Colon2", "gVarDef.Blank3", "gVarDef.Name", "gVarDef.EOStat", "gVarDef.AfterBlank"];
+        var sts = this.tokenizerstates;
         while (i < this.code.length) {
             {
                 if (false) { }
-                else if (state == "TopLevel" && ((this.code[i] == "#"))) {
-                    state = "ImportStat.Sharp";
+                else if (state == 0 && ((this.code[i] == "#"))) {
+                    state = 1;
                 }
-                else if (state == "TopLevel" && ((this.code[i] == "!"))) {
-                    state = "TopLevelDef.Exclam";
+                else if (state == 0 && ((this.code[i] == "!"))) {
+                    state = 2;
                 }
-                else if (state == "TopLevel" && ((this.code[i] == " "))) {
-                    state = "TopLevel.Blank";
+                else if (state == 0 && ((this.code[i] == " "))) {
+                    state = 3;
                 }
-                else if (state == "TopLevel" && ((this.code[i] == "\n"))) {
-                    state = "TopLevel.EOL";
+                else if (state == 0 && ((this.code[i] == "\n"))) {
+                    state = 4;
                 }
-                else if (state == "TopLevel" && (!(this.code[i] == "#")) && (!(this.code[i] == "!")) && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
-                    throw this.tokenizeerror("TopLevel => Error; !sharp&!exclam&!space&!LF", i);
+                else if (state == 0 && (!(this.code[i] == "#")) && (!(this.code[i] == "!")) && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[0], " => ").concat(sts[5], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "TopLevel.Blank" && ((this.code[i] == "\n"))) {
-                    state = "TopLevel.EOL";
+                else if (state == 3 && ((this.code[i] == "\n"))) {
+                    state = 4;
                 }
-                else if (state == "TopLevel.Blank" && ((this.code[i] == "#"))) {
-                    state = "ImportStat.Sharp";
+                else if (state == 3 && ((this.code[i] == "#"))) {
+                    state = 1;
                 }
-                else if (state == "TopLevel.Blank" && ((this.code[i] == "!"))) {
-                    state = "TopLevelDef.Exclam";
+                else if (state == 3 && ((this.code[i] == "!"))) {
+                    state = 2;
                 }
-                else if (state == "TopLevel.Blank" && (!(this.code[i] == "#")) && (!(this.code[i] == "!")) && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
-                    throw this.tokenizeerror("TopLevel.Blank => Error; !sharp&!exclam&!space&!LF", i);
+                else if (state == 3 && (!(this.code[i] == "#")) && (!(this.code[i] == "!")) && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[3], " => ").concat(sts[5], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "TopLevel.EOL" && ((this.code[i] == " "))) {
-                    state = "TopLevel.Blank";
+                else if (state == 4 && ((this.code[i] == " "))) {
+                    state = 3;
                 }
-                else if (state == "TopLevel.EOL" && ((this.code[i] == "#"))) {
-                    state = "ImportStat.Sharp";
+                else if (state == 4 && ((this.code[i] == "#"))) {
+                    state = 1;
                 }
-                else if (state == "TopLevel.EOL" && ((this.code[i] == "!"))) {
-                    state = "TopLevelDef.Exclam";
+                else if (state == 4 && ((this.code[i] == "!"))) {
+                    state = 2;
                 }
-                else if (state == "TopLevel.EOL" && (!(this.code[i] == "#")) && (!(this.code[i] == "!")) && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
-                    throw this.tokenizeerror("TopLevel.EOL => Error; !sharp&!exclam&!space&!LF", i);
+                else if (state == 4 && (!(this.code[i] == "#")) && (!(this.code[i] == "!")) && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[4], " => ").concat(sts[5], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "gVarDef.EOL") {
-                    state = "TopLevel";
+                else if (state == 6) {
+                    state = 0;
                 }
-                else if (state == "ImportStat.EOL") {
-                    state = "TopLevel";
+                else if (state == 7) {
+                    state = 0;
                 }
-                else if (state == "ImportStat.Sharp" && ((this.code[i] == " "))) {
-                    throw this.tokenizeerror("ImportStat.Sharp => ImportStat.Error; space", i);
+                else if (state == 1 && ((this.code[i] == " "))) {
+                    throw this.tokenizeerror("".concat(sts[1], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "ImportStat.Sharp" && (!(this.code[i] == " "))) {
-                    state = "ImportStat.Declaration";
+                else if (state == 1 && (!(this.code[i] == " "))) {
+                    state = 9;
                 }
-                else if (state == "ImportStat.Declaration" && ((this.code[i] == " ")) && ((tokenarr[tokenarr.length - 1].val == "include" || tokenarr[tokenarr.length - 1].val == "using"))) {
-                    state = "ImportStat.Blank";
+                else if (state == 9 && ((this.code[i] == " ")) && ((tokenarr[tokenarr.length - 1].val == "include" || tokenarr[tokenarr.length - 1].val == "using"))) {
+                    state = 10;
                 }
-                else if (state == "ImportStat.Declaration" && ((this.code[i] == " ")) && (!(tokenarr[tokenarr.length - 1].val == "include" || tokenarr[tokenarr.length - 1].val == "using"))) {
-                    throw this.tokenizeerror("ImportStat.Declaration => ImportStat.Error; space&!decl=(\"include\"|\"using\")", i);
+                else if (state == 9 && ((this.code[i] == " ")) && (!(tokenarr[tokenarr.length - 1].val == "include" || tokenarr[tokenarr.length - 1].val == "using"))) {
+                    throw this.tokenizeerror("".concat(sts[9], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "ImportStat.Blank" && ((this.code[i] == ";"))) {
-                    throw this.tokenizeerror("ImportStat.Blank => ImportStat.Error; semicolon", i);
+                else if (state == 10 && ((this.code[i] == ";"))) {
+                    throw this.tokenizeerror("".concat(sts[10], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "ImportStat.Blank" && (!(this.code[i] == " ")) && (!(this.code[i] == ";"))) {
-                    state = "ImportStat.Filename";
+                else if (state == 10 && (!(this.code[i] == " ")) && (!(this.code[i] == ";"))) {
+                    state = 11;
                 }
-                else if (state == "ImportStat.Filename" && (!(this.code[i] == " ")) && ((this.code[i] == ";"))) {
-                    state = "ImportStat.EOStat";
+                else if (state == 11 && (!(this.code[i] == " ")) && ((this.code[i] == ";"))) {
+                    state = 12;
                 }
-                else if (state == "ImportStat.Filename" && ((this.code[i] == " "))) {
-                    throw this.tokenizeerror("ImportStat.Filename => ImportStat.Error; space", i);
+                else if (state == 11 && ((this.code[i] == " "))) {
+                    throw this.tokenizeerror("".concat(sts[11], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "ImportStat.EOStat" && ((this.code[i] == " "))) {
-                    state = "ImportStat.AfterBlank";
+                else if (state == 12 && ((this.code[i] == " "))) {
+                    state = 13;
                 }
-                else if (state == "ImportStat.EOStat" && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
-                    throw this.tokenizeerror("ImportStat.EOStat => ImportStat.Error; !space&!LF", i);
+                else if (state == 12 && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[12], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "ImportStat.AfterBlank" && ((this.code[i] == "\n"))) {
-                    state = "ImportStat.EOL";
+                else if (state == 13 && ((this.code[i] == "\n"))) {
+                    state = 7;
                 }
-                else if (state == "ImportStat.EOStat" && ((this.code[i] == "\n"))) {
-                    state = "ImportStat.EOL";
+                else if (state == 12 && ((this.code[i] == "\n"))) {
+                    state = 7;
                 }
-                else if (state == "ImportStat.AfterBlank" && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
-                    throw this.tokenizeerror("ImportStat.AfterBlank => ImportStat.Error; !space&!LF", i);
+                else if (state == 13 && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[13], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "TopLevelDef.Exclam" && ((this.code[i] == " "))) {
-                    throw this.tokenizeerror("TopLevelDef.Exclam => TopLevelDef.Error; space", i);
+                else if (state == 2 && ((this.code[i] == " "))) {
+                    throw this.tokenizeerror("".concat(sts[2], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "TopLevelDef.Exclam" && (!(this.code[i] == " "))) {
-                    state = "TopLevelDef.Declaration";
+                else if (state == 2 && (!(this.code[i] == " "))) {
+                    state = 15;
                 }
-                else if (state == "TopLevelDef.Declaration" && ((this.code[i] == " "))) {
-                    throw this.tokenizeerror("TopLevelDef.Declaration => TopLevelDef.Error; space", i);
+                else if (state == 15 && ((this.code[i] == " "))) {
+                    throw this.tokenizeerror("".concat(sts[15], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "TopLevelDef.Declaration" && ((this.code[i] == ":")) && (!(tokenarr[tokenarr.length - 1].val == "fn" || tokenarr[tokenarr.length - 1].val == "global"))) {
-                    throw this.tokenizeerror("TopLevelDef.Declaration => TopLevelDef.Error; colon&!decl=(\"fn\"|\"global\")", i);
+                else if (state == 15 && ((this.code[i] == ":")) && (!(tokenarr[tokenarr.length - 1].val == "fn" || tokenarr[tokenarr.length - 1].val == "global"))) {
+                    throw this.tokenizeerror("".concat(sts[15], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "TopLevelDef.Declaration" && ((this.code[i] == ";"))) {
-                    throw this.tokenizeerror("TopLevelDef.Declaration => TopLevelDef.Error; semicolon", i);
+                else if (state == 15 && ((this.code[i] == ";"))) {
+                    throw this.tokenizeerror("".concat(sts[15], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "TopLevelDef.Declaration" && ((this.code[i] == ":")) && ((tokenarr[tokenarr.length - 1].val == "global"))) {
-                    state = "gVarDef.Colon1";
+                else if (state == 15 && ((this.code[i] == ":")) && ((tokenarr[tokenarr.length - 1].val == "global"))) {
+                    state = 16;
                 }
-                else if (state == "TopLevelDef.Declaration" && ((this.code[i] == ":")) && ((tokenarr[tokenarr.length - 1].val == "fn"))) {
-                    state = "FunctionDef.Colon1";
+                else if (state == 15 && ((this.code[i] == ":")) && ((tokenarr[tokenarr.length - 1].val == "fn"))) {
+                    state = 17;
                 }
-                else if (state == "FunctionDef.Colon1" && ((this.code[i] == " "))) {
-                    state = "FunctionDef.Blank1";
+                else if (state == 17 && ((this.code[i] == " "))) {
+                    state = 18;
                 }
-                else if (state == "FunctionDef.Colon1" && ((this.code[i] == ";"))) {
-                    throw this.tokenizeerror("FunctionDef.Colon1 => FunctionDef.Error; semicolon", i);
+                else if (state == 17 && ((this.code[i] == ";"))) {
+                    throw this.tokenizeerror("".concat(sts[17], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "FunctionDef.Colon1" && (!(this.code[i] == " ")) && (!(this.code[i] == ";"))) {
-                    state = "FunctionDef.RetType";
+                else if (state == 17 && (!(this.code[i] == " ")) && (!(this.code[i] == ";"))) {
+                    state = 20;
                 }
-                else if (state == "FunctionDef.Blank1" && (!(this.code[i] == " "))) {
-                    state = "FunctionDef.RetType";
+                else if (state == 18 && (!(this.code[i] == " "))) {
+                    state = 20;
                 }
-                else if (state == "FunctionDef.RetType" && ((this.code[i] == " "))) {
-                    state = "FunctionDef.Blank2";
+                else if (state == 20 && ((this.code[i] == " "))) {
+                    state = 21;
                 }
-                else if (state == "FunctionDef.Blank2" && (!(this.code[i] == " ")) && (!(this.code[i] == ":"))) {
-                    throw this.tokenizeerror("FunctionDef.Blank2 => FunctionDef.Error; !space&!colon", i);
+                else if (state == 21 && (!(this.code[i] == " ")) && (!(this.code[i] == ":"))) {
+                    throw this.tokenizeerror("".concat(sts[21], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "FunctionDef.Blank2" && ((this.code[i] == ":"))) {
-                    state = "FunctionDef.Colon2";
+                else if (state == 21 && ((this.code[i] == ":"))) {
+                    state = 22;
                 }
-                else if (state == "gVarDef.Colon1" && ((this.code[i] == " "))) {
-                    state = "gVarDef.Blank1";
+                else if (state == 16 && ((this.code[i] == " "))) {
+                    state = 23;
                 }
-                else if (state == "gVarDef.Colon1" && ((this.code[i] == ";"))) {
-                    throw this.tokenizeerror("gVarDef.Colon1 => gVarDef.Error; semicolon", i);
+                else if (state == 16 && ((this.code[i] == ";"))) {
+                    throw this.tokenizeerror("".concat(sts[16], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "gVarDef.Colon1" && (!(this.code[i] == " ")) && (!(this.code[i] == ";"))) {
-                    state = "gVarDef.gVarType";
+                else if (state == 16 && (!(this.code[i] == " ")) && (!(this.code[i] == ";"))) {
+                    state = 25;
                 }
-                else if (state == "gVarDef.Blank1" && (!(this.code[i] == " "))) {
-                    state = "gVarDef.gVarType";
+                else if (state == 23 && (!(this.code[i] == " "))) {
+                    state = 25;
                 }
-                else if (state == "gVarDef.gVarType" && ((this.code[i] == " "))) {
-                    state = "gVarDef.Blank2";
+                else if (state == 25 && ((this.code[i] == " "))) {
+                    state = 26;
                 }
-                else if (state == "gVarDef.Blank2" && ((this.code[i] == ":"))) {
-                    state = "gVarDef.Colon2";
+                else if (state == 26 && ((this.code[i] == ":"))) {
+                    state = 27;
                 }
-                else if (state == "gVarDef.gVarType" && ((this.code[i] == ";"))) {
-                    throw this.tokenizeerror("gVarDef.gVarType => gVarDef.Error; semicolon", i);
+                else if (state == 25 && ((this.code[i] == ";"))) {
+                    throw this.tokenizeerror("".concat(sts[25], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "gVarDef.gVarType" && ((this.code[i] == ":"))) {
-                    state = "gVarDef.Colon2";
+                else if (state == 25 && ((this.code[i] == ":"))) {
+                    state = 27;
                 }
-                else if (state == "gVarDef.Blank2" && (!(this.code[i] == " ")) && (!(this.code[i] == ":"))) {
-                    throw this.tokenizeerror("gVarDef.Blank2 => gVarDef.Error; !space&!colon", i);
+                else if (state == 26 && (!(this.code[i] == " ")) && (!(this.code[i] == ":"))) {
+                    throw this.tokenizeerror("".concat(sts[26], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "gVarDef.Colon2" && ((this.code[i] == " "))) {
-                    state = "gVarDef.Blank3";
+                else if (state == 27 && ((this.code[i] == " "))) {
+                    state = 28;
                 }
-                else if (state == "gVarDef.Blank3" && ((this.code[i] == ";"))) {
-                    throw this.tokenizeerror("gVarDef.Blank3 => gVarDef.Error; semicolon", i);
+                else if (state == 28 && ((this.code[i] == ";"))) {
+                    throw this.tokenizeerror("".concat(sts[28], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "gVarDef.Blank3" && (!(this.code[i] == " ")) && (!(this.code[i] == ";"))) {
-                    state = "gVarDef.Name";
+                else if (state == 28 && (!(this.code[i] == " ")) && (!(this.code[i] == ";"))) {
+                    state = 29;
                 }
-                else if (state == "gVarDef.Name" && ((this.code[i] == ";"))) {
-                    state = "gVarDef.EOStat";
+                else if (state == 29 && ((this.code[i] == ";"))) {
+                    state = 30;
                 }
-                else if (state == "gVarDef.EOStat" && ((this.code[i] == " "))) {
-                    state = "gVarDef.AfterBlank";
+                else if (state == 30 && ((this.code[i] == " "))) {
+                    state = 31;
                 }
-                else if (state == "gVarDef.EOStat" && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
-                    throw this.tokenizeerror("gVarDef.EOStat => gVarDef.Error; !space&!LF", i);
+                else if (state == 30 && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[30], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
                 }
-                else if (state == "gVarDef.AfterBlank" && ((this.code[i] == "\n"))) {
-                    state = "gVarDef.EOL";
+                else if (state == 31 && ((this.code[i] == "\n"))) {
+                    state = 6;
                 }
-                else if (state == "gVarDef.EOStat" && ((this.code[i] == "\n"))) {
-                    state = "gVarDef.EOL";
+                else if (state == 30 && ((this.code[i] == "\n"))) {
+                    state = 6;
                 }
-                else if (state == "gVarDef.AfterBlank" && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
-                    throw this.tokenizeerror("gVarDef.AfterBlank => gVarDef.Error; !space&!LF", i);
+                else if (state == 31 && (!(this.code[i] == " ")) && (!(this.code[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[31], " => ").concat(sts[24], "; ").concat(sts[-1]), i);
                 }
             }
-            if (state != "TopLevel") {
-                console.log(i, this.code[i].replace(/\n/g, "\\n"), state);
-                if (state != tokenarr[tokenarr.length - 1].type) {
+            if (state != 0) {
+                console.log(i, this.code[i].replace(/\n/g, "\\n"), sts[state], state);
+                if (tokenarr.length == 0 || state != tokenarr[tokenarr.length - 1].type) {
                     tokenarr.push({ type: state, val: this.code[i], i: i });
                 }
                 else {

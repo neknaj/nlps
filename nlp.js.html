@@ -8,6 +8,9 @@
 <script>
 
 var code_res = new NLPtool("http://127.0.0.1:5500/test4.nlp");
+console.log(code_res)
+console.log(code_res.tokenizerstates)
+console.log(code_res.tokenizerstates[1])
 
 function makeHighLight(tokenarr) {
     let output = document.getElementById("highlight").childNodes[0];
@@ -17,8 +20,7 @@ function makeHighLight(tokenarr) {
         let span = document.createElement("span");
         output.appendChild(span);
         span.innerText = token.val;
-        span.classList.add(token.type.split(".")[token.type.split(".").length-1]);
-        console.log(token.val=="\n")
+        span.classList.add(code_res.tokenizerstates[token.type].split(".").pop());
         if (token.val=="\n") {
             span.innerText = "⏎";
             let br = document.createElement("br");
