@@ -171,13 +171,13 @@ var NLPtool = /** @class */ (function () {
                 else if (state == 15 && ((tc[i] == ":")) && ((tar[tar.length - 1].val == "fn"))) {
                     state = 17;
                 }
-                else if (state == 17 && ((tc[i] == " "))) {
+                else if (state == 16 && ((tc[i] == " "))) {
                     state = 18;
                 }
-                else if (state == 17 && ((tc[i] == ";"))) {
-                    throw terr("".concat(sts[17], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
+                else if (state == 16 && ((tc[i] == ";"))) {
+                    throw terr("".concat(sts[16], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 17 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
+                else if (state == 16 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
                     state = 20;
                 }
                 else if (state == 18 && (!(tc[i] == " "))) {
@@ -186,116 +186,116 @@ var NLPtool = /** @class */ (function () {
                 else if (state == 20 && ((tc[i] == " "))) {
                     state = 21;
                 }
-                else if (state == 21 && (!(tc[i] == " ")) && (!(tc[i] == ":"))) {
-                    throw terr("".concat(sts[21], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
-                }
                 else if (state == 21 && ((tc[i] == ":"))) {
                     state = 22;
                 }
-                else if (state == 22 && ((tc[i] == "("))) {
+                else if (state == 20 && ((tc[i] == ";"))) {
+                    throw terr("".concat(sts[20], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
+                }
+                else if (state == 20 && ((tc[i] == ":"))) {
+                    state = 22;
+                }
+                else if (state == 21 && (!(tc[i] == " ")) && (!(tc[i] == ":"))) {
+                    throw terr("".concat(sts[21], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
+                }
+                else if (state == 22 && ((tc[i] == " "))) {
                     state = 23;
                 }
-                else if (state == 22 && (!(tc[i] == "("))) {
-                    throw terr("".concat(sts[22], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
-                }
-                else if (state == 23 && ((tc[i] == " "))) {
+                else if (state == 23 && ((tc[i] == ";"))) {
                     throw terr("".concat(sts[23], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 23 && (!(tc[i] == " "))) {
+                else if (state == 23 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
                     state = 24;
                 }
-                else if (state == 25 && (!(tc[i] == " "))) {
-                    state = 24;
-                }
-                else if (state == 24 && ((tc[i] == ","))) {
-                    state = 26;
-                }
-                else if (state == 24 && ((tc[i] == ")"))) {
-                    state = 27;
-                }
-                else if (state == 26 && ((tc[i] == " "))) {
+                else if (state == 24 && ((tc[i] == ";"))) {
                     state = 25;
                 }
-                else if (state == 26 && (!(tc[i] == " "))) {
-                    state = 24;
+                else if (state == 25 && ((tc[i] == " "))) {
+                    state = 26;
                 }
-                else if (state == 27 && ((tc[i] == ":"))) {
-                    state = 28;
+                else if (state == 25 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
+                    throw terr("".concat(sts[25], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 27 && (!(tc[i] == ":"))) {
-                    throw terr("".concat(sts[27], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
+                else if (state == 26 && ((tc[i] == "\n"))) {
+                    state = 6;
                 }
-                else if (state == 28 && ((tc[i] == " "))) {
+                else if (state == 25 && ((tc[i] == "\n"))) {
+                    state = 6;
+                }
+                else if (state == 26 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
+                    throw terr("".concat(sts[26], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
+                }
+                else if (state == 17 && ((tc[i] == " "))) {
+                    state = 27;
+                }
+                else if (state == 17 && ((tc[i] == ";"))) {
+                    throw terr("".concat(sts[17], " => ").concat(sts[28], "; ").concat(sts[-1]), i);
+                }
+                else if (state == 17 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
                     state = 29;
                 }
-                else if (state == 28 && (!(tc[i] == " "))) {
+                else if (state == 27 && (!(tc[i] == " "))) {
+                    state = 29;
+                }
+                else if (state == 29 && ((tc[i] == " "))) {
                     state = 30;
                 }
-                else if (state == 29 && (!(tc[i] == " "))) {
-                    state = 30;
+                else if (state == 30 && (!(tc[i] == " ")) && (!(tc[i] == ":"))) {
+                    throw terr("".concat(sts[30], " => ").concat(sts[28], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 30 && ((tc[i] == " "))) {
+                else if (state == 30 && ((tc[i] == ":"))) {
                     state = 31;
                 }
-                else if (state == 30 && ((tc[i] == "{"))) {
+                else if (state == 31 && ((tc[i] == "("))) {
                     state = 32;
                 }
-                else if (state == 31 && (!(tc[i] == " "))) {
-                    state = 32;
+                else if (state == 31 && (!(tc[i] == "("))) {
+                    throw terr("".concat(sts[31], " => ").concat(sts[28], "; ").concat(sts[-1]), i);
                 }
-                else if (state == 16 && ((tc[i] == " "))) {
+                else if (state == 32 && ((tc[i] == " "))) {
+                    throw terr("".concat(sts[32], " => ").concat(sts[28], "; ").concat(sts[-1]), i);
+                }
+                else if (state == 32 && (!(tc[i] == " "))) {
                     state = 33;
                 }
-                else if (state == 16 && ((tc[i] == ";"))) {
-                    throw terr("".concat(sts[16], " => ").concat(sts[34], "; ").concat(sts[-1]), i);
+                else if (state == 34 && (!(tc[i] == " "))) {
+                    state = 33;
                 }
-                else if (state == 16 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
+                else if (state == 33 && ((tc[i] == ","))) {
                     state = 35;
                 }
-                else if (state == 33 && (!(tc[i] == " "))) {
-                    state = 35;
+                else if (state == 33 && ((tc[i] == ")"))) {
+                    state = 36;
                 }
                 else if (state == 35 && ((tc[i] == " "))) {
-                    state = 36;
+                    state = 34;
+                }
+                else if (state == 35 && (!(tc[i] == " "))) {
+                    state = 33;
                 }
                 else if (state == 36 && ((tc[i] == ":"))) {
                     state = 37;
                 }
-                else if (state == 35 && ((tc[i] == ";"))) {
-                    throw terr("".concat(sts[35], " => ").concat(sts[34], "; ").concat(sts[-1]), i);
-                }
-                else if (state == 35 && ((tc[i] == ":"))) {
-                    state = 37;
-                }
-                else if (state == 36 && (!(tc[i] == " ")) && (!(tc[i] == ":"))) {
-                    throw terr("".concat(sts[36], " => ").concat(sts[34], "; ").concat(sts[-1]), i);
+                else if (state == 36 && (!(tc[i] == ":"))) {
+                    throw terr("".concat(sts[36], " => ").concat(sts[28], "; ").concat(sts[-1]), i);
                 }
                 else if (state == 37 && ((tc[i] == " "))) {
                     state = 38;
                 }
-                else if (state == 38 && ((tc[i] == ";"))) {
-                    throw terr("".concat(sts[38], " => ").concat(sts[34], "; ").concat(sts[-1]), i);
-                }
-                else if (state == 38 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
+                else if (state == 37 && (!(tc[i] == " "))) {
                     state = 39;
                 }
-                else if (state == 39 && ((tc[i] == ";"))) {
+                else if (state == 38 && (!(tc[i] == " "))) {
+                    state = 39;
+                }
+                else if (state == 39 && ((tc[i] == " "))) {
                     state = 40;
                 }
-                else if (state == 40 && ((tc[i] == " "))) {
+                else if (state == 39 && ((tc[i] == "{"))) {
                     state = 41;
                 }
-                else if (state == 40 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
-                    throw terr("".concat(sts[40], " => ").concat(sts[34], "; ").concat(sts[-1]), i);
-                }
-                else if (state == 41 && ((tc[i] == "\n"))) {
-                    state = 6;
-                }
-                else if (state == 40 && ((tc[i] == "\n"))) {
-                    state = 6;
-                }
-                else if (state == 41 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
-                    throw terr("".concat(sts[41], " => ").concat(sts[34], "; ").concat(sts[-1]), i);
+                else if (state == 40 && (!(tc[i] == " "))) {
+                    state = 41;
                 }
             }
             if (state != 0) {
