@@ -65,7 +65,7 @@ class NLPtool {
         let tc = this.code;
         let terr = this.tokenizeerror;
         console.log(tar)
-        this.tokenizerstates = ["TopLevel","ImportStat.Sharp","TopLevelDef.Exclam","TopLevel.Blank","TopLevel.EOL","Error","gVarDef.EOL","ImportStat.EOL","ImportStat.Error","ImportStat.Declaration","ImportStat.Blank","ImportStat.Filename","ImportStat.EOStat","ImportStat.AfterBlank","TopLevelDef.Error","TopLevelDef.Declaration","gVarDef.Colon1","FunctionDef.Colon1","FunctionDef.Blank1","FunctionDef.Error","FunctionDef.RetType","FunctionDef.Blank2","FunctionDef.Colon2","FunctionDef.Arg.Lparen","FunctionDef.ArgBody","FunctionDef.Arg.Blank","FunctionDef.Comma","FunctionDef.Rparen","FunctionDef.Colon3","FunctionDef.Blank3","FunctionDef.FName","FunctionDef.Blank4","FunctionDef.LCurlyB","gVarDef.Blank1","gVarDef.Error","gVarDef.gVarType","gVarDef.Blank2","gVarDef.Colon2","gVarDef.Blank3","gVarDef.Name","gVarDef.EOStat","gVarDef.AfterBlank"]
+        this.tokenizerstates = ["TopLevel","ImportStat.Sharp","TopLevelDef.Exclam","TopLevel.Blank","TopLevel.EOL","Error","gVarDef.EOL","ImportStat.EOL","ImportStat.Error","ImportStat.Declaration","ImportStat.Blank","ImportStat.Filename","ImportStat.EOStat","ImportStat.AfterBlank","TopLevelDef.Error","TopLevelDef.Declaration","gVarDef.Colon1","FunctionDef.Colon1","gVarDef.Blank1","gVarDef.Error","gVarDef.gVarType","gVarDef.Blank2","gVarDef.Colon2","gVarDef.Blank3","gVarDef.Name","gVarDef.EOStat","gVarDef.AfterBlank","FunctionDef.Blank1","FunctionDef.Error","FunctionDef.RetType","FunctionDef.Blank2","FunctionDef.Colon2","FunctionDef.Arg.Lparen","FunctionDef.ArgBody","FunctionDef.Arg.Blank","FunctionDef.Comma","FunctionDef.Rparen","FunctionDef.Colon3","FunctionDef.Blank3","FunctionDef.FName","FunctionDef.Blank4","BlockTop"]
         var sts = this.tokenizerstates;
         while (i<this.code.length) {
             {
@@ -153,7 +153,7 @@ class NLPtool {
             if (state!=0) {
                 console.log(i,this.code[i].replace(/\n/g,"\\n"),sts[state],state)
                 if (tar.length==0||state!=tar[tar.length-1].type) {
-                    tar.push({type:state,val:this.code[i],i:i});
+                    tar.push({type:state,type_str:sts[state],val:this.code[i],i:i});
                 }
                 else {
                     tar[tar.length-1].val += this.code[i];
