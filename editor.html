@@ -1,0 +1,106 @@
+<html>
+    <body>
+        <main>
+            <textarea id="editor"></textarea>
+            <div id="highlight"><pre></pre></div>
+        </main>
+    </body>
+</html>
+
+<script src="nlp.js"></script>
+<script>
+
+const editor = document.getElementById("editor");
+var code_res;
+
+function makeHighLight(tokenarr) {
+    let output = document.getElementById("highlight").childNodes[0];
+    output.innerHTML = "";
+    console.log(tokenarr)
+    for (let token of tokenarr) {
+        let span = document.createElement("span");
+        output.appendChild(span);
+        span.innerText = token.val;
+        span.classList.add(code_res.tokenizerstates[token.type].split(".").pop());
+        if (token.val=="\n") {
+            span.innerText = "⏎";
+            let br = document.createElement("br");
+            output.appendChild(br);
+        }
+    }
+}
+editor.onchange = update;
+editor.onkeydown = update;
+editor.oninput = update;
+
+update()
+function update() {
+    code_res = new NLPtool(`data:text/plain;charset=UTF-8;base64,${btoa(String.fromCharCode.apply(null, new TextEncoder().encode(editor.value)))}`);
+    console.log(code_res)
+    makeHighLight(code_res.tokenarr);
+}
+
+</script>
+<style>
+    body {
+        background-color: black;
+        height: 100dvh;
+        padding: 0;
+        margin: 0;
+    }
+    main {
+        display: flex;
+        height: 100%;
+    }
+    #editor {
+        width: 30dvw;
+    }
+    #highlight {
+        font-size: 200%;
+        font-family: monospace;
+        margin: 20px;
+        padding: 20px;
+        background-color: rgb(3, 6, 58);
+        color: white;
+    }
+</style>
+<style id="highlight_style">
+
+    #highlight span {
+        margin-bottom: 10px;
+        background-color: rgb(0, 0, 0);
+    }
+
+    #highlight span.EOL {
+        color: rgb(135, 135, 135);
+        background-color: rgb(3, 6, 58);
+    }
+
+    .Sharp {
+        color: rgb(255, 78, 231);
+    }
+    .LPAREN, .RPAREN {
+        color: rgb(204, 200, 115);
+    }
+    .Declaration {
+        color: rgb(174, 247, 255);
+    }
+    .Filename {
+        color: rgb(20, 255, 90);
+    }
+    .gVarType {
+        color: rgb(255, 116, 116);
+    }
+    .Name {
+        color: rgb(217, 140, 255);
+    }
+    .RetType {
+        color: rgb(255, 255, 132);
+    }
+    .ArgBody {
+        color: cyan;
+    }
+    .FName {
+        color: orange;
+    }
+</style>
