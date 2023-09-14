@@ -37,7 +37,7 @@ function main(filename) {
             ret1.push(`else if (state==${statenamearr.indexOf(transion[0])} ${procCond(transion[2])}) { state=${statenamearr.indexOf(transion[1])} }`)
         }
         else {
-            ret1.push(`else if (state==${statenamearr.indexOf(transion[0])} ${procCond(transion[2])}) { throw terr(\`\${sts[${statenamearr.indexOf(transion[0])}]} => \${sts[${statenamearr.indexOf(transion[1])}]}; \${sts[${statenamearr.indexOf(transion[2])}]}\`,i) }`)
+            ret1.push(`else if (state==${statenamearr.indexOf(transion[0])} ${procCond(transion[2])}) { throw this.tokenizeerror(\`\${sts[${statenamearr.indexOf(transion[0])}]} => \${sts[${statenamearr.indexOf(transion[1])}]}; ${transion[2]}\`,i) }`)
         }
     }
     for (let transion of transionarr) { // 全体図用mermaidコードの生成

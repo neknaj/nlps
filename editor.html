@@ -11,7 +11,7 @@
 <script>
 
 const editor = document.getElementById("editor");
-var code_res;
+var nlpt;
 
 function makeHighLight(tokenarr) {
     let output = document.getElementById("highlight").childNodes[0];
@@ -21,7 +21,12 @@ function makeHighLight(tokenarr) {
         let span = document.createElement("span");
         output.appendChild(span);
         span.innerText = token.val;
-        span.classList.add(code_res.tokenizerstates[token.type].split(".").pop());
+        if (token.type!=-1) {
+            span.classList.add(nlpt.tokenizerstates[token.type].split(".").pop());
+        }
+        else {
+            span.classList.add("Error");
+        }
         if (token.val=="\n") {
             span.innerText = "⏎";
             let br = document.createElement("br");
@@ -35,9 +40,21 @@ editor.oninput = update;
 
 update()
 function update() {
-    code_res = new NLPtool(`data:text/plain;charset=UTF-8;base64,${btoa(String.fromCharCode.apply(null, new TextEncoder().encode(editor.value)))}`);
-    console.log(code_res)
-    makeHighLight(code_res.tokenarr);
+    nlpt = new NLPtool(`data:text/plain;charset=UTF-8;base64,${btoa(String.fromCharCode.apply(null, new TextEncoder().encode(editor.value)))}`);
+    try {
+        nlpt.tokenize();
+    }
+    catch (e) {
+        console.error(e)
+        { // 未解決部分追加
+            let lastindex = nlpt.tokenarr[nlpt.tokenarr.length-1].i + nlpt.tokenarr[nlpt.tokenarr.length-1].val.length;
+            console.log(lastindex);
+            nlpt.tokenarr.push({ type:-1, type_str:"Error", val: nlpt.code.slice(lastindex), i: lastindex })
+        }
+    }
+    console.log(nlpt.tokenarr)
+    makeHighLight(nlpt.tokenarr);
+    console.log(nlpt)
 }
 
 </script>
@@ -53,10 +70,13 @@ function update() {
         height: 100%;
     }
     #editor {
+        font-size: 130%;
         width: 30dvw;
+        background: transparent;
+        color: white;
     }
     #highlight {
-        font-size: 200%;
+        font-size: 130%;
         font-family: monospace;
         margin: 20px;
         padding: 20px;
@@ -102,5 +122,9 @@ function update() {
     }
     .FName {
         color: orange;
+    }
+    .Error {
+        color: gray;
+        text-decoration:underline wavy rgb(147, 0, 0)
     }
 </style>

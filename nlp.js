@@ -24,7 +24,6 @@ var NLPtool = /** @class */ (function () {
         }
         this.code = this.fRead(filename);
         console.log(this.code);
-        this.tokenize();
     }
     NLPtool.prototype.tokenizeerror = function (message, i) {
         // @ts-ignore
@@ -59,7 +58,6 @@ var NLPtool = /** @class */ (function () {
         var state = 0;
         var i = 0;
         var tc = this.code;
-        var terr = this.tokenizeerror;
         console.log(tar);
         this.tokenizerstates = ["TopLevel", "ImportStat.Sharp", "TopLevelDef.Exclam", "TopLevel.Blank", "TopLevel.EOL", "Error", "gVarDef.EOL", "ImportStat.EOL", "ImportStat.Error", "ImportStat.Declaration", "ImportStat.Blank", "ImportStat.Filename", "ImportStat.EOStat", "ImportStat.AfterBlank", "TopLevelDef.Error", "TopLevelDef.Declaration", "gVarDef.Colon1", "FunctionDef.Colon1", "gVarDef.Blank1", "gVarDef.Error", "gVarDef.gVarType", "gVarDef.Blank2", "gVarDef.Colon2", "gVarDef.Blank3", "gVarDef.Name", "gVarDef.EOStat", "gVarDef.AfterBlank", "FunctionDef.Blank1", "FunctionDef.Error", "FunctionDef.RetType", "FunctionDef.Blank2", "FunctionDef.Colon2", "FunctionDef.Arg.Lparen", "FunctionDef.ArgBody", "FunctionDef.Arg.Blank", "FunctionDef.Comma", "FunctionDef.Rparen", "FunctionDef.Colon3", "FunctionDef.Blank3", "FunctionDef.FName", "FunctionDef.Blank4", "BlockTop"];
         var sts = this.tokenizerstates;
@@ -79,7 +77,7 @@ var NLPtool = /** @class */ (function () {
                     state = 4;
                 }
                 else if (state == 0 && (!(tc[i] == "#")) && (!(tc[i] == "!")) && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
-                    throw terr("".concat(sts[0], " => ").concat(sts[5], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[0], " => ").concat(sts[5], "; !sharp&!exclam&!space&!LF"), i);
                 }
                 else if (state == 3 && ((tc[i] == "\n"))) {
                     state = 4;
@@ -91,7 +89,7 @@ var NLPtool = /** @class */ (function () {
                     state = 2;
                 }
                 else if (state == 3 && (!(tc[i] == "#")) && (!(tc[i] == "!")) && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
-                    throw terr("".concat(sts[3], " => ").concat(sts[5], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[3], " => ").concat(sts[5], "; !sharp&!exclam&!space&!LF"), i);
                 }
                 else if (state == 4 && ((tc[i] == " "))) {
                     state = 3;
@@ -103,7 +101,7 @@ var NLPtool = /** @class */ (function () {
                     state = 2;
                 }
                 else if (state == 4 && (!(tc[i] == "#")) && (!(tc[i] == "!")) && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
-                    throw terr("".concat(sts[4], " => ").concat(sts[5], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[4], " => ").concat(sts[5], "; !sharp&!exclam&!space&!LF"), i);
                 }
                 else if (state == 6) {
                     state = 0;
@@ -112,7 +110,7 @@ var NLPtool = /** @class */ (function () {
                     state = 0;
                 }
                 else if (state == 1 && ((tc[i] == " "))) {
-                    throw terr("".concat(sts[1], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[1], " => ").concat(sts[8], "; space"), i);
                 }
                 else if (state == 1 && (!(tc[i] == " "))) {
                     state = 9;
@@ -121,10 +119,10 @@ var NLPtool = /** @class */ (function () {
                     state = 10;
                 }
                 else if (state == 9 && ((tc[i] == " ")) && (!(tar[tar.length - 1].val == "include" || tar[tar.length - 1].val == "using"))) {
-                    throw terr("".concat(sts[9], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[9], " => ").concat(sts[8], "; space&!decl=(\"include\"|\"using\")"), i);
                 }
                 else if (state == 10 && ((tc[i] == ";"))) {
-                    throw terr("".concat(sts[10], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[10], " => ").concat(sts[8], "; semicolon"), i);
                 }
                 else if (state == 10 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
                     state = 11;
@@ -133,13 +131,13 @@ var NLPtool = /** @class */ (function () {
                     state = 12;
                 }
                 else if (state == 11 && ((tc[i] == " "))) {
-                    throw terr("".concat(sts[11], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[11], " => ").concat(sts[8], "; space"), i);
                 }
                 else if (state == 12 && ((tc[i] == " "))) {
                     state = 13;
                 }
                 else if (state == 12 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
-                    throw terr("".concat(sts[12], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[12], " => ").concat(sts[8], "; !space&!LF"), i);
                 }
                 else if (state == 13 && ((tc[i] == "\n"))) {
                     state = 7;
@@ -148,22 +146,22 @@ var NLPtool = /** @class */ (function () {
                     state = 7;
                 }
                 else if (state == 13 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
-                    throw terr("".concat(sts[13], " => ").concat(sts[8], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[13], " => ").concat(sts[8], "; !space&!LF"), i);
                 }
                 else if (state == 2 && ((tc[i] == " "))) {
-                    throw terr("".concat(sts[2], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[2], " => ").concat(sts[14], "; space"), i);
                 }
                 else if (state == 2 && (!(tc[i] == " "))) {
                     state = 15;
                 }
                 else if (state == 15 && ((tc[i] == " "))) {
-                    throw terr("".concat(sts[15], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[15], " => ").concat(sts[14], "; space"), i);
                 }
                 else if (state == 15 && ((tc[i] == ":")) && (!(tar[tar.length - 1].val == "fn" || tar[tar.length - 1].val == "global"))) {
-                    throw terr("".concat(sts[15], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[15], " => ").concat(sts[14], "; colon&!decl=(\"fn\"|\"global\")"), i);
                 }
                 else if (state == 15 && ((tc[i] == ";"))) {
-                    throw terr("".concat(sts[15], " => ").concat(sts[14], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[15], " => ").concat(sts[14], "; semicolon"), i);
                 }
                 else if (state == 15 && ((tc[i] == ":")) && ((tar[tar.length - 1].val == "global"))) {
                     state = 16;
@@ -175,7 +173,7 @@ var NLPtool = /** @class */ (function () {
                     state = 18;
                 }
                 else if (state == 16 && ((tc[i] == ";"))) {
-                    throw terr("".concat(sts[16], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[16], " => ").concat(sts[19], "; semicolon"), i);
                 }
                 else if (state == 16 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
                     state = 20;
@@ -190,19 +188,19 @@ var NLPtool = /** @class */ (function () {
                     state = 22;
                 }
                 else if (state == 20 && ((tc[i] == ";"))) {
-                    throw terr("".concat(sts[20], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[20], " => ").concat(sts[19], "; semicolon"), i);
                 }
                 else if (state == 20 && ((tc[i] == ":"))) {
                     state = 22;
                 }
                 else if (state == 21 && (!(tc[i] == " ")) && (!(tc[i] == ":"))) {
-                    throw terr("".concat(sts[21], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[21], " => ").concat(sts[19], "; !space&!colon"), i);
                 }
                 else if (state == 22 && ((tc[i] == " "))) {
                     state = 23;
                 }
                 else if (state == 23 && ((tc[i] == ";"))) {
-                    throw terr("".concat(sts[23], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[23], " => ").concat(sts[19], "; semicolon"), i);
                 }
                 else if (state == 23 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
                     state = 24;
@@ -214,7 +212,7 @@ var NLPtool = /** @class */ (function () {
                     state = 26;
                 }
                 else if (state == 25 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
-                    throw terr("".concat(sts[25], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[25], " => ").concat(sts[19], "; !space&!LF"), i);
                 }
                 else if (state == 26 && ((tc[i] == "\n"))) {
                     state = 6;
@@ -223,13 +221,13 @@ var NLPtool = /** @class */ (function () {
                     state = 6;
                 }
                 else if (state == 26 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
-                    throw terr("".concat(sts[26], " => ").concat(sts[19], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[26], " => ").concat(sts[19], "; !space&!LF"), i);
                 }
                 else if (state == 17 && ((tc[i] == " "))) {
                     state = 27;
                 }
                 else if (state == 17 && ((tc[i] == ";"))) {
-                    throw terr("".concat(sts[17], " => ").concat(sts[28], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[17], " => ").concat(sts[28], "; semicolon"), i);
                 }
                 else if (state == 17 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
                     state = 29;
@@ -241,7 +239,7 @@ var NLPtool = /** @class */ (function () {
                     state = 30;
                 }
                 else if (state == 30 && (!(tc[i] == " ")) && (!(tc[i] == ":"))) {
-                    throw terr("".concat(sts[30], " => ").concat(sts[28], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[30], " => ").concat(sts[28], "; !space&!colon"), i);
                 }
                 else if (state == 30 && ((tc[i] == ":"))) {
                     state = 31;
@@ -250,10 +248,10 @@ var NLPtool = /** @class */ (function () {
                     state = 32;
                 }
                 else if (state == 31 && (!(tc[i] == "("))) {
-                    throw terr("".concat(sts[31], " => ").concat(sts[28], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[31], " => ").concat(sts[28], "; !lparen"), i);
                 }
                 else if (state == 32 && ((tc[i] == " "))) {
-                    throw terr("".concat(sts[32], " => ").concat(sts[28], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[32], " => ").concat(sts[28], "; space"), i);
                 }
                 else if (state == 32 && (!(tc[i] == " "))) {
                     state = 33;
@@ -277,7 +275,7 @@ var NLPtool = /** @class */ (function () {
                     state = 37;
                 }
                 else if (state == 36 && (!(tc[i] == ":"))) {
-                    throw terr("".concat(sts[36], " => ").concat(sts[28], "; ").concat(sts[-1]), i);
+                    throw this.tokenizeerror("".concat(sts[36], " => ").concat(sts[28], "; !colon"), i);
                 }
                 else if (state == 37 && ((tc[i] == " "))) {
                     state = 38;
@@ -311,9 +309,10 @@ var NLPtool = /** @class */ (function () {
             }
         }
         console.table(tar);
+        return this;
     };
     return NLPtool;
 }());
 if (!(typeof require != "undefined")) {
-    var code_res = new NLPtool("./test4.nlp");
+    var code_res = new NLPtool("./test4.nlp").tokenize();
 }
