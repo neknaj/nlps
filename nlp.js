@@ -112,7 +112,10 @@ var NLPtool = /** @class */ (function () {
                 else if (state == 1 && ((tc[i] == " "))) {
                     throw this.tokenizeerror("".concat(sts[1], " => ").concat(sts[8], "; space"), i);
                 }
-                else if (state == 1 && (!(tc[i] == " "))) {
+                else if (state == 1 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[1], " => ").concat(sts[8], "; LF"), i);
+                }
+                else if (state == 1 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
                     state = 9;
                 }
                 else if (state == 9 && ((tc[i] == " ")) && ((tar[tar.length - 1].val == "include" || tar[tar.length - 1].val == "using"))) {
@@ -121,17 +124,32 @@ var NLPtool = /** @class */ (function () {
                 else if (state == 9 && ((tc[i] == " ")) && (!(tar[tar.length - 1].val == "include" || tar[tar.length - 1].val == "using"))) {
                     throw this.tokenizeerror("".concat(sts[9], " => ").concat(sts[8], "; space&!decl=(\"include\"|\"using\")"), i);
                 }
+                else if (state == 9 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[9], " => ").concat(sts[8], "; LF"), i);
+                }
                 else if (state == 10 && ((tc[i] == ";"))) {
                     throw this.tokenizeerror("".concat(sts[10], " => ").concat(sts[8], "; semicolon"), i);
                 }
-                else if (state == 10 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
+                else if (state == 10 && (!(tc[i] == " ")) && (!(tc[i] == ";")) && (!(tc[i] == "\n"))) {
                     state = 11;
                 }
-                else if (state == 11 && (!(tc[i] == " ")) && ((tc[i] == ";"))) {
+                else if (state == 10 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[10], " => ").concat(sts[8], "; LF"), i);
+                }
+                else if (state == 11 && (!(tc[i] == " ")) && (!(tc[i] == "\n")) && ((tc[i] == ";"))) {
                     state = 12;
                 }
                 else if (state == 11 && ((tc[i] == " "))) {
                     throw this.tokenizeerror("".concat(sts[11], " => ").concat(sts[8], "; space"), i);
+                }
+                else if (state == 11 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[11], " => ").concat(sts[8], "; LF"), i);
+                }
+                else if (state == 13 && ((tc[i] == "\n"))) {
+                    state = 7;
+                }
+                else if (state == 13 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[13], " => ").concat(sts[8], "; !space&!LF"), i);
                 }
                 else if (state == 12 && ((tc[i] == " "))) {
                     state = 13;
@@ -139,23 +157,23 @@ var NLPtool = /** @class */ (function () {
                 else if (state == 12 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
                     throw this.tokenizeerror("".concat(sts[12], " => ").concat(sts[8], "; !space&!LF"), i);
                 }
-                else if (state == 13 && ((tc[i] == "\n"))) {
-                    state = 7;
-                }
                 else if (state == 12 && ((tc[i] == "\n"))) {
                     state = 7;
-                }
-                else if (state == 13 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
-                    throw this.tokenizeerror("".concat(sts[13], " => ").concat(sts[8], "; !space&!LF"), i);
                 }
                 else if (state == 2 && ((tc[i] == " "))) {
                     throw this.tokenizeerror("".concat(sts[2], " => ").concat(sts[14], "; space"), i);
                 }
-                else if (state == 2 && (!(tc[i] == " "))) {
+                else if (state == 2 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[2], " => ").concat(sts[14], "; LF"), i);
+                }
+                else if (state == 2 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
                     state = 15;
                 }
                 else if (state == 15 && ((tc[i] == " "))) {
                     throw this.tokenizeerror("".concat(sts[15], " => ").concat(sts[14], "; space"), i);
+                }
+                else if (state == 15 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[15], " => ").concat(sts[14], "; LF"), i);
                 }
                 else if (state == 15 && ((tc[i] == ":")) && (!(tar[tar.length - 1].val == "fn" || tar[tar.length - 1].val == "global"))) {
                     throw this.tokenizeerror("".concat(sts[15], " => ").concat(sts[14], "; colon&!decl=(\"fn\"|\"global\")"), i);
@@ -175,38 +193,59 @@ var NLPtool = /** @class */ (function () {
                 else if (state == 16 && ((tc[i] == ";"))) {
                     throw this.tokenizeerror("".concat(sts[16], " => ").concat(sts[19], "; semicolon"), i);
                 }
-                else if (state == 16 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
+                else if (state == 16 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[16], " => ").concat(sts[19], "; LF"), i);
+                }
+                else if (state == 16 && (!(tc[i] == " ")) && (!(tc[i] == ";")) && (!(tc[i] == "\n"))) {
                     state = 20;
                 }
-                else if (state == 18 && (!(tc[i] == " "))) {
+                else if (state == 18 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
                     state = 20;
+                }
+                else if (state == 18 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[18], " => ").concat(sts[19], "; LF"), i);
                 }
                 else if (state == 20 && ((tc[i] == " "))) {
                     state = 21;
                 }
-                else if (state == 21 && ((tc[i] == ":"))) {
-                    state = 22;
-                }
                 else if (state == 20 && ((tc[i] == ";"))) {
                     throw this.tokenizeerror("".concat(sts[20], " => ").concat(sts[19], "; semicolon"), i);
+                }
+                else if (state == 20 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[20], " => ").concat(sts[19], "; LF"), i);
                 }
                 else if (state == 20 && ((tc[i] == ":"))) {
                     state = 22;
                 }
-                else if (state == 21 && (!(tc[i] == " ")) && (!(tc[i] == ":"))) {
-                    throw this.tokenizeerror("".concat(sts[21], " => ").concat(sts[19], "; !space&!colon"), i);
+                else if (state == 21 && ((tc[i] == ":"))) {
+                    state = 22;
+                }
+                else if (state == 21 && (!(tc[i] == " ")) && (!(tc[i] == ":")) && (!(tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[21], " => ").concat(sts[19], "; !space&!colon&!LF"), i);
+                }
+                else if (state == 21 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[21], " => ").concat(sts[19], "; LF"), i);
                 }
                 else if (state == 22 && ((tc[i] == " "))) {
                     state = 23;
                 }
+                else if (state == 22 && (!(tc[i] == " "))) {
+                    throw this.tokenizeerror("".concat(sts[22], " => ").concat(sts[19], "; !space"), i);
+                }
                 else if (state == 23 && ((tc[i] == ";"))) {
                     throw this.tokenizeerror("".concat(sts[23], " => ").concat(sts[19], "; semicolon"), i);
                 }
-                else if (state == 23 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
+                else if (state == 23 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[23], " => ").concat(sts[19], "; LF"), i);
+                }
+                else if (state == 23 && (!(tc[i] == " ")) && (!(tc[i] == ";")) && (!(tc[i] == "\n"))) {
                     state = 24;
                 }
                 else if (state == 24 && ((tc[i] == ";"))) {
                     state = 25;
+                }
+                else if (state == 24 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[24], " => ").concat(sts[19], "; LF"), i);
                 }
                 else if (state == 25 && ((tc[i] == " "))) {
                     state = 26;
@@ -229,32 +268,53 @@ var NLPtool = /** @class */ (function () {
                 else if (state == 17 && ((tc[i] == ";"))) {
                     throw this.tokenizeerror("".concat(sts[17], " => ").concat(sts[28], "; semicolon"), i);
                 }
-                else if (state == 17 && (!(tc[i] == " ")) && (!(tc[i] == ";"))) {
+                else if (state == 17 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[17], " => ").concat(sts[28], "; LF"), i);
+                }
+                else if (state == 17 && (!(tc[i] == " ")) && (!(tc[i] == ";")) && (!(tc[i] == "\n"))) {
                     state = 29;
                 }
-                else if (state == 27 && (!(tc[i] == " "))) {
+                else if (state == 27 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
                     state = 29;
+                }
+                else if (state == 27 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[27], " => ").concat(sts[28], "; LF"), i);
                 }
                 else if (state == 29 && ((tc[i] == " "))) {
                     state = 30;
                 }
-                else if (state == 30 && (!(tc[i] == " ")) && (!(tc[i] == ":"))) {
-                    throw this.tokenizeerror("".concat(sts[30], " => ").concat(sts[28], "; !space&!colon"), i);
+                else if (state == 29 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[29], " => ").concat(sts[28], "; LF"), i);
+                }
+                else if (state == 30 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[30], " => ").concat(sts[28], "; LF"), i);
+                }
+                else if (state == 30 && (!(tc[i] == " ")) && (!(tc[i] == ":")) && (!(tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[30], " => ").concat(sts[28], "; !space&!colon&!LF"), i);
                 }
                 else if (state == 30 && ((tc[i] == ":"))) {
                     state = 31;
                 }
-                else if (state == 31 && ((tc[i] == "("))) {
+                else if (state == 31 && ((tc[i] == "(")) && (!(tc[i] == "\n"))) {
                     state = 32;
                 }
                 else if (state == 31 && (!(tc[i] == "("))) {
                     throw this.tokenizeerror("".concat(sts[31], " => ").concat(sts[28], "; !lparen"), i);
                 }
+                else if (state == 31 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[31], " => ").concat(sts[28], "; LF"), i);
+                }
+                else if (state == 32 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[32], " => ").concat(sts[28], "; LF"), i);
+                }
                 else if (state == 32 && ((tc[i] == " "))) {
                     throw this.tokenizeerror("".concat(sts[32], " => ").concat(sts[28], "; space"), i);
                 }
-                else if (state == 32 && (!(tc[i] == " "))) {
+                else if (state == 32 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
                     state = 33;
+                }
+                else if (state == 34 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[34], " => ").concat(sts[28], "; LF"), i);
                 }
                 else if (state == 34 && (!(tc[i] == " "))) {
                     state = 33;
@@ -265,10 +325,16 @@ var NLPtool = /** @class */ (function () {
                 else if (state == 33 && ((tc[i] == ")"))) {
                     state = 36;
                 }
+                else if (state == 33 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[33], " => ").concat(sts[28], "; LF"), i);
+                }
                 else if (state == 35 && ((tc[i] == " "))) {
                     state = 34;
                 }
-                else if (state == 35 && (!(tc[i] == " "))) {
+                else if (state == 35 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[35], " => ").concat(sts[28], "; LF"), i);
+                }
+                else if (state == 35 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
                     state = 33;
                 }
                 else if (state == 36 && ((tc[i] == ":"))) {
@@ -280,11 +346,20 @@ var NLPtool = /** @class */ (function () {
                 else if (state == 37 && ((tc[i] == " "))) {
                     state = 38;
                 }
-                else if (state == 37 && (!(tc[i] == " "))) {
+                else if (state == 37 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[37], " => ").concat(sts[28], "; LF"), i);
+                }
+                else if (state == 37 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
                     state = 39;
                 }
-                else if (state == 38 && (!(tc[i] == " "))) {
+                else if (state == 38 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[38], " => ").concat(sts[28], "; LF"), i);
+                }
+                else if (state == 38 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
                     state = 39;
+                }
+                else if (state == 39 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[39], " => ").concat(sts[28], "; LF"), i);
                 }
                 else if (state == 39 && ((tc[i] == " "))) {
                     state = 40;
@@ -292,7 +367,10 @@ var NLPtool = /** @class */ (function () {
                 else if (state == 39 && ((tc[i] == "{"))) {
                     state = 41;
                 }
-                else if (state == 40 && (!(tc[i] == " "))) {
+                else if (state == 40 && ((tc[i] == "\n"))) {
+                    throw this.tokenizeerror("".concat(sts[40], " => ").concat(sts[28], "; LF"), i);
+                }
+                else if (state == 40 && (!(tc[i] == " ")) && (!(tc[i] == "\n"))) {
                     state = 41;
                 }
             }
