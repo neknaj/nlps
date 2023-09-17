@@ -13,7 +13,7 @@ function main(filename) {
     let ret1 = []
     let ret2 = []
     let transionarr = []
-    let statenamearr = ["start","LF","comment.LF","split"] // idを固定するstate
+    let statenamearr = ["start", "LF", "comment.LF", "split"] // idを固定するstate
     for (let line of fdata_.split("\n")) {
 
         let transion = line.replace(/\s/g, "").match(/^.*?(?=-)|(?<=>).*?(?=:)|(?<=:).+/g)
@@ -32,21 +32,21 @@ function main(filename) {
     let sts = NaN;
     const retpush = (trans, sw) => {
         if (!trans[1].endsWith("Error")) {
-            ret1.push(`    ${sw} (${procCond(trans[2])}) state=${statenamearr.indexOf(trans[1])};`)
+            ret1.push(`        ${sw} (${procCond(trans[2])}) state=${statenamearr.indexOf(trans[1])};`)
             return
         }
-        ret1.push(`    ${sw} (${procCond(trans[2])}) throw this.tokenizeerror(\`\${sts[${statenamearr.indexOf(trans[0])}]} => \${sts[${statenamearr.indexOf(trans[1])}]}; ${trans[2]}\`,i);`)
+        ret1.push(`        ${sw} (${procCond(trans[2])}) throw this.tokenizeerror(\`\${sts[${statenamearr.indexOf(trans[0])}]} => \${sts[${statenamearr.indexOf(trans[1])}]}; ${trans[2]}\`,i);`)
     }
     ret1.push("switch(state){")
     for (let transion of transionarr) { // jsコードの生成
         if (sts == statenamearr.indexOf(transion[0])) {
-            procCond(transion[2]) ? retpush(transion, "else if") : ret1.push(`    else state=${statenamearr.indexOf(transion[1])};`)
+            procCond(transion[2]) ? retpush(transion, "else if") : ret1.push(`        else state=${statenamearr.indexOf(transion[1])};`)
         }
         else {
             sts = statenamearr.indexOf(transion[0]);
-            ret1.push("    break;")
-            ret1.push(`  case ${statenamearr.indexOf(transion[0])}:`)
-            procCond(transion[2]) ? retpush(transion, "if") : ret1.push(`    state=${statenamearr.indexOf(transion[1])};`)
+            ret1.push("        break;")
+            ret1.push(`    case ${statenamearr.indexOf(transion[0])}:`)
+            procCond(transion[2]) ? retpush(transion, "if") : ret1.push(`        state=${statenamearr.indexOf(transion[1])};`)
 
         }
     }
