@@ -3,25 +3,26 @@
         <main>
             <textarea id="editor" spellcheck="false">!include: stdcalc;
 
-
 #* hey
 this
-is a block comment #
-# this is a line comment
 
-!global:12.str: string;
+is a block comment #
+
+!global: 12.str: string; # this is a line comment
 
 !fn:4.int :(4.int: max): main {
+
+    0 :> !local: 4.int: x;
+    !local: 4.int: y <: y;
+    !local: 4.int: z;
+
     !ctrl:(x max <):while {
         y x + :> z;
         y :> x;
         z :> y;
     }
-    0 :> !local: 4.int: x;
-    !local: 4.int: y <: y;
-    !local: 4.int: z;
 
-    "hello world" "!" add :> string;
+    "hello world" "!\n\"\\" add :> string;
     0 :> return;
 }</textarea>
             <div id="highlight"><pre></pre></div>
