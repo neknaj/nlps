@@ -13,7 +13,7 @@ function main(filename) {
     let ret1 = []
     let ret2 = []
     let transionarr = []
-    let statenamearr = ["start","LF","comment.LF","split"] // idを固定するstate
+    let statenamearr = []
     for (let line of fdata_.split("\n")) {
 
         let transion = line.replace(/\s/g, "").match(/^.*?(?=-)|(?<=>).*?(?=:)|(?<=:).+/g)
