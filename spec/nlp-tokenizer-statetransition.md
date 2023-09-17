@@ -47,8 +47,11 @@ comment.start --> comment.blockstart: asterisk
 comment.start --> LF: LF
 comment.start --> comment.linecomment: *
 
+comment.notestart --> comment.notebeforeblank: space
 comment.notestart --> comment.note: !LF
 comment.notestart --> LF: LF
+comment.notebeforeblank --> comment.note: !LF
+comment.notebeforeblank --> LF: LF
 comment.note --> comment.note: !LF
 comment.note --> LF: LF
 
