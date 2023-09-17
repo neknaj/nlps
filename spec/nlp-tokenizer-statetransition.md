@@ -3,7 +3,6 @@
 ## 全体図
 ```mermaid
 stateDiagram-v2
-
 ```
 ## 部分
 ```mermaid
@@ -66,5 +65,22 @@ comment.blockend --> string.start: quot
 comment.blockend --> LF: LF
 comment.blockend --> token: *
 
+string.start --> string.excape1: backslash
+string.start --> LF: LF
+string.start --> string.char: *
+string.char --> string.LF: LF
+string.char --> string.excape1: backslash
+string.char --> string.end: sharp
+string.char --> string.char: *
+string.escape1 --> string.excape2: *
+string.escape2 --> string.char
+string.escape2 --> string.excape1: backslash
+
+string.end --> split: space|colon|dot|comma|semicolon
+string.end --> special: exclam|lparen|rparen|lbracket|rbracket
+string.end --> comment.start: sharp
+string.end --> LF: LF
+string.end --> string.start: quot
+string.end --> token: *
 
 ```
