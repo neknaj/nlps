@@ -44,7 +44,10 @@ function makeHighLight(tokenarr) {
         output.appendChild(span);
         span.innerText = token.val;
         if (token.type!=-1) {
-            span.classList.add(token.type_str.split(".").pop());
+            span.classList.add(token.type_str.split(".").join("_"));
+            if (token.val==" ") {
+                span.classList.add(`space`);
+            }
         }
         else {
             span.classList.add("Error");
@@ -122,28 +125,31 @@ function update() {
     }
 
     .token {
-        color: rgb(182, 255, 210);
+        color: rgb(255, 249, 167);
     }
-    .space, .colon, .dot, .semicolon {
-        text-decoration: underline wavy rgb(232, 121, 121);
+    .split {
+        color: rgb(255, 123, 93);
     }
-    .lparen, .rparen {
-        color: rgb(255, 84, 181);
+    .space {
+        text-decoration: underline wavy rgba(199, 199, 199, 0.3);
     }
-    .lbracket, .rbracket {
-        color: rgb(255, 255, 92);
-    }
-    .LT {
-        color: rgb(125, 214, 255);
+    .special {
+        color: rgb(92, 168, 255);
     }
     .LF {
         color: gray;
         user-select: none;
     }
-    .sharp, .exclam {
-        color: rgb(255, 69, 227);
+    .comment_LF {
+        color: gray;
+        user-select: none;
+        text-decoration: underline rgba(55, 186, 92, 0.4);
     }
-    .quot {
-        color: red;
+    .comment_start,.comment_blockstart,.comment_blockend {
+        color: rgb(0, 153, 0);
+    }
+    .comment_blockcomment, .comment_linecomment {
+        color: rgb(49, 123, 87);
+        text-decoration: underline rgba(55, 186, 92, 0.4);
     }
 </style>
