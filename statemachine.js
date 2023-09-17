@@ -11,42 +11,56 @@ function main(filename) {
     console.log(fdata_)
     //console.log(fdata)
     let ret1 = []
-    ret1.push("if (false) {}")
     let ret2 = []
     let transionarr = []
     let statenamearr = []
     for (let line of fdata_.split("\n")) {
 
-        let transion = line.replace(/\s/g,"").match(/^.*?(?=-)|(?<=>).*?(?=:)|(?<=:).+/g)
-        if (transion!=null&&transion.length==3) {
+        let transion = line.replace(/\s/g, "").match(/^.*?(?=-)|(?<=>).*?(?=:)|(?<=:).+/g)
+        if (transion != null && transion.length == 3) {
             transionarr.push(transion)
-            if (statenamearr.indexOf(transion[0])==-1) {
+            if (statenamearr.indexOf(transion[0]) == -1) {
                 statenamearr.push(transion[0])
             }
-            if (statenamearr.indexOf(transion[1])==-1) {
+            if (statenamearr.indexOf(transion[1]) == -1) {
                 statenamearr.push(transion[1])
             }
         }
         // ["gVarDef.Colon1","gVarDef.Blank1","space"]
     }
-    console.log("this.tokenizerstates = [\""+statenamearr.join("\",\"")+"\"]")
+    console.log("this.tokenizerstates = [\"" + statenamearr.join("\",\"") + "\"]")
+    let sts = NaN;
+    const retpush = (trans, sw) => {
+        if (!trans[1].endsWith("Error")) {
+            ret1.push(`    ${sw} (${procCond(trans[2])}) state=${statenamearr.indexOf(trans[1])};`)
+            return
+        }
+        ret1.push(`    ${sw} (${procCond(trans[2])}) throw this.tokenizeerror(\`\${sts[${statenamearr.indexOf(trans[0])}]} => \${sts[${statenamearr.indexOf(trans[1])}]}; ${trans[2]}\`,i);`)
+    }
+    ret1.push("switch(status){")
     for (let transion of transionarr) { // jsコードの生成
-        if (!transion[1].endsWith("Error")) {
-            ret1.push(`else if (state==${statenamearr.indexOf(transion[0])} ${procCond(transion[2])}) state=${statenamearr.indexOf(transion[1])};`)
+        if (sts == statenamearr.indexOf(transion[0])) {
+            procCond(transion[2]) ? retpush(transion, "else if") : ret1.push(`    else state=${statenamearr.indexOf(transion[1])};`)
         }
         else {
-            ret1.push(`else if (state==${statenamearr.indexOf(transion[0])} ${procCond(transion[2])}) throw this.tokenizeerror(\`\${sts[${statenamearr.indexOf(transion[0])}]} => \${sts[${statenamearr.indexOf(transion[1])}]}; ${transion[2]}\`,i);`)
+            sts = statenamearr.indexOf(transion[0]);
+            ret1.push("    break;")
+            ret1.push(`  case ${statenamearr.indexOf(transion[0])}:`)
+            procCond(transion[2]) ? retpush(transion, "if") : ret1.push(`    state=${statenamearr.indexOf(transion[1])};`)
+
         }
     }
+    ret1.splice(1, 1);
+    ret1.push("}");
     for (let transion of transionarr) { // 全体図用mermaidコードの生成
         ret2.push(`${transion[0]} --> ${transion[1]}: ${transion[2]}`);
     }
     //console.table(ret)
-    console.log("")
-    console.log(ret2.join("\n"))
-    console.log("")
+    // console.log("--------------")
+    // console.log(ret2.join("\n"))
+    // console.log("")
     console.log(ret1.join("\n"))
-    console.log("")
+    // console.log("--------------")
 }
 let condition = {
     "space": " ",
@@ -67,7 +81,7 @@ let condition = {
 function procCond(cond) {
     let ret = []
     let split = cond.split(/&|\|/);
-    if (cond.includes("&")&&cond.includes("|")) {
+    if (cond.includes("&") && cond.includes("|")) {
         throw `AND and OR are there in same condition statement`
     }
     else if (cond.includes("&")) {
@@ -76,13 +90,13 @@ function procCond(cond) {
     else if (cond.includes("|")) {
         split_char = "|"
     }
-    else  {
+    else {
         split_char = "&"
     }
-    console.log(split_char,split)
+    console.log(split_char, split)
     for (let c of split) {
         let r = "";
-        if (c[0]=="!") {
+        if (c[0] == "!") {
             r = "!"
             c = c.slice(1)
         }
@@ -110,9 +124,9 @@ function procCond(cond) {
                 break;
         }
     }
-    if (ret.length==0) {
+    if (ret.length == 0) {
         return ""
     }
-    return `&&(${ret.join(split_char+split_char)})`
+    return `${ret.join(split_char + split_char)}`
 }
 main("./spec/nlp-tokenizer-statetransition.md")
