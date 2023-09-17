@@ -31,13 +31,11 @@ function main(filename) {
     }
     console.log("this.tokenizerstates = [\""+statenamearr.join("\",\"")+"\"]")
     for (let transion of transionarr) { // jsコードの生成
-        if (transion[0]==transion[1]) {
-        }
-        else if (!transion[1].endsWith("Error")) {
-            ret1.push(`else if (state==${statenamearr.indexOf(transion[0])} ${procCond(transion[2])}) { state=${statenamearr.indexOf(transion[1])} }`)
+        if (!transion[1].endsWith("Error")) {
+            ret1.push(`else if (state==${statenamearr.indexOf(transion[0])} ${procCond(transion[2])}) state=${statenamearr.indexOf(transion[1])};`)
         }
         else {
-            ret1.push(`else if (state==${statenamearr.indexOf(transion[0])} ${procCond(transion[2])}) { throw this.tokenizeerror(\`\${sts[${statenamearr.indexOf(transion[0])}]} => \${sts[${statenamearr.indexOf(transion[1])}]}; ${transion[2]}\`,i) }`)
+            ret1.push(`else if (state==${statenamearr.indexOf(transion[0])} ${procCond(transion[2])}) throw this.tokenizeerror(\`\${sts[${statenamearr.indexOf(transion[0])}]} => \${sts[${statenamearr.indexOf(transion[1])}]}; ${transion[2]}\`,i);`)
         }
     }
     for (let transion of transionarr) { // 全体図用mermaidコードの生成
