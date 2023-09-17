@@ -3,7 +3,24 @@
         <main>
             <textarea id="editor" spellcheck="false">#include stdcalc;
 
-!fn: 4.int :(4.int): main {
+/* hey */
+/* it
+fwea
+faw f */
+
+!global:12.str: string;
+
+!fn:4.int :(4.int: max): main {
+    !ctrl:(x max <):while {
+        y x + :> z;
+        y :> x;
+        z :> y;
+    }
+    0 :> !local: 4.int: x;
+    !local: 4.int: y <: y;
+    !local: 4.int: z;
+
+    "hello world" "!" add :> string;
     0 :> return;
 }</textarea>
             <div id="highlight"><pre></pre></div>
@@ -26,7 +43,7 @@ function makeHighLight(tokenarr) {
         output.appendChild(span);
         span.innerText = token.val;
         if (token.type!=-1) {
-            span.classList.add(nlpt.tokenizerstates[token.type].split(".").pop());
+            span.classList.add(token.type_str.split(".").pop());
         }
         else {
             span.classList.add("Error");
@@ -51,9 +68,14 @@ function update() {
     catch (e) {
         console.error(e)
         { // 未解決部分追加
-            let lastindex = nlpt.tokenarr[nlpt.tokenarr.length-1].i + nlpt.tokenarr[nlpt.tokenarr.length-1].val.length;
-            console.log(lastindex);
-            nlpt.tokenarr.push({ type:-1, type_str:"Error", val: nlpt.code.slice(lastindex), i: lastindex })
+            if (nlpt.tokenarr.length!=0) {
+                let lastindex = nlpt.tokenarr[nlpt.tokenarr.length-1].i + nlpt.tokenarr[nlpt.tokenarr.length-1].val.length;
+                console.log(lastindex);
+                nlpt.tokenarr.push({ type:-1, type_str:"Error", val: nlpt.code.slice(lastindex), i: lastindex })
+            }
+            else {
+                nlpt.tokenarr.push({ type:-1, type_str:"Error", val: nlpt.code, i: 0 })
+            }
         }
     }
     console.log(nlpt.tokenarr)
@@ -84,7 +106,7 @@ function update() {
         font-family: monospace;
         margin: 20px;
         padding: 20px;
-        background-color: rgb(3, 6, 58);
+        background-color: rgb(0, 4, 26);
         color: white;
     }
 </style>
@@ -92,43 +114,35 @@ function update() {
 
     #highlight span {
         margin-bottom: 10px;
-        background-color: rgb(0, 0, 0);
     }
 
     #highlight span.EOL {
         color: rgb(135, 135, 135);
-        background-color: rgb(3, 6, 58);
     }
 
-    .Sharp {
-        color: rgb(255, 78, 231);
+    .token {
+        color: rgb(182, 255, 210);
     }
-    .LPAREN, .RPAREN {
-        color: rgb(204, 200, 115);
+    .space, .colon, .dot, .semicolon {
+        text-decoration: underline wavy rgb(232, 121, 121);
     }
-    .Declaration {
-        color: rgb(174, 247, 255);
+    .lparen, .rparen {
+        color: rgb(255, 84, 181);
     }
-    .Filename {
-        color: rgb(20, 255, 90);
+    .lbracket, .rbracket {
+        color: rgb(255, 255, 92);
     }
-    .gVarType {
-        color: rgb(255, 116, 116);
+    .LT {
+        color: rgb(125, 214, 255);
     }
-    .Name {
-        color: rgb(217, 140, 255);
-    }
-    .RetType {
-        color: rgb(255, 255, 132);
-    }
-    .ArgBody {
-        color: cyan;
-    }
-    .FName {
-        color: orange;
-    }
-    .Error {
+    .LF {
         color: gray;
-        text-decoration:underline wavy rgb(147, 0, 0)
+        user-select: none;
+    }
+    .sharp, .exclam {
+        color: rgb(255, 69, 227);
+    }
+    .quot {
+        color: red;
     }
 </style>

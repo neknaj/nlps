@@ -58,10 +58,11 @@ let condition = {
     "semicolon": ";",
     "LF": "\\n",
     "comma": ",",
+    "dot": ",",
     "lparen": "(",
     "rparen": ")",
-    "lcurlyb": "{",
-    "rcurlyb": "}",
+    "lbracket": "{",
+    "rbracket": "}",
 }
 function procCond(cond) {
     let ret = ""
@@ -76,29 +77,21 @@ function procCond(cond) {
             case "sharp":
             case "exclam":
             case "colon":
+            case "dot":
             case "semicolon":
             case "LF":
             case "comma":
             case "lparen":
             case "rparen":
-            case "lcurlyb":
-            case "rcurlyb":
+            case "lbracket":
+            case "rbracket":
                 ret += `&&(${r}(tc[i]=="${condition[c]}"))`;
                 break;
-            case "decl=(\"include\"|\"using\")":
-                ret += `&&(${r}(tar[tar.length-1].val=="include"||tar[tar.length-1].val=="using"))`;
-                break;
-            case "decl=(\"fn\"|\"global\")":
-                ret += `&&(${r}(tar[tar.length-1].val=="fn"||tar[tar.length-1].val=="global"))`;
-                break;
-            case "decl=\"fn\"":
-                ret += `&&(${r}(tar[tar.length-1].val=="fn"))`;
-                break;
-            case "decl=\"global\"":
-                ret += `&&(${r}(tar[tar.length-1].val=="global"))`;
+            case "*":
+                ret += ``;
                 break;
             default:
-               // throw "errorrrrrrrr"
+                throw "errorrrrrrrr"
                 break;
         }
     }
