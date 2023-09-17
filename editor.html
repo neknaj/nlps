@@ -1,7 +1,9 @@
 <html>
     <body>
         <main>
-            <textarea id="editor" spellcheck="false">!include: stdcalc;
+            <textarea id="editor" spellcheck="false">#: Neknaj Language For Programming
+
+!include: stdcalc;
 
 #* hey
 this
@@ -61,7 +63,7 @@ function makeHighLight(tokenarr) {
     }
 }
 editor.onchange = update;
-editor.onkeydown = update;
+//editor.onkeydown = update;
 editor.oninput = update;
 
 update()
@@ -129,7 +131,7 @@ function update() {
         color: rgb(255, 249, 167);
     }
     .split {
-        color: rgb(255, 123, 93);
+        color: rgb(255, 255, 255);
     }
     .space {
         text-decoration: underline wavy rgba(199, 199, 199, 0.3);
@@ -146,11 +148,32 @@ function update() {
         user-select: none;
         text-decoration: underline rgba(55, 186, 92, 0.4);
     }
-    .comment_start,.comment_blockstart,.comment_blockend {
+    .comment_start,.comment_blockstart,.comment_blockend, .comment_notestart {
         color: rgb(0, 153, 0);
     }
     .comment_blockcomment, .comment_linecomment {
         color: rgb(49, 123, 87);
         text-decoration: underline rgba(55, 186, 92, 0.4);
+    }
+    .comment_note {
+        color: rgb(255, 255, 255);
+        background-color: black;
+        text-decoration: underline rgba(55, 186, 92, 0.4);
+    }
+
+    .string_start, .string_end {
+        color: rgb(242, 129, 8);
+    }
+    .string_char {
+        color: rgb(255, 188, 64);
+    }
+    .string_space {
+        text-decoration: underline wavy rgba(255, 115, 0, 0.3);
+    }
+    .string_escape1 {
+        color: rgb(181, 154, 21);
+    }
+    .string_escape2 {
+        color: rgb(235, 204, 46);
     }
 </style>

@@ -59,7 +59,7 @@ var NLPtool = /** @class */ (function () {
         var i = 0;
         var tc = this.code;
         console.log(tar);
-        this.tokenizerstates = ["start", "LF", "comment.LF", "split", "special", "comment.start", "string.start", "token", "comment.blockstart", "comment.linecomment", "comment.blockend", "comment.blockcomment", "string.excape1", "string.char", "string.LF", "string.end", "string.escape1", "string.excape2", "string.escape2"];
+        this.tokenizerstates = ["start", "LF", "comment.LF", "split", "string.space", "special", "comment.start", "string.start", "token", "comment.notestart", "comment.blockstart", "comment.linecomment", "comment.note", "comment.blockend", "comment.blockcomment", "string.escape1", "string.char", "string.end", "string.escape2"];
         var sts = this.tokenizerstates;
         while (i < this.code.length) {
             {
@@ -68,164 +68,207 @@ var NLPtool = /** @class */ (function () {
                         if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")))
                             state = 3;
                         else if (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))
-                            state = 4;
-                        else if (((tc[i] == "#")))
                             state = 5;
+                        else if (((tc[i] == "#")))
+                            state = 6;
                         else if (((tc[i] == "\n")))
                             state = 1;
                         else if (((tc[i] == "\"")))
-                            state = 6;
-                        else
                             state = 7;
+                        else
+                            state = 8;
                         break;
                     case 3:
                         if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")))
                             state = 3;
                         else if (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))
-                            state = 4;
-                        else if (((tc[i] == "#")))
                             state = 5;
-                        else if (((tc[i] == "\"")))
+                        else if (((tc[i] == "#")))
                             state = 6;
+                        else if (((tc[i] == "\"")))
+                            state = 7;
                         else if (((tc[i] == "\n")))
                             state = 1;
                         else
-                            state = 7;
+                            state = 8;
                         break;
-                    case 4:
+                    case 5:
                         if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")))
                             state = 3;
                         else if (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))
-                            state = 4;
-                        else if (((tc[i] == "#")))
                             state = 5;
-                        else if (((tc[i] == "\"")))
+                        else if (((tc[i] == "#")))
                             state = 6;
+                        else if (((tc[i] == "\"")))
+                            state = 7;
                         else if (((tc[i] == "\n")))
                             state = 1;
                         else
-                            state = 7;
+                            state = 8;
                         break;
-                    case 7:
+                    case 8:
                         if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")))
                             state = 3;
                         else if (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))
-                            state = 4;
-                        else if (((tc[i] == "#")))
                             state = 5;
-                        else if (((tc[i] == "\"")))
+                        else if (((tc[i] == "#")))
                             state = 6;
+                        else if (((tc[i] == "\"")))
+                            state = 7;
                         else if (((tc[i] == "\n")))
                             state = 1;
                         else
-                            state = 7;
+                            state = 8;
                         break;
                     case 1:
                         if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")))
                             state = 3;
                         else if (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))
-                            state = 4;
-                        else if (((tc[i] == "#")))
                             state = 5;
-                        else if (((tc[i] == "\"")))
+                        else if (((tc[i] == "#")))
                             state = 6;
+                        else if (((tc[i] == "\"")))
+                            state = 7;
                         else if (((tc[i] == "\n")))
                             state = 1;
                         else
-                            state = 7;
-                        break;
-                    case 5:
-                        if (((tc[i] == "*")))
                             state = 8;
-                        else if ((!(tc[i] == "*")))
+                        break;
+                    case 6:
+                        if (((tc[i] == ":")))
                             state = 9;
+                        else if (((tc[i] == "*")))
+                            state = 10;
+                        else if (((tc[i] == "\n")))
+                            state = 1;
+                        else
+                            state = 11;
                         break;
                     case 9:
                         if ((!(tc[i] == "\n")))
-                            state = 9;
+                            state = 12;
                         else if (((tc[i] == "\n")))
                             state = 1;
                         break;
-                    case 8:
-                        if (((tc[i] == "#")))
-                            state = 10;
-                        else if ((!(tc[i] == "#")) && (!(tc[i] == "\n")))
+                    case 12:
+                        if ((!(tc[i] == "\n")))
+                            state = 12;
+                        else if (((tc[i] == "\n")))
+                            state = 1;
+                        break;
+                    case 11:
+                        if ((!(tc[i] == "\n")))
                             state = 11;
+                        else if (((tc[i] == "\n")))
+                            state = 1;
+                        break;
+                    case 10:
+                        if (((tc[i] == "#")))
+                            state = 13;
+                        else if ((!(tc[i] == "#")) && (!(tc[i] == "\n")))
+                            state = 14;
                         else if (((tc[i] == "\n")))
                             state = 2;
                         break;
-                    case 11:
+                    case 14:
                         if (((tc[i] == "#")))
-                            state = 10;
+                            state = 13;
                         else if ((!(tc[i] == "#")) && (!(tc[i] == "\n")))
-                            state = 11;
+                            state = 14;
                         else if (((tc[i] == "\n")))
                             state = 2;
                         break;
                     case 2:
                         if (((tc[i] == "#")))
-                            state = 10;
+                            state = 13;
                         else if ((!(tc[i] == "#")) && (!(tc[i] == "\n")))
-                            state = 11;
+                            state = 14;
                         else if (((tc[i] == "\n")))
                             state = 2;
                         break;
-                    case 10:
+                    case 13:
                         if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")))
                             state = 3;
                         else if (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))
-                            state = 4;
-                        else if (((tc[i] == "#")))
                             state = 5;
-                        else if (((tc[i] == "\"")))
-                            state = 6;
-                        else if (((tc[i] == "\n")))
-                            state = 1;
-                        else
-                            state = 7;
-                        break;
-                    case 6:
-                        if (((tc[i] == "\\")))
-                            state = 12;
-                        else if (((tc[i] == "\n")))
-                            state = 1;
-                        else
-                            state = 13;
-                        break;
-                    case 13:
-                        if (((tc[i] == "\n")))
-                            state = 14;
-                        else if (((tc[i] == "\\")))
-                            state = 12;
                         else if (((tc[i] == "#")))
-                            state = 15;
+                            state = 6;
+                        else if (((tc[i] == "\"")))
+                            state = 7;
+                        else if (((tc[i] == "\n")))
+                            state = 1;
                         else
-                            state = 13;
+                            state = 8;
+                        break;
+                    case 7:
+                        if (((tc[i] == "\\")))
+                            state = 15;
+                        else if (((tc[i] == "\n")))
+                            state = 1;
+                        else if (((tc[i] == " ")))
+                            state = 4;
+                        else
+                            state = 16;
                         break;
                     case 16:
-                        state = 17;
+                        if (((tc[i] == "\n")))
+                            state = 1;
+                        else if (((tc[i] == "\\")))
+                            state = 15;
+                        else if (((tc[i] == "\"")))
+                            state = 17;
+                        else if (((tc[i] == " ")))
+                            state = 4;
+                        else
+                            state = 16;
                         break;
-                    case 18:
-                        if (((tc[i] == "\\")))
-                            state = 12;
+                    case 4:
+                        if (((tc[i] == "\n")))
+                            state = 1;
+                        else if (((tc[i] == "\\")))
+                            state = 15;
+                        else if (((tc[i] == "\"")))
+                            state = 17;
+                        else if (((tc[i] == " ")))
+                            state = 4;
+                        else
+                            state = 16;
                         break;
                     case 15:
+                        if (((tc[i] == "\n")))
+                            state = 1;
+                        else
+                            state = 18;
+                        break;
+                    case 18:
+                        if (((tc[i] == "\n")))
+                            state = 1;
+                        else if (((tc[i] == "\"")))
+                            state = 17;
+                        else if (((tc[i] == "\\")))
+                            state = 15;
+                        else if (((tc[i] == " ")))
+                            state = 4;
+                        else
+                            state = 16;
+                        break;
+                    case 17:
                         if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")))
                             state = 3;
                         else if (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))
-                            state = 4;
-                        else if (((tc[i] == "#")))
                             state = 5;
+                        else if (((tc[i] == "#")))
+                            state = 6;
                         else if (((tc[i] == "\n")))
                             state = 1;
                         else if (((tc[i] == "\"")))
-                            state = 6;
-                        else
                             state = 7;
+                        else
+                            state = 8;
                 }
             }
             {
-                console.log(i, this.code[i].replace(/\n/g, "\\n"), sts[state], state);
+                //console.log(i,this.code[i].replace(/\n/g,"\\n"),sts[state],state)
                 if (tar.length == 0 || state != tar[tar.length - 1].type) {
                     tar.push({ type: state, type_str: sts[state], val: this.code[i], i: i });
                 }

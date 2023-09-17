@@ -42,8 +42,15 @@ LF --> string.start: quot
 LF --> LF: LF
 LF --> token: *
 
+comment.start --> comment.notestart: colon
 comment.start --> comment.blockstart: asterisk
-comment.start --> comment.linecomment: !asterisk
+comment.start --> LF: LF
+comment.start --> comment.linecomment: *
+
+comment.notestart --> comment.note: !LF
+comment.notestart --> LF: LF
+comment.note --> comment.note: !LF
+comment.note --> LF: LF
 
 comment.linecomment --> comment.linecomment: !LF
 comment.linecomment --> LF: LF
@@ -65,16 +72,30 @@ comment.blockend --> string.start: quot
 comment.blockend --> LF: LF
 comment.blockend --> token: *
 
-string.start --> string.excape1: backslash
+string.start --> string.escape1: backslash
 string.start --> LF: LF
+string.start --> string.space: space
 string.start --> string.char: *
-string.char --> string.LF: LF
-string.char --> string.excape1: backslash
-string.char --> string.end: sharp
+
+string.char --> LF: LF
+string.char --> string.escape1: backslash
+string.char --> string.end: quot
+string.char --> string.space: space
 string.char --> string.char: *
-string.escape1 --> string.excape2: *
-string.escape2 --> string.char
-string.escape2 --> string.excape1: backslash
+
+string.space --> LF: LF
+string.space --> string.escape1: backslash
+string.space --> string.end: quot
+string.space --> string.space: space
+string.space --> string.char: *
+
+string.escape1 --> LF: LF
+string.escape1 --> string.escape2: *
+string.escape2 --> LF: LF
+string.escape2 --> string.end: quot
+string.escape2 --> string.escape1: backslash
+string.escape2 --> string.space: space
+string.escape2 --> string.char: *
 
 string.end --> split: space|colon|dot|comma|semicolon
 string.end --> special: exclam|lparen|rparen|lbracket|rbracket
