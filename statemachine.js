@@ -70,7 +70,7 @@ let condition = {
     "semicolon": ";",
     "LF": "\\n",
     "comma": ",",
-    "dot": ",",
+    "dot": ".",
     "quot": "\\\"",
     "lparen": "(",
     "rparen": ")",

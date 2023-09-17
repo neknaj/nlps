@@ -65,7 +65,7 @@ var NLPtool = /** @class */ (function () {
             {
                 switch (state) {
                     case 0:
-                        if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")))
+                        if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ".")) || ((tc[i] == ",")) || ((tc[i] == ";")))
                             state = 3;
                         else if (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))
                             state = 5;
@@ -79,7 +79,7 @@ var NLPtool = /** @class */ (function () {
                             state = 8;
                         break;
                     case 3:
-                        if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")))
+                        if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ".")) || ((tc[i] == ",")) || ((tc[i] == ";")))
                             state = 3;
                         else if (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))
                             state = 5;
@@ -93,7 +93,7 @@ var NLPtool = /** @class */ (function () {
                             state = 8;
                         break;
                     case 5:
-                        if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")))
+                        if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ".")) || ((tc[i] == ",")) || ((tc[i] == ";")))
                             state = 3;
                         else if (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))
                             state = 5;
@@ -107,7 +107,7 @@ var NLPtool = /** @class */ (function () {
                             state = 8;
                         break;
                     case 8:
-                        if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")))
+                        if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ".")) || ((tc[i] == ",")) || ((tc[i] == ";")))
                             state = 3;
                         else if (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))
                             state = 5;
@@ -121,7 +121,7 @@ var NLPtool = /** @class */ (function () {
                             state = 8;
                         break;
                     case 1:
-                        if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")))
+                        if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ".")) || ((tc[i] == ",")) || ((tc[i] == ";")))
                             state = 3;
                         else if (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))
                             state = 5;
@@ -195,7 +195,7 @@ var NLPtool = /** @class */ (function () {
                             state = 2;
                         break;
                     case 14:
-                        if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")))
+                        if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ".")) || ((tc[i] == ",")) || ((tc[i] == ";")))
                             state = 3;
                         else if (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))
                             state = 5;
@@ -261,7 +261,7 @@ var NLPtool = /** @class */ (function () {
                             state = 17;
                         break;
                     case 18:
-                        if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")))
+                        if (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ".")) || ((tc[i] == ",")) || ((tc[i] == ";")))
                             state = 3;
                         else if (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))
                             state = 5;
