@@ -59,14 +59,30 @@ let condition = {
     "LF": "\\n",
     "comma": ",",
     "dot": ",",
+    "quot": "\\\"",
     "lparen": "(",
     "rparen": ")",
     "lbracket": "{",
     "rbracket": "}",
+    "asterisk": "*",
 }
 function procCond(cond) {
-    let ret = ""
-    for (let c of cond.split("&")) {
+    let ret = []
+    let split = cond.split(/&|\|/);
+    if (cond.includes("&")&&cond.includes("|")) {
+        throw `AND and OR are there in same condition statement`
+    }
+    else if (cond.includes("&")) {
+        split_char = "&"
+    }
+    else if (cond.includes("|")) {
+        split_char = "|"
+    }
+    else  {
+        split_char = "&"
+    }
+    console.log(split_char,split)
+    for (let c of split) {
         let r = "";
         if (c[0]=="!") {
             r = "!"
@@ -81,20 +97,24 @@ function procCond(cond) {
             case "semicolon":
             case "LF":
             case "comma":
+            case "quot":
             case "lparen":
             case "rparen":
             case "lbracket":
             case "rbracket":
-                ret += `&&(${r}(tc[i]=="${condition[c]}"))`;
+            case "asterisk":
+                ret.push(`(${r}(tc[i]=="${condition[c]}"))`);
                 break;
             case "*":
-                ret += ``;
                 break;
             default:
                 throw "errorrrrrrrr"
                 break;
         }
     }
-    return ret
+    if (ret.length==0) {
+        return ""
+    }
+    return `&&(${ret.join(split_char+split_char)})`
 }
 main("./spec/nlp-tokenizer-statetransition.md")

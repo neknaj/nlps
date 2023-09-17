@@ -54,78 +54,133 @@ var NLPtool = /** @class */ (function () {
     };
     NLPtool.prototype.tokenize = function () {
         var tar = [];
-        var tar_ = [];
-        this.tokenarr = tar_;
+        this.tokenarr = tar;
         var state = 0;
         var i = 0;
         var tc = this.code;
         console.log(tar);
-        this.tokenizerstates = ["split", "token"];
+        this.tokenizerstates = ["start", "split", "special", "comment.start", "string.start", "token", "comment.blockstart", "comment.linecomment", "comment.lineend", "comment.blockend", "comment.blockcomment", "comment.LF"];
         var sts = this.tokenizerstates;
-        var split_str = {
-            " ": "space",
-            ":": "colon",
-            ".": "dot",
-            ";": "semicolon",
-            "\n": "LF",
-        };
         while (i < this.code.length) {
-            if (Object.keys(split_str).indexOf(tc[i]) != -1) {
-                tar.push({ type: 0, type_str: split_str[this.code[i]], val: this.code[i], i: i });
+            {
+                if (false) { }
+                else if (state == 0 && (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")) || ((tc[i] == "\n")))) {
+                    state = 1;
+                }
+                else if (state == 0 && (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))) {
+                    state = 2;
+                }
+                else if (state == 0 && (((tc[i] == "#")))) {
+                    state = 3;
+                }
+                else if (state == 0 && (((tc[i] == "\"")))) {
+                    state = 4;
+                }
+                else if (state == 0) {
+                    state = 5;
+                }
+                else if (state == 1 && (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))) {
+                    state = 2;
+                }
+                else if (state == 1 && (((tc[i] == "#")))) {
+                    state = 3;
+                }
+                else if (state == 1 && (((tc[i] == "\"")))) {
+                    state = 4;
+                }
+                else if (state == 1) {
+                    state = 5;
+                }
+                else if (state == 2 && (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")) || ((tc[i] == "\n")))) {
+                    state = 1;
+                }
+                else if (state == 2 && (((tc[i] == "#")))) {
+                    state = 3;
+                }
+                else if (state == 2 && (((tc[i] == "\"")))) {
+                    state = 4;
+                }
+                else if (state == 2) {
+                    state = 5;
+                }
+                else if (state == 3 && (((tc[i] == "*")))) {
+                    state = 6;
+                }
+                else if (state == 3 && ((!(tc[i] == "*")))) {
+                    state = 7;
+                }
+                else if (state == 7 && (((tc[i] == "\n")))) {
+                    state = 8;
+                }
+                else if (state == 6 && (((tc[i] == "#")))) {
+                    state = 9;
+                }
+                else if (state == 6 && ((!(tc[i] == "#")) && (!(tc[i] == "\n")))) {
+                    state = 10;
+                }
+                else if (state == 6 && (((tc[i] == "\n")))) {
+                    state = 11;
+                }
+                else if (state == 10 && (((tc[i] == "#")))) {
+                    state = 9;
+                }
+                else if (state == 10 && (((tc[i] == "\n")))) {
+                    state = 11;
+                }
+                else if (state == 11 && (((tc[i] == "#")))) {
+                    state = 9;
+                }
+                else if (state == 11 && ((!(tc[i] == "#")) && (!(tc[i] == "\n")))) {
+                    state = 10;
+                }
+                else if (state == 8 && (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")) || ((tc[i] == "\n")))) {
+                    state = 1;
+                }
+                else if (state == 8 && (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))) {
+                    state = 2;
+                }
+                else if (state == 8 && (((tc[i] == "#")))) {
+                    state = 3;
+                }
+                else if (state == 8 && (((tc[i] == "\"")))) {
+                    state = 4;
+                }
+                else if (state == 8) {
+                    state = 5;
+                }
+                else if (state == 9 && (((tc[i] == " ")) || ((tc[i] == ":")) || ((tc[i] == ",")) || ((tc[i] == ",")) || ((tc[i] == ";")) || ((tc[i] == "\n")))) {
+                    state = 1;
+                }
+                else if (state == 9 && (((tc[i] == "!")) || ((tc[i] == "(")) || ((tc[i] == ")")) || ((tc[i] == "{")) || ((tc[i] == "}")))) {
+                    state = 2;
+                }
+                else if (state == 9 && (((tc[i] == "#")))) {
+                    state = 3;
+                }
+                else if (state == 9 && (((tc[i] == "\"")))) {
+                    state = 4;
+                }
+                else if (state == 9) {
+                    state = 5;
+                }
             }
-            else if (tc[i] == "\"") {
-                tar.push({ type: 2, type_str: "quot", val: this.code[i], i: i });
+            if (state != 0) {
+                console.log(i, this.code[i].replace(/\n/g, "\\n"), sts[state], state);
+                if (tar.length == 0 || state != tar[tar.length - 1].type) {
+                    tar.push({ type: state, type_str: sts[state], val: this.code[i], i: i });
+                }
+                else {
+                    tar[tar.length - 1].val += this.code[i];
+                }
+                //console.table(tar)
+                i++;
             }
-            else if (tc[i] == "#") {
-                tar.push({ type: 2, type_str: "sharp", val: this.code[i], i: i });
-            }
-            else if (tc[i] == "!") {
-                tar.push({ type: 2, type_str: "exclam", val: this.code[i], i: i });
-            }
-            else if (tc[i] == ">") {
-                tar.push({ type: 2, type_str: "LT", val: this.code[i], i: i });
-            }
-            else if (tc[i] == "(") {
-                tar.push({ type: 2, type_str: "lparen", val: this.code[i], i: i });
-            }
-            else if (tc[i] == ")") {
-                tar.push({ type: 2, type_str: "rparen", val: this.code[i], i: i });
-            }
-            else if (tc[i] == "{") {
-                tar.push({ type: 2, type_str: "lbracket", val: this.code[i], i: i });
-            }
-            else if (tc[i] == "}") {
-                tar.push({ type: 2, type_str: "rbracket", val: this.code[i], i: i });
-            }
-            else {
-                tar.push({ type: 1, type_str: "token", val: this.code[i], i: i });
-            }
-            i++;
-        }
-        var bft = 0;
-        var tokenval = "";
-        for (var _i = 0, tar_1 = tar; _i < tar_1.length; _i++) {
-            var t = tar_1[_i];
-            if (t.type == 1) {
-                tokenval += t.val;
-            }
-            else if (bft == 1) {
-                tar_.push({ type: 1, type_str: "token", val: tokenval, i: i });
-                tokenval = "";
-                tar_.push({ type: 0, type_str: t.type_str, val: t.val, i: t.i });
-            }
-            else {
-                tar_.push({ type: 0, type_str: t.type_str, val: t.val, i: t.i });
-            }
-            // @ts-ignore
-            bft = t.type;
         }
         console.table(tar);
-        console.table(tar_);
         return this;
     };
     return NLPtool;
 }());
-if (typeof require != "undefined") {
+if (!(typeof require != "undefined")) {
     var code_res = new NLPtool("./test4.nlp").tokenize();
 }
