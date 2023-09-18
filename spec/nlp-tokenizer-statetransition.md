@@ -89,6 +89,7 @@ comment.blockend --> token: *
 
 string.start --> string.escape1: backslash
 string.start --> LF: LF
+string.start --> string.end: quot
 string.start --> string.space: space
 string.start --> string.char: *
 

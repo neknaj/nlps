@@ -63,7 +63,7 @@ class NLPtool {
         let i:number = 0;
         let tc = this.code;
         console.log(tar)
-        this.tokenizerstates = ["start","LF","comment.LF","split","string.space","lassign","rassign","special","comment.start","string.start","token","comment.notestart","comment.blockstart","comment.linecomment","comment.notebeforeblank","comment.note","comment.blockend","comment.blockcomment","string.escape1","string.char","string.end","string.escape2","lassign_","rassign_"]
+        this.tokenizerstates = ["start","LF","comment.LF","split","string.space","lassign","rassign","special","comment.start","string.start","token","comment.notestart","comment.blockstart","comment.linecomment","comment.notebeforeblank","comment.note","comment.blockend","comment.blockcomment","string.escape1","string.end","string.char","string.escape2","lassign_","rassign_"]
         var sts = this.tokenizerstates;
         while (i<this.code.length) {
             {
@@ -170,22 +170,23 @@ class NLPtool {
                     case 9:
                         if ((tc[i]=="\\")) state=18;
                         else if ((tc[i]=="\n")) state=1;
+                        else if ((tc[i]=="\"")) state=19;
                         else if ((tc[i]==" ")) state=4;
-                        else state=19;
+                        else state=20;
                         break;
-                    case 19:
+                    case 20:
                         if ((tc[i]=="\n")) state=1;
                         else if ((tc[i]=="\\")) state=18;
-                        else if ((tc[i]=="\"")) state=20;
+                        else if ((tc[i]=="\"")) state=19;
                         else if ((tc[i]==" ")) state=4;
-                        else state=19;
+                        else state=20;
                         break;
                     case 4:
                         if ((tc[i]=="\n")) state=1;
                         else if ((tc[i]=="\\")) state=18;
-                        else if ((tc[i]=="\"")) state=20;
+                        else if ((tc[i]=="\"")) state=19;
                         else if ((tc[i]==" ")) state=4;
-                        else state=19;
+                        else state=20;
                         break;
                     case 18:
                         if ((tc[i]=="\n")) state=1;
@@ -193,12 +194,12 @@ class NLPtool {
                         break;
                     case 21:
                         if ((tc[i]=="\n")) state=1;
-                        else if ((tc[i]=="\"")) state=20;
+                        else if ((tc[i]=="\"")) state=19;
                         else if ((tc[i]=="\\")) state=18;
                         else if ((tc[i]==" ")) state=4;
-                        else state=19;
+                        else state=20;
                         break;
-                    case 20:
+                    case 19:
                         if ((tc[i]==":")&&(tc[i+1]==">")) state=5;
                         else if ((tc[i]=="<")&&(tc[i+1]==":")) state=6;
                         else if ((tc[i]==" ")||(tc[i]==":")||(tc[i]==".")||(tc[i]==",")||(tc[i]==";")) state=3;

@@ -59,7 +59,7 @@ var NLPtool = /** @class */ (function () {
         var i = 0;
         var tc = this.code;
         console.log(tar);
-        this.tokenizerstates = ["start", "LF", "comment.LF", "split", "string.space", "lassign", "rassign", "special", "comment.start", "string.start", "token", "comment.notestart", "comment.blockstart", "comment.linecomment", "comment.notebeforeblank", "comment.note", "comment.blockend", "comment.blockcomment", "string.escape1", "string.char", "string.end", "string.escape2", "lassign_", "rassign_"];
+        this.tokenizerstates = ["start", "LF", "comment.LF", "split", "string.space", "lassign", "rassign", "special", "comment.start", "string.start", "token", "comment.notestart", "comment.blockstart", "comment.linecomment", "comment.notebeforeblank", "comment.note", "comment.blockend", "comment.blockcomment", "string.escape1", "string.end", "string.char", "string.escape2", "lassign_", "rassign_"];
         var sts = this.tokenizerstates;
         while (i < this.code.length) {
             {
@@ -237,22 +237,24 @@ var NLPtool = /** @class */ (function () {
                             state = 18;
                         else if ((tc[i] == "\n"))
                             state = 1;
+                        else if ((tc[i] == "\""))
+                            state = 19;
                         else if ((tc[i] == " "))
                             state = 4;
                         else
-                            state = 19;
+                            state = 20;
                         break;
-                    case 19:
+                    case 20:
                         if ((tc[i] == "\n"))
                             state = 1;
                         else if ((tc[i] == "\\"))
                             state = 18;
                         else if ((tc[i] == "\""))
-                            state = 20;
+                            state = 19;
                         else if ((tc[i] == " "))
                             state = 4;
                         else
-                            state = 19;
+                            state = 20;
                         break;
                     case 4:
                         if ((tc[i] == "\n"))
@@ -260,11 +262,11 @@ var NLPtool = /** @class */ (function () {
                         else if ((tc[i] == "\\"))
                             state = 18;
                         else if ((tc[i] == "\""))
-                            state = 20;
+                            state = 19;
                         else if ((tc[i] == " "))
                             state = 4;
                         else
-                            state = 19;
+                            state = 20;
                         break;
                     case 18:
                         if ((tc[i] == "\n"))
@@ -276,15 +278,15 @@ var NLPtool = /** @class */ (function () {
                         if ((tc[i] == "\n"))
                             state = 1;
                         else if ((tc[i] == "\""))
-                            state = 20;
+                            state = 19;
                         else if ((tc[i] == "\\"))
                             state = 18;
                         else if ((tc[i] == " "))
                             state = 4;
                         else
-                            state = 19;
+                            state = 20;
                         break;
-                    case 20:
+                    case 19:
                         if ((tc[i] == ":") && (tc[i + 1] == ">"))
                             state = 5;
                         else if ((tc[i] == "<") && (tc[i + 1] == ":"))
