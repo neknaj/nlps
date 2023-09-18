@@ -28,7 +28,7 @@ class NLPtool {
             }
         }
         this.code = this.fRead(filename);
-        console.log(this.code)
+        //console.log(this.code)
     }
     tokenizeerror(message:string,i:number): object {
         // @ts-ignore
@@ -62,7 +62,7 @@ class NLPtool {
         var state:number = 0;
         let i:number = 0;
         let tc = this.code;
-        console.log(tar)
+        //console.log(tar)
         this.tokenizerstates = ["start","LF","comment.LF","split","string.space","lassign","rassign","special","comment.start","string.start","token","comment.notestart","comment.blockstart","comment.linecomment","comment.notebeforeblank","comment.note","comment.blockend","comment.blockcomment","string.escape1","string.end","string.char","string.escape2","lassign_","rassign_"]
         var sts = this.tokenizerstates;
         while (i<this.code.length) {
@@ -197,7 +197,7 @@ class NLPtool {
                 i++;
             }
         }
-        console.table(tar)
+        //console.table(tar)
         return this;
     }
 }

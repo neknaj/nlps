@@ -43,7 +43,7 @@ var nlpt;
 function makeHighLight(tokenarr) {
     let output = document.getElementById("highlight").childNodes[0];
     output.innerHTML = "";
-    console.log(tokenarr)
+    //console.log(tokenarr)
     {
         let linen = document.createElement("span");
         linen.classList.add("linenumber");
@@ -85,7 +85,7 @@ function update() {
         nlpt.tokenize();
     }
     catch (e) {
-        console.error(e)
+        //console.error(e)
         { // 未解決部分追加
             if (nlpt.tokenarr.length!=0) {
                 let lastindex = nlpt.tokenarr[nlpt.tokenarr.length-1].i + nlpt.tokenarr[nlpt.tokenarr.length-1].val.length;
@@ -97,9 +97,9 @@ function update() {
             }
         }
     }
-    console.log(nlpt.tokenarr)
+    //console.log(nlpt.tokenarr)
     makeHighLight(nlpt.tokenarr);
-    console.log(nlpt)
+    //console.log(nlpt)
 }
 
 </script>
@@ -145,6 +145,7 @@ function update() {
         border-right: 1px solid rgb(108, 68, 43);
         background-color: rgb(0, 17, 69);
         user-select: none;
+        -webkit-user-select: none;
     }
 </style>
 <style id="highlight_style">
@@ -165,6 +166,7 @@ function update() {
     }
     .space {
         text-decoration: underline wavy rgba(199, 199, 199, 0.3);
+        -webkit-text-decoration: underline wavy rgba(199, 199, 199, 0.3);
     }
     .special {
         color: rgb(92, 168, 255);
@@ -172,11 +174,14 @@ function update() {
     .LF {
         color: gray;
         user-select: none;
+        -webkit-user-select: none;
     }
     .comment_LF {
         color: gray;
         user-select: none;
+        -webkit-user-select: none;
         text-decoration: underline rgba(55, 186, 92, 0.4);
+        -webkit-text-decoration: underline rgba(55, 186, 92, 0.4);
     }
     .comment_start,.comment_blockstart,.comment_blockend, .comment_notestart {
         color: rgb(0, 153, 0);
@@ -184,16 +189,19 @@ function update() {
     .comment_blockcomment, .comment_linecomment {
         color: rgb(49, 123, 87);
         text-decoration: underline rgba(55, 186, 92, 0.4);
+        -webkit-text-decoration: underline rgba(55, 186, 92, 0.4);
     }
     .comment_note {
         color: rgb(0, 0, 0);
         background-color: rgb(255, 248, 206);
         text-decoration: underline rgba(0, 242, 69, 0.4);
+        -webkit-text-decoration: underline rgba(0, 242, 69, 0.4);
         border-radius: 3px;
         padding: 2px;
     }
     .comment_notebeforeblank {
         text-decoration: underline rgba(0, 242, 69, 0.4);
+        -webkit-text-decoration: underline rgba(0, 242, 69, 0.4);
     }
 
     .string_start, .string_end {
@@ -204,6 +212,7 @@ function update() {
     }
     .string_space {
         text-decoration: underline wavy rgba(255, 115, 0, 0.3);
+        -webkit-text-decoration: underline wavy rgba(255, 115, 0, 0.3);
     }
     .string_escape1 {
         color: rgb(181, 154, 21);

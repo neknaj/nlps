@@ -23,7 +23,7 @@ var NLPtool = /** @class */ (function () {
             }
         }
         this.code = this.fRead(filename);
-        console.log(this.code);
+        //console.log(this.code)
     }
     NLPtool.prototype.tokenizeerror = function (message, i) {
         // @ts-ignore
@@ -58,7 +58,7 @@ var NLPtool = /** @class */ (function () {
         var state = 0;
         var i = 0;
         var tc = this.code;
-        console.log(tar);
+        //console.log(tar)
         this.tokenizerstates = ["start", "LF", "comment.LF", "split", "string.space", "lassign", "rassign", "special", "comment.start", "string.start", "token", "comment.notestart", "comment.blockstart", "comment.linecomment", "comment.notebeforeblank", "comment.note", "comment.blockend", "comment.blockcomment", "string.escape1", "string.end", "string.char", "string.escape2", "lassign_", "rassign_"];
         var sts = this.tokenizerstates;
         while (i < this.code.length) {
@@ -241,7 +241,7 @@ var NLPtool = /** @class */ (function () {
                 i++;
             }
         }
-        console.table(tar);
+        //console.table(tar)
         return this;
     };
     return NLPtool;
