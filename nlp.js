@@ -228,12 +228,12 @@ var NLPtool = /** @class */ (function () {
                 }
             }
             if (state != 0) {
+                var LineAndCol = this.getLineAndCol(i);
                 //console.log(i,this.code[i].replace(/\n/g,"\\n"),sts[state],state)
-                if (tar.length == 0 || state != tar[tar.length - 1].type) {
-                    tar.push({ type: state, type_str: sts[state], val: this.code[i], i: i });
+                if (tar.length == 0 || state != tar[tar.length - 1].type || state == 1 || state == 2 || state == 3) {
+                    // @ts-ignore
+                    tar.push({ type: state, type_str: sts[state], val: this.code[i], i: i, line: LineAndCol.line, col: LineAndCol.col });
                 }
-                else if (state == 1 || state == 2 || state == 3)
-                    tar.push({ type: state, type_str: sts[state], val: this.code[i], i: i });
                 else {
                     tar[tar.length - 1].val += this.code[i];
                 }

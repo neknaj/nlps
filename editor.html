@@ -44,6 +44,12 @@ function makeHighLight(tokenarr) {
     let output = document.getElementById("highlight").childNodes[0];
     output.innerHTML = "";
     console.log(tokenarr)
+    {
+        let linen = document.createElement("span");
+        linen.classList.add("linenumber");
+        linen.innerText = 1;
+        output.appendChild(linen);
+    }
     for (let token of tokenarr) {
         let span = document.createElement("span");
         output.appendChild(span);
@@ -61,6 +67,10 @@ function makeHighLight(tokenarr) {
             span.innerText = "⏎";
             let br = document.createElement("br");
             output.appendChild(br);
+            let linen = document.createElement("span");
+            linen.classList.add("linenumber");
+            linen.innerText = token.line+1;
+            output.appendChild(linen);
         }
     }
 }
@@ -105,24 +115,42 @@ function update() {
         height: 100%;
     }
     #editor {
-        font-size: 130%;
-        width: 50dvw;
+        width: 100%;
+        font-size: 15px;
         background: transparent;
         color: white;
+        border: none;
+        outline: none;
+        resize: none;
+        overflow: scroll;
+        line-height: 20px;
     }
     #highlight {
-        font-size: 130%;
+        width: calc(100% + 125px);
+        font-size: 15px;
         font-family: monospace;
-        margin: 20px;
-        padding: 20px;
         background-color: rgb(0, 4, 26);
         color: white;
+        height: 100dvh;
+        overflow: scroll;
+        line-height: 18px;
+    }
+    .linenumber {
+        font-size: 10px;
+        display: inline-block;
+        margin: 0;
+        margin-right: 10px;
+        padding-left: 10px;
+        width: 40px;
+        border-right: 1px solid rgb(108, 68, 43);
+        background-color: rgb(0, 17, 69);
+        user-select: none;
     }
 </style>
 <style id="highlight_style">
 
-    #highlight span {
-        margin-bottom: 10px;
+    #highlight pre {
+        margin: 0;
     }
 
     #highlight span.EOL {
