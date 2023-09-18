@@ -78,6 +78,8 @@ let condition = {
     "rbracket": "}",
     "asterisk": "*",
     "backslash": "\\\\",
+    "gt": ">",
+    "lt": "<",
 }
 function procCond(cond) {
     let ret = []
@@ -96,34 +98,50 @@ function procCond(cond) {
     }
     console.log(split_char, split)
     for (let c of split) {
-        let r = "";
-        if (c[0] == "!") {
-            r = "!"
+        if (c[0]=="'") {
             c = c.slice(1)
+            switch (c) {
+                case "colon":
+                case "gt":
+                    ret.push(`(tc[i+1]=="${condition[c]}")`);
+                    break;
+                default:
+                    throw "errorrrrrrrr"
+                    break;
+            }
         }
-        switch (c) {
-            case "space":
-            case "sharp":
-            case "exclam":
-            case "colon":
-            case "dot":
-            case "semicolon":
-            case "LF":
-            case "comma":
-            case "quot":
-            case "lparen":
-            case "rparen":
-            case "lbracket":
-            case "rbracket":
-            case "asterisk":
-            case "backslash":
-                ret.push(`(${r}(tc[i]=="${condition[c]}"))`);
-                break;
-            case "*":
-                break;
-            default:
-                throw "errorrrrrrrr"
-                break;
+        else {
+            let r = "=";
+            if (c[0] == "!") {
+                r = "!"
+                c = c.slice(1)
+            }
+            switch (c) {
+                case "space":
+                case "sharp":
+                case "exclam":
+                case "colon":
+                case "dot":
+                case "semicolon":
+                case "LF":
+                case "comma":
+                case "quot":
+                case "lparen":
+                case "rparen":
+                case "lbracket":
+                case "rbracket":
+                case "asterisk":
+                case "backslash":
+                case "lt":
+                case "gt":
+                    ret.push(`(tc[i]${r}="${condition[c]}")`);
+                    break;
+                case "*":
+                    break;
+                default:
+                    throw "errorrrrrrrr"
+                    break;
+            }
         }
     }
     if (ret.length == 0) {

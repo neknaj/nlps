@@ -5,6 +5,8 @@
 
 !include: stdcalc;
 
+!define: pi: 3.1415;
+
 #* hey
 this
 
@@ -12,7 +14,7 @@ is a block comment #
 
 !global: 12.str: string; # this is a line comment
 
-!fn:4.int :(4.int: max): main {
+!fn: 4.int:(4.int: max): main {
 
     0 :> !local: 4.int: x;
     !local: 4.int: y <: y;
@@ -104,7 +106,7 @@ function update() {
     }
     #editor {
         font-size: 130%;
-        width: 30dvw;
+        width: 50dvw;
         background: transparent;
         color: white;
     }
@@ -180,5 +182,9 @@ function update() {
     }
     .string_escape2 {
         color: rgb(235, 204, 46);
+    }
+
+    .lassign, .lassign_, .rassign, .rassign_ {
+        color: red;
     }
 </style>
