@@ -153,7 +153,7 @@ class NLPtool {
                         state=22;
                         break;
                     case 6:
-                        state=22;
+                        state=23;
                         break;
                     case 3:
                         state=0;

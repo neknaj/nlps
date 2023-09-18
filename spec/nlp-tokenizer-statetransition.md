@@ -72,7 +72,7 @@ string.escape2 --> string.char: *
 
 
 lassign --> lassign_: *
-rassign --> lassign_: *
+rassign --> rassign_: *
 
 
 split --> start: *
