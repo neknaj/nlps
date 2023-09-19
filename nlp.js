@@ -2,7 +2,9 @@ var NLPtool = /** @class */ (function () {
     function NLPtool(filename) {
         this.filename = filename;
         { // Define the fRead function
+            // @ts-ignore
             if (typeof require != "undefined") {
+                // @ts-ignore
                 var fs_1 = require('fs');
                 this.fRead = function (filename) {
                     return fs_1.readFileSync(filename, 'utf8').replace(/\r\n/g, "\n");
@@ -59,6 +61,32 @@ var NLPtool = /** @class */ (function () {
         var i = 0;
         var tc = this.code;
         //console.log(tar)
+        this.tokengroup = {
+            "start": "null",
+            "LF": "LF",
+            "comment.LF": "LF",
+            "split": "split",
+            "string.space": "string",
+            "lassign": "assign",
+            "rassign": "assign",
+            "special": "special",
+            "comment.start": "comment",
+            "string.start": "string",
+            "token": "token",
+            "comment.notestart": "comment",
+            "comment.blockstart": "comment",
+            "comment.linecomment": "comment",
+            "comment.notebeforeblank": "comment",
+            "comment.note": "comment",
+            "comment.blockend": "comment",
+            "comment.blockcomment": "comment",
+            "string.escape1": "string",
+            "string.end": "string",
+            "string.char": "string",
+            "string.escape2": "string",
+            "lassign_": "assign",
+            "rassign_": "assign",
+        };
         this.tokenizerstates = ["start", "LF", "comment.LF", "split", "string.space", "lassign", "rassign", "special", "comment.start", "string.start", "token", "comment.notestart", "comment.blockstart", "comment.linecomment", "comment.notebeforeblank", "comment.note", "comment.blockend", "comment.blockcomment", "string.escape1", "string.end", "string.char", "string.escape2", "lassign_", "rassign_"];
         var sts = this.tokenizerstates;
         while (i < this.code.length) {
@@ -232,7 +260,7 @@ var NLPtool = /** @class */ (function () {
                 //console.log(i,this.code[i].replace(/\n/g,"\\n"),sts[state],state)
                 if (tar.length == 0 || state != tar[tar.length - 1].type || state == 1 || state == 2 || state == 3) {
                     // @ts-ignore
-                    tar.push({ type: state, type_str: sts[state], val: this.code[i], i: i, line: LineAndCol.line, col: LineAndCol.col });
+                    tar.push({ type: state, type_str: sts[state], val: this.code[i], i: i, line: LineAndCol.line, col: LineAndCol.col, group: this.tokengroup[sts[state]] });
                 }
                 else {
                     tar[tar.length - 1].val += this.code[i];
@@ -241,11 +269,12 @@ var NLPtool = /** @class */ (function () {
                 i++;
             }
         }
-        //console.table(tar)
+        console.table(tar);
         return this;
     };
     return NLPtool;
 }());
+// @ts-ignore
 if ((typeof require != "undefined")) {
     var code_res = new NLPtool("./test4.nlp").tokenize();
 }

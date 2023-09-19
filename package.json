@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "スタックマシンを基にした自作プログラミング言語とその処理システム",
   "main": "nlp.js",
-  "devDependencies": {},
   "scripts": {
     "test": "npx tsc nlp.ts && node nlp.js"
   },
@@ -16,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/bem130/nlps/issues"
   },
-  "homepage": "https://github.com/bem130/nlps#readme"
+  "homepage": "https://github.com/bem130/nlps#readme",
+  "dependencies": {
+    "typescript": "^5.2.2"
+  }
 }
