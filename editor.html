@@ -4,6 +4,7 @@
             <textarea id="editor" spellcheck="false">#: Neknaj Language For Programming
 
 !include: stdcalc;
+!using: stdcalc;
 
 !define: pi: 3.1415;
 
@@ -96,6 +97,12 @@ function update() {
                 nlpt.tokenarr.push({ type:-1, type_str:"Error", val: nlpt.code, i: 0 })
             }
         }
+    }
+    try {
+        nlpt.parse();
+    }
+    catch (e) {
+        console.error(e)
     }
     //console.log(nlpt.tokenarr)
     makeHighLight(nlpt.tokenarr);
