@@ -123,7 +123,7 @@ function procCond(cond) {
                 target = "group"
                 switch (c) {
                     case "include":
-                    case "define":
+                    case "replace":
                     case "global":
                     case "fn":
                     case "token":
@@ -161,7 +161,7 @@ function procCond(cond) {
                         break;
                     case "include":
                     case "using":
-                    case "define":
+                    case "replace":
                     case "global":
                     case "fn":
                         ret.push(`(tar[i].${target}${r}="${c}")`);

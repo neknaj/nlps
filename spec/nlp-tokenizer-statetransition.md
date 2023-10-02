@@ -9,7 +9,7 @@ stateDiagram-v2
 stateDiagram-v2
 start --> lassign: colon&'gt
 start --> rassign: lt&'colon
-start --> split: space|colon|dot|comma|semicolon
+start --> split: space|colon|comma|semicolon
 start --> special: exclam|lparen|rparen|lbracket|rbracket
 start --> comment.start: sharp
 start --> LF: LF

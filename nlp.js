@@ -97,7 +97,7 @@ var NLPtool = /** @class */ (function () {
                             state = 5;
                         else if ((tc[i] == "<") && (tc[i + 1] == ":"))
                             state = 6;
-                        else if ((tc[i] == " ") || (tc[i] == ":") || (tc[i] == ".") || (tc[i] == ",") || (tc[i] == ";"))
+                        else if ((tc[i] == " ") || (tc[i] == ":") || (tc[i] == ",") || (tc[i] == ";"))
                             state = 3;
                         else if ((tc[i] == "!") || (tc[i] == "(") || (tc[i] == ")") || (tc[i] == "{") || (tc[i] == "}"))
                             state = 7;
@@ -276,7 +276,7 @@ var NLPtool = /** @class */ (function () {
         var state = 1;
         var i = 0;
         var tar = this.tokenarr;
-        this.parserstates = ["Error", "TopLevel", "TLDefinition.exclam", "TL.comment", "TL.LF", "TLDefinition.include", "TLDefinition.using", "TLDefinition.define", "TLDefinition.global", "TLDefinition.func", "TLDefinition.include.colon1", "TLDefinition.include.blank1", "TLDefinition.include.filename", "TLDefinition.include.blank2", "TLDefinition.include.EOS", "TLDefinition.using.colon1", "TLDefinition.using.blank1", "TLDefinition.using.filename", "TLDefinition.using.blank2", "TLDefinition.using.EOS", "TLDefinition.define.colon1", "TLDefinition.define.blank1", "TLDefinition.define.defname"];
+        this.parserstates = ["Error", "TopLevel", "TLDefinition.exclam", "TL.comment", "TL.blank", "TL.LF", "TLDefinition.include", "TLDefinition.using", "TLDefinition.replace", "TLDefinition.global", "TLDefinition.func", "TLDefinition.include.colon1", "TLDefinition.include.blank1", "TLDefinition.include.filename", "TLDefinition.include.EOS", "TLDefinition.using.colon1", "TLDefinition.using.blank1", "TLDefinition.using.filename", "TLDefinition.using.EOS", "TLDefinition.replace.colon1", "TLDefinition.replace.blank1", "TLDefinition.replace.defname", "TLDefinition.replace.colon2", "TLDefinition.replace.blank2", "TLDefinition.replace.defval", "TLDefinition.replace.EOS", "TLDefinition.global.colon1", "TLDefinition.global.blank1", "TLDefinition.global.deftype", "TLDefinition.global.colon2", "TLDefinition.global.blank2", "TLDefinition.global.defname", "TLDefinition.global.EOS"];
         var sts = this.parserstates;
         while (i < tar.length) {
             {
@@ -286,8 +286,10 @@ var NLPtool = /** @class */ (function () {
                             state = 2;
                         else if ((tar[i].group == "comment"))
                             state = 3;
-                        else if ((tar[i].group == "LF"))
+                        else if ((tar[i].group == "split") && (tar[i].val == " "))
                             state = 4;
+                        else if ((tar[i].group == "LF"))
+                            state = 5;
                         else
                             state = 0;
                         break;
@@ -297,52 +299,45 @@ var NLPtool = /** @class */ (function () {
                     case 4:
                         state = 1;
                         break;
+                    case 5:
+                        state = 1;
+                        break;
                     case 2:
                         if ((tar[i].group == "token") && (tar[i].val == "include"))
-                            state = 5;
-                        else if ((tar[i].group == "token") && (tar[i].val == "using"))
                             state = 6;
-                        else if ((tar[i].group == "token") && (tar[i].val == "define"))
+                        else if ((tar[i].group == "token") && (tar[i].val == "using"))
                             state = 7;
-                        else if ((tar[i].group == "token") && (tar[i].val == "global"))
+                        else if ((tar[i].group == "token") && (tar[i].val == "replace"))
                             state = 8;
-                        else if ((tar[i].group == "token") && (tar[i].val == "fn"))
+                        else if ((tar[i].group == "token") && (tar[i].val == "global"))
                             state = 9;
-                        else
-                            state = 0;
-                        break;
-                    case 5:
-                        if ((tar[i].group == "split") && (tar[i].val == ":"))
+                        else if ((tar[i].group == "token") && (tar[i].val == "fn"))
                             state = 10;
                         else
                             state = 0;
                         break;
-                    case 10:
-                        if ((tar[i].group == "split") && (tar[i].val == " "))
+                    case 6:
+                        if ((tar[i].group == "split") && (tar[i].val == ":"))
                             state = 11;
-                        else if ((tar[i].group == "token"))
-                            state = 12;
-                        break;
-                    case 11:
-                        if ((tar[i].group == "split") && (tar[i].val == " "))
-                            state = 11;
-                        else if ((tar[i].group == "token"))
-                            state = 12;
                         else
                             state = 0;
                         break;
+                    case 11:
+                        if ((tar[i].group == "split") && (tar[i].val == " "))
+                            state = 12;
+                        else if ((tar[i].group == "token"))
+                            state = 13;
+                        break;
                     case 12:
                         if ((tar[i].group == "split") && (tar[i].val == " "))
+                            state = 12;
+                        else if ((tar[i].group == "token"))
                             state = 13;
-                        else if ((tar[i].group == "split") && (tar[i].val == ";"))
-                            state = 14;
                         else
                             state = 0;
                         break;
                     case 13:
-                        if ((tar[i].group == "split") && (tar[i].val == " "))
-                            state = 13;
-                        else if ((tar[i].group == "split") && (tar[i].val == ";"))
+                        if ((tar[i].group == "split") && (tar[i].val == ";"))
                             state = 14;
                         else
                             state = 0;
@@ -350,7 +345,7 @@ var NLPtool = /** @class */ (function () {
                     case 14:
                         state = 1;
                         break;
-                    case 6:
+                    case 7:
                         if ((tar[i].group == "split") && (tar[i].val == ":"))
                             state = 15;
                         else
@@ -373,45 +368,117 @@ var NLPtool = /** @class */ (function () {
                             state = 0;
                         break;
                     case 17:
-                        if ((tar[i].group == "split") && (tar[i].val == " "))
+                        if ((tar[i].group == "split") && (tar[i].val == ";"))
                             state = 18;
-                        else if ((tar[i].group == "split") && (tar[i].val == ";"))
-                            state = 19;
                         else
                             state = 0;
                         break;
                     case 18:
-                        if ((tar[i].group == "split") && (tar[i].val == " "))
-                            state = 18;
-                        else if ((tar[i].group == "split") && (tar[i].val == ";"))
+                        state = 1;
+                        break;
+                    case 8:
+                        if ((tar[i].group == "split") && (tar[i].val == ":"))
                             state = 19;
                         else
                             state = 0;
                         break;
                     case 19:
-                        state = 1;
-                        break;
-                    case 7:
-                        if ((tar[i].group == "split") && (tar[i].val == ":"))
+                        if ((tar[i].group == "split") && (tar[i].val == " "))
                             state = 20;
+                        else if ((tar[i].group == "token"))
+                            state = 21;
                         else
                             state = 0;
                         break;
                     case 20:
                         if ((tar[i].group == "split") && (tar[i].val == " "))
-                            state = 21;
+                            state = 20;
                         else if ((tar[i].group == "token"))
-                            state = 22;
+                            state = 21;
                         else
                             state = 0;
                         break;
                     case 21:
-                        if ((tar[i].group == "split") && (tar[i].val == " "))
-                            state = 21;
-                        else if ((tar[i].group == "token"))
+                        if ((tar[i].group == "split") && (tar[i].val == ":"))
                             state = 22;
                         else
                             state = 0;
+                        break;
+                    case 22:
+                        if ((tar[i].group == "split") && (tar[i].val == " "))
+                            state = 23;
+                        else if ((tar[i].group == "token"))
+                            state = 24;
+                        else
+                            state = 0;
+                        break;
+                    case 23:
+                        if ((tar[i].group == "split") && (tar[i].val == " "))
+                            state = 23;
+                        else if ((tar[i].group == "token"))
+                            state = 24;
+                        break;
+                    case 24:
+                        if ((tar[i].group == "split") && (tar[i].val == ";"))
+                            state = 25;
+                        else
+                            state = 0;
+                        break;
+                    case 25:
+                        state = 1;
+                        break;
+                    case 9:
+                        if ((tar[i].group == "split") && (tar[i].val == ":"))
+                            state = 26;
+                        else
+                            state = 0;
+                        break;
+                    case 26:
+                        if ((tar[i].group == "split") && (tar[i].val == " "))
+                            state = 27;
+                        else if ((tar[i].group == "token"))
+                            state = 28;
+                        else
+                            state = 0;
+                        break;
+                    case 27:
+                        if ((tar[i].group == "split") && (tar[i].val == " "))
+                            state = 27;
+                        else if ((tar[i].group == "token"))
+                            state = 28;
+                        else
+                            state = 0;
+                        break;
+                    case 28:
+                        if ((tar[i].group == "split") && (tar[i].val == ":"))
+                            state = 29;
+                        else
+                            state = 0;
+                        break;
+                    case 29:
+                        if ((tar[i].group == "split") && (tar[i].val == " "))
+                            state = 30;
+                        else if ((tar[i].group == "token"))
+                            state = 31;
+                        else
+                            state = 0;
+                        break;
+                    case 30:
+                        if ((tar[i].group == "split") && (tar[i].val == " "))
+                            state = 30;
+                        else if ((tar[i].group == "token"))
+                            state = 31;
+                        else
+                            state = 0;
+                        break;
+                    case 31:
+                        if ((tar[i].group == "split") && (tar[i].val == ";"))
+                            state = 32;
+                        else
+                            state = 0;
+                        break;
+                    case 32:
+                        state = 1;
                 }
             }
             if (state == 0) {
