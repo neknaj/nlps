@@ -54,12 +54,12 @@ TLDefinition.using.blank2 --> TLDefinition.using.EOS: $split&semicolon
 TLDefinition.using.blank2 --> Error: *
 TLDefinition.using.EOS --> TopLevel: *
 
-TLDefinition.define --> TLDefinition.define.colon1: $split&define
+TLDefinition.define --> TLDefinition.define.colon1: $split&colon
 TLDefinition.define --> Error: *
 TLDefinition.define.colon1 --> TLDefinition.define.blank1: $split&space
 TLDefinition.define.colon1 --> TLDefinition.define.defname: $token
 TLDefinition.define.colon1 --> Error: *
 TLDefinition.define.blank1 --> TLDefinition.define.blank1: $split&space
-TLDefinition.define.blank1 --> TLDefinition.using.defname: $token
+TLDefinition.define.blank1 --> TLDefinition.define.defname: $token
 TLDefinition.define.blank1 --> Error: *
 ```

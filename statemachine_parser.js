@@ -96,7 +96,7 @@ function procCond(cond) {
     else {
         split_char = "&"
     }
-    console.log(split_char, split)
+   // console.log(split_char, split)
     for (let c of split) {
         if (c[0]=="'") {
             c = c.slice(1)
@@ -111,7 +111,7 @@ function procCond(cond) {
             }
         }
         else {
-            console.log(c)
+            //console.log(c)
             let r = "=";
             let target = "val"
             if (c[0] == "!") {
