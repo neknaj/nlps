@@ -28,7 +28,6 @@ TLDefinition.include --> TLDefinition.include.colon1: $split&colon
 TLDefinition.include --> Error: *
 TLDefinition.include.colon1 --> TLDefinition.include.blank1: $split&space
 TLDefinition.include.colon1 --> TLDefinition.include.filename: $token
-
 TLDefinition.include.blank1 --> TLDefinition.include.blank1: $split&space
 TLDefinition.include.blank1 --> TLDefinition.include.filename: $token
 TLDefinition.include.blank1 --> Error: *
