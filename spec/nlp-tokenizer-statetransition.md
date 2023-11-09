@@ -33,7 +33,7 @@ comment.note --> LF: LF
 comment.linecomment --> comment.linecomment: !LF
 comment.linecomment --> LF: LF
 
-comment.blockstart --> comment.blockend: sharp
+comment.blockstart --> comment.blockend: asterisk&'sharp
 comment.blockstart --> comment.blockcomment: !sharp&!LF
 comment.blockstart --> comment.LF: LF
 comment.blockcomment --> comment.blockend: sharp
