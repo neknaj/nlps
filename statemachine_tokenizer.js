@@ -106,7 +106,7 @@ function procCond(cond) {
                     ret.push(`(tc[i+1]=="${condition[c]}")`);
                     break;
                 default:
-                    throw "errorrrrrrrr"
+                    throw "error 1: \""+c+"\" has not caught";
                     break;
             }
         }
@@ -139,7 +139,7 @@ function procCond(cond) {
                 case "*":
                     break;
                 default:
-                    throw "errorrrrrrrr"
+                    throw "error 2: \""+c+"\" has not caught";
                     break;
             }
         }
