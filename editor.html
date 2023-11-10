@@ -11,7 +11,7 @@
 #* hey
 this
 
-is a block comment #
+is a block comment *#
 
 !global: 12.str: string; # this is a line comment
 
@@ -30,7 +30,8 @@ is a block comment #
     "hello world" "!\n\"\\" add :> string;
     0 :> return;
 }</textarea>
-            <div id="highlight"><pre></pre></div>
+            <div id="highlight_tokenizer" class="highlight"><pre></pre></div>
+            <div id="highlight_parser" class="highlight"><pre></pre></div>
         </main>
     </body>
 </html>
@@ -41,8 +42,42 @@ is a block comment #
 const editor = document.getElementById("editor");
 var nlpt;
 
-function makeHighLight(tokenarr) {
-    let output = document.getElementById("highlight").childNodes[0];
+function makeHighLight_tokenizer(tokenarr,elmId) {
+    let output = document.getElementById(elmId).childNodes[0];
+    output.innerHTML = "";
+    //console.log(tokenarr)
+    {
+        let linen = document.createElement("span");
+        linen.classList.add("linenumber");
+        linen.innerText = 1;
+        output.appendChild(linen);
+    }
+    for (let token of tokenarr) {
+        let span = document.createElement("span");
+        output.appendChild(span);
+        span.innerText = token.val;
+        if (token.type!=-1) {
+            span.classList.add(token.type_str.split(".").join("_"));
+            if (token.val==" ") {
+                span.classList.add(`space`);
+            }
+        }
+        else {
+            span.classList.add("Error");
+        }
+        if (token.val=="\n") {
+            span.innerText = "⏎";
+            let br = document.createElement("br");
+            output.appendChild(br);
+            let linen = document.createElement("span");
+            linen.classList.add("linenumber");
+            linen.innerText = token.line+1;
+            output.appendChild(linen);
+        }
+    }
+}
+function makeHighLight_parser(tokenarr,elmId) {
+    let output = document.getElementById(elmId).childNodes[0];
     output.innerHTML = "";
     //console.log(tokenarr)
     {
@@ -105,7 +140,9 @@ function update() {
         console.error(e)
     }
     //console.log(nlpt.tokenarr)
-    makeHighLight(nlpt.tokenarr);
+    console.table(nlpt.tokenarr)
+    makeHighLight_tokenizer(nlpt.tokenarr,"highlight_tokenizer");
+    makeHighLight_parser(nlpt.tokenarr,"highlight_parser");
     //console.log(nlpt)
 }
 
@@ -132,7 +169,7 @@ function update() {
         overflow: scroll;
         line-height: 20px;
     }
-    #highlight {
+    .highlight {
         width: calc(100% + 125px);
         font-size: 15px;
         font-family: monospace;
@@ -157,11 +194,11 @@ function update() {
 </style>
 <style id="highlight_style">
 
-    #highlight pre {
+    .highlight pre {
         margin: 0;
     }
 
-    #highlight span.EOL {
+    .highlight span.EOL {
         color: rgb(135, 135, 135);
     }
 
@@ -190,7 +227,7 @@ function update() {
         text-decoration: underline rgba(55, 186, 92, 0.4);
         -webkit-text-decoration: underline rgba(55, 186, 92, 0.4);
     }
-    .comment_start,.comment_blockstart,.comment_blockend, .comment_notestart {
+    .comment_start, .comment_blockstart, .comment_blockend1, .comment_blockend, .comment_notestart {
         color: rgb(0, 153, 0);
     }
     .comment_blockcomment, .comment_linecomment {

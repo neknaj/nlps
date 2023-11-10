@@ -93,120 +93,153 @@ class NLPtool {
             "lassign_": "assign",
             "rassign_": "assign",
         }
-        this.tokenizerstates = ["start","LF","comment.LF","split","string.space","lassign","rassign","special","comment.start","string.start","token","comment.notestart","comment.blockstart","comment.linecomment","comment.notebeforeblank","comment.note","comment.blockend","comment.blockcomment","string.escape1","string.end","string.char","string.escape2","lassign_","rassign_"]
+        this.tokenizerstates = ["start","LF","comment.LF","split","string.space","lassign","rassign","special","comment.start","string.start","token","comment.notestart","comment.blockstart","comment.linecomment","comment.notebeforeblank","comment.note","comment.blockend1","comment.blockcomment","comment.blockend","string.escape1","string.end","string.char","string.escape2","lassign_","rassign_"]
         var sts = this.tokenizerstates;
         while (i<this.code.length) {
             {
 
                 switch(state){
-                    case 0:
-                        if ((tc[i]==":")&&(tc[i+1]==">")) state=5;
-                        else if ((tc[i]=="<")&&(tc[i+1]==":")) state=6;
-                        else if ((tc[i]==" ")||(tc[i]==":")||(tc[i]==",")||(tc[i]==";")) state=3;
-                        else if ((tc[i]=="!")||(tc[i]=="(")||(tc[i]==")")||(tc[i]=="{")||(tc[i]=="}")) state=7;
-                        else if ((tc[i]=="#")) state=8;
-                        else if ((tc[i]=="\n")) state=1;
-                        else if ((tc[i]=="\"")) state=9;
-                        else state=10;
+                    case 1:
+                        if ((tar[i].group=="special")&&(tar[i].val=="!")) state=2;
+                        else if ((tar[i].group=="comment")) state=3;
+                        else if ((tar[i].group=="split")&&(tar[i].val==" ")) state=4;
+                        else if ((tar[i].group=="LF")) state=5;
+                        else state=0;
                         break;
-                    case 8:
-                        if ((tc[i]==":")) state=11;
-                        else if ((tc[i]=="*")) state=12;
-                        else if ((tc[i]=="\n")) state=1;
-                        else state=13;
+                    case 3:
+                        state=1;
+                        break;
+                    case 4:
+                        state=1;
+                        break;
+                    case 5:
+                        state=1;
+                        break;
+                    case 2:
+                        if ((tar[i].group=="token")&&(tar[i].val=="include")) state=6;
+                        else if ((tar[i].group=="token")&&(tar[i].val=="using")) state=7;
+                        else if ((tar[i].group=="token")&&(tar[i].val=="replace")) state=8;
+                        else if ((tar[i].group=="token")&&(tar[i].val=="global")) state=9;
+                        else if ((tar[i].group=="token")&&(tar[i].val=="fn")) state=10;
+                        else state=0;
+                        break;
+                    case 6:
+                        if ((tar[i].group=="split")&&(tar[i].val==":")) state=11;
+                        else state=0;
                         break;
                     case 11:
-                        if ((tc[i]==" ")) state=14;
-                        else if ((tc[i]!="\n")) state=15;
-                        else if ((tc[i]=="\n")) state=1;
+                        if ((tar[i].group=="split")&&(tar[i].val==" ")) state=12;
+                        else if ((tar[i].group=="token")) state=13;
+                        break;
+                    case 12:
+                        if ((tar[i].group=="split")&&(tar[i].val==" ")) state=12;
+                        else if ((tar[i].group=="token")) state=13;
+                        else state=0;
+                        break;
+                    case 13:
+                        if ((tar[i].group=="split")&&(tar[i].val==";")) state=14;
+                        else state=0;
                         break;
                     case 14:
-                        if ((tc[i]!="\n")) state=15;
-                        else if ((tc[i]=="\n")) state=1;
+                        state=1;
+                        break;
+                    case 7:
+                        if ((tar[i].group=="split")&&(tar[i].val==":")) state=15;
+                        else state=0;
                         break;
                     case 15:
-                        if ((tc[i]!="\n")) state=15;
-                        else if ((tc[i]=="\n")) state=1;
+                        if ((tar[i].group=="split")&&(tar[i].val==" ")) state=16;
+                        else if ((tar[i].group=="token")) state=17;
+                        else state=0;
                         break;
                     case 13:
                         if ((tc[i]!="\n")) state=13;
                         else if ((tc[i]=="\n")) state=1;
                         break;
                     case 12:
-                        if ((tc[i]=="#")) state=16;
+                        if ((tc[i]=="*")&&(tc[i+1]=="#")) state=16;
                         else if ((tc[i]!="#")&&(tc[i]!="\n")) state=17;
                         else if ((tc[i]=="\n")) state=2;
                         break;
                     case 17:
-                        if ((tc[i]=="#")) state=16;
+                        if ((tc[i]=="*")&&(tc[i+1]=="#")) state=16;
                         else if ((tc[i]!="#")&&(tc[i]!="\n")) state=17;
                         else if ((tc[i]=="\n")) state=2;
                         break;
                     case 2:
-                        if ((tc[i]=="#")) state=16;
+                        if ((tc[i]=="*")&&(tc[i+1]=="#")) state=16;
                         else if ((tc[i]!="#")&&(tc[i]!="\n")) state=17;
                         else if ((tc[i]=="\n")) state=2;
                         break;
+                    case 16:
+                        state=18;
+                        break;
                     case 9:
-                        if ((tc[i]=="\\")) state=18;
+                        if ((tc[i]=="\\")) state=19;
                         else if ((tc[i]=="\n")) state=1;
-                        else if ((tc[i]=="\"")) state=19;
+                        else if ((tc[i]=="\"")) state=20;
                         else if ((tc[i]==" ")) state=4;
-                        else state=20;
-                        break;
-                    case 20:
-                        if ((tc[i]=="\n")) state=1;
-                        else if ((tc[i]=="\\")) state=18;
-                        else if ((tc[i]=="\"")) state=19;
-                        else if ((tc[i]==" ")) state=4;
-                        else state=20;
-                        break;
-                    case 4:
-                        if ((tc[i]=="\n")) state=1;
-                        else if ((tc[i]=="\\")) state=18;
-                        else if ((tc[i]=="\"")) state=19;
-                        else if ((tc[i]==" ")) state=4;
-                        else state=20;
-                        break;
-                    case 18:
-                        if ((tc[i]=="\n")) state=1;
                         else state=21;
                         break;
                     case 21:
                         if ((tc[i]=="\n")) state=1;
-                        else if ((tc[i]=="\"")) state=19;
-                        else if ((tc[i]=="\\")) state=18;
+                        else if ((tc[i]=="\\")) state=19;
+                        else if ((tc[i]=="\"")) state=20;
                         else if ((tc[i]==" ")) state=4;
-                        else state=20;
+                        else state=21;
                         break;
-                    case 5:
-                        state=22;
-                        break;
-                    case 6:
-                        state=23;
-                        break;
-                    case 3:
-                        state=0;
-                        break;
-                    case 7:
-                        state=0;
-                        break;
-                    case 10:
-                        state=0;
-                        break;
-                    case 1:
-                        state=0;
-                        break;
-                    case 16:
-                        state=0;
+                    case 4:
+                        if ((tc[i]=="\n")) state=1;
+                        else if ((tc[i]=="\\")) state=19;
+                        else if ((tc[i]=="\"")) state=20;
+                        else if ((tc[i]==" ")) state=4;
+                        else state=21;
                         break;
                     case 19:
-                        state=0;
+                        if ((tc[i]=="\n")) state=1;
+                        else state=22;
                         break;
                     case 22:
+                        if ((tc[i]=="\n")) state=1;
+                        else if ((tc[i]=="\"")) state=20;
+                        else if ((tc[i]=="\\")) state=19;
+                        else if ((tc[i]==" ")) state=4;
+                        else state=21;
+                        break;
+                    case 5:
+                        state=23;
+                        break;
+                    case 6:
+                        state=24;
+                        break;
+                    case 9:
+                        if ((tar[i].group=="split")&&(tar[i].val==":")) state=26;
+                        else state=0;
+                        break;
+                    case 26:
+                        if ((tar[i].group=="split")&&(tar[i].val==" ")) state=27;
+                        else if ((tar[i].group=="token")) state=28;
+                        else state=0;
+                        break;
+                    case 27:
+                        if ((tar[i].group=="split")&&(tar[i].val==" ")) state=27;
+                        else if ((tar[i].group=="token")) state=28;
+                        else state=0;
+                        break;
+                    case 28:
+                        if ((tar[i].group=="split")&&(tar[i].val==":")) state=29;
+                        else state=0;
+                        break;
+                    case 18:
+                        state=0;
+                        break;
+                    case 20:
                         state=0;
                         break;
                     case 23:
+                        state=0;
+                        break;
+                    case 24:
                         state=0;
                 }
 

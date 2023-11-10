@@ -5,6 +5,9 @@
 雑に拡張し続けて把握不可能になった前のプログラムたちを整理して作り直すプロジェクト  
 前は個別に名前をつけてたけど、相互に依存しまくって意味不明なので、全体にNLPSという名前を付けてみた  
 
+# Web Editor
+[/nlps/editor.html](https://neknaj.github.io/nlps/editor.html)
+
 
 # 処理系の特徴
 | 特徴 | 理由 | 対象 |
