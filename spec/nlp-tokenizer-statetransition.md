@@ -33,16 +33,16 @@ comment.note --> LF: LF
 comment.linecomment --> comment.linecomment: !LF
 comment.linecomment --> LF: LF
 
-comment.blockstart --> comment.blockend: sharp
+comment.blockstart --> comment.blockend1: asterisk&'sharp
 comment.blockstart --> comment.blockcomment: !sharp&!LF
 comment.blockstart --> comment.LF: LF
-comment.blockcomment --> comment.blockend: sharp
+comment.blockcomment --> comment.blockend1: asterisk&'sharp
 comment.blockcomment --> comment.blockcomment: !sharp&!LF
 comment.blockcomment --> comment.LF: LF
-comment.LF --> comment.blockend: sharp
+comment.LF --> comment.blockend1: asterisk&'sharp
 comment.LF --> comment.blockcomment: !sharp&!LF
 comment.LF --> comment.LF: LF
-
+comment.blockend1 --> comment.blockend: *
 
 string.start --> string.escape1: backslash
 string.start --> LF: LF

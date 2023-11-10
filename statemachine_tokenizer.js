@@ -103,6 +103,7 @@ function procCond(cond) {
             switch (c) {
                 case "colon":
                 case "gt":
+                case "sharp":
                     ret.push(`(tc[i+1]=="${condition[c]}")`);
                     break;
                 default:
