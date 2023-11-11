@@ -1,10 +1,8 @@
-var NLPtool = /** @class */ (function () {
+var NLPtool = (function () {
     function NLPtool(filename) {
         this.filename = filename;
-        { // Define the fRead function
-            // @ts-ignore
+        {
             if (typeof require != "undefined") {
-                // @ts-ignore
                 var fs_1 = require('fs');
                 this.fRead = function (filename) {
                     return fs_1.readFileSync(filename, 'utf8').replace(/\r\n/g, "\n");
@@ -25,17 +23,13 @@ var NLPtool = /** @class */ (function () {
             }
         }
         this.code = this.fRead(filename);
-        //console.log(this.code)
     }
     NLPtool.prototype.tokenizeerror = function (message, i) {
-        // @ts-ignore
         var error = new Error(message, this.filename);
         error.name = "NLP_TokenizeError";
         var LineAndCol = this.getLineAndCol(i);
-        // @ts-ignore
         error.lineNumber = LineAndCol.line;
         error.columnNumber = LineAndCol.col;
-        //error.stack = ""
         return error;
     };
     NLPtool.prototype.getLineAndCol = function (i) {
@@ -60,7 +54,6 @@ var NLPtool = /** @class */ (function () {
         var state = 0;
         var i = 0;
         var tc = this.code;
-        //console.log(tar)
         this.tokengroup = {
             "start": "null",
             "LF": "LF",
@@ -88,12 +81,9 @@ var NLPtool = /** @class */ (function () {
             "lassign_": "assign",
             "rassign_": "assign",
         };
-        /*TokenizerReplace_states_start*/
         this.tokenizerstates = ["start", "LF", "comment.LF", "split", "string.space", "lassign", "rassign", "special", "comment.start", "string.start", "token", "comment.notestart", "comment.blockstart", "comment.linecomment", "comment.notebeforeblank", "comment.note", "comment.blockend1", "comment.blockcomment", "comment.blockend", "string.escape1", "string.end", "string.char", "string.escape2", "lassign_", "rassign_"];
-        /*TokenizerReplace_states_end*/
         var sts = this.tokenizerstates;
         while (i < this.code.length) {
-            /*TokenizerReplace_switch_start*/
             switch (state) {
                 case 0:
                     if ((tc[i] == ":") && (tc[i + 1] == ">"))
@@ -260,18 +250,14 @@ var NLPtool = /** @class */ (function () {
                 case 24:
                     state = 0;
             }
-            /*TokenizerReplace_switch_end*/
             if (state != 0) {
                 var LineAndCol = this.getLineAndCol(i);
-                //console.log(i,this.code[i].replace(/\n/g,"\\n"),sts[state],state)
                 if (tar.length == 0 || state != tar[tar.length - 1].ttype || state == 1 || state == 2 || state == 3) {
-                    // @ts-ignore
                     tar.push({ ttype: state, ptype: null, ttype_str: sts[state], ptype_str: null, val: this.code[i], i: i, line: LineAndCol.line, col: LineAndCol.col, group: this.tokengroup[sts[state]] });
                 }
                 else {
                     tar[tar.length - 1].val += this.code[i];
                 }
-                //console.table(tar)
                 i++;
             }
         }
@@ -282,12 +268,9 @@ var NLPtool = /** @class */ (function () {
         var state = 1;
         var i = 0;
         var tar = this.tokenarr;
-        /*ParserReplace_states_start*/
         this.parserstates = ["Error", "TopLevel", "TLDefinition.exclam", "TL.comment", "TL.blank", "TL.LF", "TL.note", "TLDefinition.include", "TLDefinition.using", "TLDefinition.replace", "TLDefinition.global", "TLDefinition.func", "TLDefinition.include.colon1", "TLDefinition.include.blank1", "TLDefinition.include.filename", "TLDefinition.include.EOS", "TLDefinition.using.colon1", "TLDefinition.using.blank1", "TLDefinition.using.filename", "TLDefinition.using.EOS", "TLDefinition.replace.colon1", "TLDefinition.replace.blank1", "TLDefinition.replace.defname", "TLDefinition.replace.colon2", "TLDefinition.replace.blank2", "TLDefinition.replace.defval", "TLDefinition.replace.EOS", "TLDefinition.global.colon1", "TLDefinition.global.blank1", "TLDefinition.global.deftype", "TLDefinition.global.colon2", "TLDefinition.global.blank2", "TLDefinition.global.defname", "TLDefinition.global.EOS"];
-        /*ParserReplace_states_end*/
         var sts = this.parserstates;
         while (i < tar.length) {
-            /*ParserReplace_switch_start*/
             switch (state) {
                 case 1:
                     if ((tar[i].group == "special") && (tar[i].val == "!"))
@@ -494,7 +477,6 @@ var NLPtool = /** @class */ (function () {
                 case 33:
                     state = 1;
             }
-            /*ParserReplace_switch_end*/
             if (state == 0) {
                 throw JSON.stringify({ val: tar[i].val, state: state, state_str: sts[state], group: tar[i].group, ttype_str: tar[i].ttype_str, i: tar[i].i });
             }
@@ -509,9 +491,7 @@ var NLPtool = /** @class */ (function () {
     };
     return NLPtool;
 }());
-// @ts-ignore
 if ((typeof require != "undefined")) {
     var code_res = new NLPtool("./test4.nlp").tokenize();
-    // @ts-ignore
     code_res.parse();
 }
