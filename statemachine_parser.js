@@ -3,12 +3,15 @@ const fs = require('fs');
 function fRead(filename) {
     return fs.readFileSync(filename, 'utf8').replace(/\r\n/g, "\n");
 };
+function fWrite(filename,content) {
+    fs.writeFileSync(filename,content);
+};
 
 
-function main(filename) {
-    let fdata = fRead(filename)
+function main(tokenizertransionmd,nlpts) {
+    let fdata = fRead(tokenizertransionmd)
     let fdata_ = fdata.split("## 部分")[1];
-    console.log(fdata_)
+    // console.log(fdata_)
     //console.log(fdata)
     let ret1 = []
     let ret2 = []
@@ -28,7 +31,6 @@ function main(filename) {
         }
         // ["gVarDef.Colon1","gVarDef.Blank1","space"]
     }
-    console.log("this.parserstates = [\"" + statenamearr.join("\",\"") + "\"]")
     let sts = NaN;
     const retpush = (trans, sw) => {
         if (!trans[1].endsWith("Error")) {
@@ -55,12 +57,19 @@ function main(filename) {
     for (let transion of transionarr) { // 全体図用mermaidコードの生成
         ret2.push(`${transion[0]} --> ${transion[1]}: ${transion[2]}`);
     }
-    //console.table(ret)
-    // console.log("--------------")
-    // console.log(ret2.join("\n"))
-    // console.log("")
-    console.log(ret1.join("\n"))
-    // console.log("--------------")
+    
+    let indent1 = Array(4*3).fill(" ").join("");
+    let indent2 = Array(4*2).fill(" ").join("");
+    let nlpts_before = fRead(nlpts);
+    let nlpts_new = "";
+    nlpts_new += nlpts_before.substring(0,nlpts_before.indexOf("/*ParserReplace_states_start*/")+"/*ParserReplace_states_start*/".length) +"\n";
+    nlpts_new += indent2+"this.parserstates = [\"" + statenamearr.join("\",\"") + "\"]" +"\n";
+    nlpts_new += indent2+nlpts_before.substring(nlpts_before.indexOf("/*ParserReplace_states_end*/"),nlpts_before.indexOf("/*ParserReplace_switch_start*/")+"/*ParserReplace_switch_start*/".length) +"\n";
+    for (line of ret1) {
+        nlpts_new += indent1+line +"\n";
+    }
+    nlpts_new += indent1+nlpts_before.substring(nlpts_before.indexOf("/*ParserReplace_switch_end*/")) +"\n";
+    fWrite(nlpts,nlpts_new);
 }
 let condition = {
     "space": " ",
@@ -181,4 +190,4 @@ function procCond(cond) {
     }
     return `${ret.join(split_char + split_char)}`
 }
-main("./spec/nlp-parser-statetransition.md")
+main("./spec/nlp-parser-statetransition.md","./nlp.ts")
