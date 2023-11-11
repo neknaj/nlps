@@ -67,7 +67,7 @@ function main(tokenizertransionmd,nlpts) {
     for (line of ret1) {
         nlpts_new += indent1+line +"\n";
     }
-    nlpts_new += indent1+nlpts_before.substring(nlpts_before.indexOf("/*TokenizerReplace_switch_end*/")) +"\n";
+    nlpts_new += indent1+nlpts_before.substring(nlpts_before.indexOf("/*TokenizerReplace_switch_end*/"));
     fWrite(nlpts,nlpts_new);
 }
 let condition = {
