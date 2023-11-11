@@ -1,0 +1,28 @@
+.highlight .parser.LF {
+    color: gray;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.highlight .parser.Error {
+    text-decoration: underline wavy red;
+}
+
+.highlight .parser.space::before{
+    content: "·";
+    color: rgba(199, 199, 199, 0.4);
+    margin-right: -0.5em;
+}
+
+.highlight .parser.TL_comment {
+    color: rgb(49, 123, 87);
+}
+.highlight .parser.TL_note {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 248, 206);
+    text-decoration: underline rgba(0, 242, 69, 0.4);
+    -webkit-text-decoration: underline rgba(0, 242, 69, 0.4);
+    border-radius: 3px;
+    padding: 2px;
+    font-family: serif;
+}

@@ -129,6 +129,7 @@ function procCond(cond) {
                     case "token":
                     case "special":
                     case "comment":
+                    case "note":
                     case "split":
                     case "LF":
                         ret.push(`(tar[i].${target}${r}="${c}")`);

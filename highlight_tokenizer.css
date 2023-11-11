@@ -1,0 +1,76 @@
+.highlight .tokenizer.token {
+    color: rgb(255, 249, 167);
+}
+.highlight .tokenizer.split {
+    color: rgb(255, 255, 255);
+}
+.highlight .tokenizer.space::before {
+    content: "·";
+    color: rgba(199, 199, 199, 0.4);
+    margin-right: -0.5em;
+}
+.highlight .tokenizer.special {
+    color: rgb(92, 168, 255);
+}
+.highlight .tokenizer.LF {
+    color: gray;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.highlight .tokenizer.comment_LF {
+    color: gray;
+    user-select: none;
+    -webkit-user-select: none;
+    text-decoration: underline rgba(55, 186, 92, 0.4);
+    -webkit-text-decoration: underline rgba(55, 186, 92, 0.4);
+}
+.highlight .tokenizer.comment_start,
+.highlight .tokenizer.comment_blockstart,
+.highlight .tokenizer.comment_blockend1,
+.highlight .tokenizer.comment_blockend,
+.highlight .tokenizer.comment_notestart {
+    color: rgb(0, 153, 0);
+}
+.highlight .tokenizer.comment_blockcomment,
+.highlight .tokenizer.comment_linecomment {
+    color: rgb(49, 123, 87);
+    text-decoration: underline rgba(55, 186, 92, 0.4);
+    -webkit-text-decoration: underline rgba(55, 186, 92, 0.4);
+}
+.highlight .tokenizer.comment_note {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 248, 206);
+    text-decoration: underline rgba(0, 242, 69, 0.4);
+    -webkit-text-decoration: underline rgba(0, 242, 69, 0.4);
+    border-radius: 3px;
+    padding: 2px;
+    font-family: serif;
+}
+.highlight .tokenizer.comment_notebeforeblank {
+    text-decoration: underline rgba(0, 242, 69, 0.4);
+    -webkit-text-decoration: underline rgba(0, 242, 69, 0.4);
+}
+
+.highlight .tokenizer.string_start,
+.highlight .tokenizer.string_end {
+    color: rgb(242, 129, 8);
+}
+.highlight .tokenizer.string_char {
+    color: rgb(255, 188, 64);
+}
+.highlight .tokenizer.string_space::before {
+    color: rgba(255, 188, 64, 0.4);
+}
+.highlight .tokenizer.string_escape1 {
+    color: rgb(181, 154, 21);
+}
+.highlight .tokenizer.string_escape2 {
+    color: rgb(235, 204, 46);
+}
+
+.highlight .tokenizer.lassign,
+.highlight .tokenizer.lassign_,
+.highlight .tokenizer.rassign,
+.highlight .tokenizer.rassign_ {
+    color: red;
+}

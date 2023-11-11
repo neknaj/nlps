@@ -13,7 +13,9 @@ TopLevel --> TL.blank: $split&space
 TopLevel --> TL.LF: $LF
 TopLevel --> Error: *
 
+TL.comment --> TL.note: $note
 TL.comment --> TopLevel: *
+TL.note --> TopLevel: *
 TL.blank --> TopLevel: *
 TL.LF --> TopLevel: *
 
