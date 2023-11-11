@@ -78,7 +78,6 @@ var NLPtool = /** @class */ (function () {
             "comment.linecomment": "comment",
             "comment.notebeforeblank": "comment",
             "comment.note": "comment",
-            "comment.blockend1": "comment",
             "comment.blockend": "comment",
             "comment.blockcomment": "comment",
             "string.escape1": "string",
