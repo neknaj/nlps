@@ -240,7 +240,7 @@ class NLPtool {
         let i:number = 0;
         let tar = this.tokenarr;
         /*ParserReplace_states_start*/
-        this.parserstates = ["Error","TopLevel","TLDefinition.exclam","TL.comment","TL.blank","TL.LF","TL.note","TLDefinition.include","TLDefinition.using","TLDefinition.replace","TLDefinition.global","TLDefinition.func","TLDefinition.include.colon1","TLDefinition.include.blank1","TLDefinition.include.filename","TLDefinition.include.EOS","TLDefinition.using.colon1","TLDefinition.using.blank1","TLDefinition.using.filename","TLDefinition.using.EOS","TLDefinition.replace.colon1","TLDefinition.replace.blank1","TLDefinition.replace.defname","TLDefinition.replace.colon2","TLDefinition.replace.blank2","TLDefinition.replace.defval","TLDefinition.replace.EOS","TLDefinition.global.colon1","TLDefinition.global.blank1","TLDefinition.global.deftype","TLDefinition.global.colon2","TLDefinition.global.blank2","TLDefinition.global.defname","TLDefinition.global.EOS","TLDefinition.func.colon1","TLDefinition.func.blank1","TLDefinition.func.rettype","TLDefinition.func.blank2","TLDefinition.func.lparen","TLDefinition.func.args.blank1","TLDefinition.func.args.argstype","TLDefinition.func.args.colon","TLDefinition.func.args.blank2","TLDefinition.func.args.defname"]
+        this.parserstates = ["Error","TopLevel","TLDefinition.exclam","TL.comment","TL.blank","TL.LF","TL.note","TLDefinition.include","TLDefinition.using","TLDefinition.replace","TLDefinition.global","TLDefinition.func","TLDefinition.include.colon1","TLDefinition.include.blank1","TLDefinition.include.filename","TLDefinition.include.EOS","TLDefinition.using.colon1","TLDefinition.using.blank1","TLDefinition.using.filename","TLDefinition.using.EOS","TLDefinition.replace.colon1","TLDefinition.replace.blank1","TLDefinition.replace.defname","TLDefinition.replace.colon2","TLDefinition.replace.blank2","TLDefinition.replace.defval","TLDefinition.replace.EOS","TLDefinition.global.colon1","TLDefinition.global.blank1","TLDefinition.global.deftype","TLDefinition.global.colon2","TLDefinition.global.blank2","TLDefinition.global.defname","TLDefinition.global.EOS","TLDefinition.func.colon1","TLDefinition.func.blank1","TLDefinition.func.rettype","TLDefinition.func.blank2","TLDefinition.func.lparen","TLDefinition.func.args.blank1","TLDefinition.func.args.argstype","TLDefinition.func.args.colon","TLDefinition.func.args.blank2","TLDefinition.func.args.defname","TLDefinition.args.blank3","TLDefinition.func.args.comma","TLDefinition.func.rparen"]
         /*ParserReplace_states_end*/
         var sts = this.parserstates;
         while (i<tar.length) {
@@ -386,6 +386,7 @@ class NLPtool {
                     break;
                 case 11:
                     if ((tar[i].group=="split")&&(tar[i].val==":")) state=34;
+                    else state=0;
                     break;
                 case 34:
                     if ((tar[i].group=="split")&&(tar[i].val==" ")) state=35;
@@ -399,12 +400,12 @@ class NLPtool {
                     break;
                 case 36:
                     if ((tar[i].group=="split")&&(tar[i].val==" ")) state=37;
-                    else if ((tar[i].group=="split")&&(tar[i].val=="(")) state=38;
+                    else if ((tar[i].group=="special")&&(tar[i].val=="(")) state=38;
                     else state=0;
                     break;
                 case 37:
                     if ((tar[i].group=="split")&&(tar[i].val==" ")) state=37;
-                    else if ((tar[i].group=="split")&&(tar[i].val=="(")) state=38;
+                    else if ((tar[i].group=="special")&&(tar[i].val=="(")) state=38;
                     else state=0;
                     break;
                 case 38:
@@ -429,6 +430,12 @@ class NLPtool {
                 case 42:
                     if ((tar[i].group=="split")&&(tar[i].val==" ")) state=42;
                     else if ((tar[i].group=="token")) state=43;
+                    else state=0;
+                    break;
+                case 43:
+                    if ((tar[i].group=="split")&&(tar[i].val==" ")) state=44;
+                    else if ((tar[i].group=="split")&&(tar[i].val==",")) state=45;
+                    else if ((tar[i].group=="special")&&(tar[i].val==")")) state=46;
                     else state=0;
             }
             /*ParserReplace_switch_end*/

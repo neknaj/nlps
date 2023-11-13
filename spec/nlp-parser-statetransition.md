@@ -91,6 +91,7 @@ TLDefinition.global.EOS --> TopLevel: *
 ```mermaid
 stateDiagram-v2
 TLDefinition.func --> TLDefinition.func.colon1: $split&colon
+TLDefinition.func --> Error: *
 TLDefinition.func.colon1 --> TLDefinition.func.blank1: $split&space
 TLDefinition.func.colon1 --> TLDefinition.func.rettype: $token
 TLDefinition.func.colon1 --> Error: *
@@ -98,10 +99,10 @@ TLDefinition.func.blank1 --> TLDefinition.func.blank1: $split&space
 TLDefinition.func.blank1 --> TLDefinition.func.rettype: $token
 TLDefinition.func.blank1 --> Error: *
 TLDefinition.func.rettype --> TLDefinition.func.blank2: $split&space
-TLDefinition.func.rettype --> TLDefinition.func.lparen: $split&lparen
+TLDefinition.func.rettype --> TLDefinition.func.lparen: $special&lparen
 TLDefinition.func.rettype --> Error: *
 TLDefinition.func.blank2 --> TLDefinition.func.blank2: $split&space
-TLDefinition.func.blank2 --> TLDefinition.func.lparen: $split&lparen
+TLDefinition.func.blank2 --> TLDefinition.func.lparen: $special&lparen
 TLDefinition.func.blank2 --> Error: *
 TLDefinition.func.lparen --> TLDefinition.func.args.blank1: $split&space
 TLDefinition.func.lparen --> TLDefinition.func.args.argstype: $token
@@ -117,4 +118,12 @@ TLDefinition.func.args.colon --> Error: *
 TLDefinition.func.args.blank2 --> TLDefinition.func.args.blank2: $split&space
 TLDefinition.func.args.blank2 --> TLDefinition.func.args.defname: $token
 TLDefinition.func.args.blank2 --> Error: *
+TLDefinition.func.args.defname --> TLDefinition.func.args.blank3: $split&space
+TLDefinition.func.args.defname --> TLDefinition.func.args.comma: $split&comma
+TLDefinition.func.args.defname --> TLDefinition.func.rparen: $special&rparen
+TLDefinition.func.args.defname --> Error: *
+TLDefinition.func.args.blank3 --> TLDefinition.func.args.blank3: $split&space
+TLDefinition.func.args.blank3 --> TLDefinition.func.args.comma: $split&comma
+TLDefinition.func.args.blank3 --> TLDefinition.func.rparen: $special&rparen
+TLDefinition.func.args.blank3 --> Error: *
 ```
