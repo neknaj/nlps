@@ -79,17 +79,26 @@ TLDefinition.func.blank2 --> TLDefinition.func.blank2: $split&space
 TLDefinition.func.blank2 --> TLDefinition.func.lparen: $special&lparen
 TLDefinition.func.lparen --> TLDefinition.func.args.blank1: $split&space
 TLDefinition.func.lparen --> TLDefinition.func.args.argstype: $token
-TLDefinition.func.args.blank1 --> TLDefinition.func.args.blank1: $split&space
-TLDefinition.func.args.blank1 --> TLDefinition.func.args.argstype: $token
-TLDefinition.func.args.argstype --> TLDefinition.func.args.colon: $split&colon
-TLDefinition.func.args.colon --> TLDefinition.func.args.blank2: $split&space
-TLDefinition.func.args.colon --> TLDefinition.func.args.defname: $token
-TLDefinition.func.args.blank2 --> TLDefinition.func.args.blank2: $split&space
-TLDefinition.func.args.blank2 --> TLDefinition.func.args.defname: $token
-TLDefinition.func.args.defname --> TLDefinition.func.args.blank3: $split&space
-TLDefinition.func.args.defname --> TLDefinition.func.args.comma: $split&comma
-TLDefinition.func.args.defname --> TLDefinition.func.rparen: $special&rparen
-TLDefinition.func.args.blank3 --> TLDefinition.func.args.blank3: $split&space
-TLDefinition.func.args.blank3 --> TLDefinition.func.args.comma: $split&comma
-TLDefinition.func.args.blank3 --> TLDefinition.func.rparen: $special&rparen
+TLDefinition.func.lparen --> TLDefinition.func.rparen: $special&rparen
+    TLDefinition.func.args.blank1 --> TLDefinition.func.args.blank1: $split&space
+    TLDefinition.func.args.blank1 --> TLDefinition.func.args.argstype: $token
+    TLDefinition.func.args.blank1 --> TLDefinition.func.rparen: $special&rparen
+    TLDefinition.func.args.argstype --> TLDefinition.func.args.colon: $split&colon
+    TLDefinition.func.args.colon --> TLDefinition.func.args.blank2: $split&space
+    TLDefinition.func.args.colon --> TLDefinition.func.args.defname: $token
+    TLDefinition.func.args.blank2 --> TLDefinition.func.args.blank2: $split&space
+    TLDefinition.func.args.blank2 --> TLDefinition.func.args.defname: $token
+    TLDefinition.func.args.defname --> TLDefinition.func.args.blank3: $split&space
+    TLDefinition.func.args.defname --> TLDefinition.func.args.comma: $split&comma
+    TLDefinition.func.args.defname --> TLDefinition.func.rparen: $special&rparen
+    TLDefinition.func.args.blank3 --> TLDefinition.func.args.blank3: $split&space
+    TLDefinition.func.args.blank3 --> TLDefinition.func.args.comma: $split&comma
+    TLDefinition.func.args.blank3 --> TLDefinition.func.rparen: $special&rparen
+    TLDefinition.func.args.comma --> TLDefinition.func.args.blank1: $split&space
+    TLDefinition.func.args.comma --> TLDefinition.func.args.argstype: $token
+TLDefinition.func.rparen --> TLDefinition.func.colon2: $split&colon
+TLDefinition.func.colon2 --> TLDefinition.func.blank3: $split&space
+TLDefinition.func.colon2 --> TLDefinition.func.defname: $token
+TLDefinition.func.blank3 --> TLDefinition.func.blank3: $split&space
+TLDefinition.func.blank3 --> TLDefinition.func.defname: $token
 ```
