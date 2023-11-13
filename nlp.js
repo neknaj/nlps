@@ -271,7 +271,9 @@ var NLPtool = (function () {
         this.parserstates = ["Error", "TopLevel", "TLDefinition.exclam", "TL.comment", "TL.blank", "TL.LF", "TL.note", "TLDefinition.include", "TLDefinition.using", "TLDefinition.replace", "TLDefinition.global", "TLDefinition.func", "TLDefinition.include.colon1", "TLDefinition.include.blank1", "TLDefinition.include.filename", "TLDefinition.include.EOS", "TLDefinition.using.colon1", "TLDefinition.using.blank1", "TLDefinition.using.filename", "TLDefinition.using.EOS", "TLDefinition.replace.colon1", "TLDefinition.replace.blank1", "TLDefinition.replace.defname", "TLDefinition.replace.colon2", "TLDefinition.replace.blank2", "TLDefinition.replace.defval", "TLDefinition.replace.EOS", "TLDefinition.global.colon1", "TLDefinition.global.blank1", "TLDefinition.global.deftype", "TLDefinition.global.colon2", "TLDefinition.global.blank2", "TLDefinition.global.defname", "TLDefinition.global.EOS", "TLDefinition.func.colon1", "TLDefinition.func.blank1", "TLDefinition.func.rettype", "TLDefinition.func.blank2", "TLDefinition.func.lparen", "TLDefinition.func.args.blank1", "TLDefinition.func.args.argstype", "TLDefinition.func.args.colon", "TLDefinition.func.args.blank2", "TLDefinition.func.args.defname", "TLDefinition.func.args.blank3", "TLDefinition.func.args.comma", "TLDefinition.func.rparen"];
         var sts = this.parserstates;
         while (i < tar.length) {
-            switch (state) {
+            var state_copy = state;
+            state = 0;
+            switch (state_copy) {
                 case 1:
                     if ((tar[i].group == "special") && (tar[i].val == "!"))
                         state = 2;
@@ -281,8 +283,6 @@ var NLPtool = (function () {
                         state = 4;
                     else if ((tar[i].group == "LF"))
                         state = 5;
-                    else
-                        state = 0;
                     break;
                 case 3:
                     if ((tar[i].group == "note"))
@@ -310,14 +310,10 @@ var NLPtool = (function () {
                         state = 10;
                     else if ((tar[i].group == "token") && (tar[i].val == "fn"))
                         state = 11;
-                    else
-                        state = 0;
                     break;
                 case 7:
                     if ((tar[i].group == "split") && (tar[i].val == ":"))
                         state = 12;
-                    else
-                        state = 0;
                     break;
                 case 12:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
@@ -330,14 +326,10 @@ var NLPtool = (function () {
                         state = 13;
                     else if ((tar[i].group == "token"))
                         state = 14;
-                    else
-                        state = 0;
                     break;
                 case 14:
                     if ((tar[i].group == "split") && (tar[i].val == ";"))
                         state = 15;
-                    else
-                        state = 0;
                     break;
                 case 15:
                     state = 1;
@@ -345,30 +337,22 @@ var NLPtool = (function () {
                 case 8:
                     if ((tar[i].group == "split") && (tar[i].val == ":"))
                         state = 16;
-                    else
-                        state = 0;
                     break;
                 case 16:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 17;
                     else if ((tar[i].group == "token"))
                         state = 18;
-                    else
-                        state = 0;
                     break;
                 case 17:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 17;
                     else if ((tar[i].group == "token"))
                         state = 18;
-                    else
-                        state = 0;
                     break;
                 case 18:
                     if ((tar[i].group == "split") && (tar[i].val == ";"))
                         state = 19;
-                    else
-                        state = 0;
                     break;
                 case 19:
                     state = 1;
@@ -376,38 +360,28 @@ var NLPtool = (function () {
                 case 9:
                     if ((tar[i].group == "split") && (tar[i].val == ":"))
                         state = 20;
-                    else
-                        state = 0;
                     break;
                 case 20:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 21;
                     else if ((tar[i].group == "token"))
                         state = 22;
-                    else
-                        state = 0;
                     break;
                 case 21:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 21;
                     else if ((tar[i].group == "token"))
                         state = 22;
-                    else
-                        state = 0;
                     break;
                 case 22:
                     if ((tar[i].group == "split") && (tar[i].val == ":"))
                         state = 23;
-                    else
-                        state = 0;
                     break;
                 case 23:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 24;
                     else if ((tar[i].group == "token"))
                         state = 25;
-                    else
-                        state = 0;
                     break;
                 case 24:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
@@ -418,8 +392,6 @@ var NLPtool = (function () {
                 case 25:
                     if ((tar[i].group == "split") && (tar[i].val == ";"))
                         state = 26;
-                    else
-                        state = 0;
                     break;
                 case 26:
                     state = 1;
@@ -427,52 +399,38 @@ var NLPtool = (function () {
                 case 10:
                     if ((tar[i].group == "split") && (tar[i].val == ":"))
                         state = 27;
-                    else
-                        state = 0;
                     break;
                 case 27:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 28;
                     else if ((tar[i].group == "token"))
                         state = 29;
-                    else
-                        state = 0;
                     break;
                 case 28:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 28;
                     else if ((tar[i].group == "token"))
                         state = 29;
-                    else
-                        state = 0;
                     break;
                 case 29:
                     if ((tar[i].group == "split") && (tar[i].val == ":"))
                         state = 30;
-                    else
-                        state = 0;
                     break;
                 case 30:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 31;
                     else if ((tar[i].group == "token"))
                         state = 32;
-                    else
-                        state = 0;
                     break;
                 case 31:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 31;
                     else if ((tar[i].group == "token"))
                         state = 32;
-                    else
-                        state = 0;
                     break;
                 case 32:
                     if ((tar[i].group == "split") && (tar[i].val == ";"))
                         state = 33;
-                    else
-                        state = 0;
                     break;
                 case 33:
                     state = 1;
@@ -480,78 +438,58 @@ var NLPtool = (function () {
                 case 11:
                     if ((tar[i].group == "split") && (tar[i].val == ":"))
                         state = 34;
-                    else
-                        state = 0;
                     break;
                 case 34:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 35;
                     else if ((tar[i].group == "token"))
                         state = 36;
-                    else
-                        state = 0;
                     break;
                 case 35:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 35;
                     else if ((tar[i].group == "token"))
                         state = 36;
-                    else
-                        state = 0;
                     break;
                 case 36:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 37;
                     else if ((tar[i].group == "special") && (tar[i].val == "("))
                         state = 38;
-                    else
-                        state = 0;
                     break;
                 case 37:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 37;
                     else if ((tar[i].group == "special") && (tar[i].val == "("))
                         state = 38;
-                    else
-                        state = 0;
                     break;
                 case 38:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 39;
                     else if ((tar[i].group == "token"))
                         state = 40;
-                    else
-                        state = 0;
                     break;
                 case 39:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 39;
                     else if ((tar[i].group == "token"))
                         state = 40;
-                    else
-                        state = 0;
                     break;
                 case 40:
                     if ((tar[i].group == "split") && (tar[i].val == ":"))
                         state = 41;
-                    else
-                        state = 0;
                     break;
                 case 41:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 42;
                     else if ((tar[i].group == "token"))
                         state = 43;
-                    else
-                        state = 0;
                     break;
                 case 42:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
                         state = 42;
                     else if ((tar[i].group == "token"))
                         state = 43;
-                    else
-                        state = 0;
                     break;
                 case 43:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
@@ -560,8 +498,6 @@ var NLPtool = (function () {
                         state = 45;
                     else if ((tar[i].group == "special") && (tar[i].val == ")"))
                         state = 46;
-                    else
-                        state = 0;
                     break;
                 case 44:
                     if ((tar[i].group == "split") && (tar[i].val == " "))
@@ -570,8 +506,6 @@ var NLPtool = (function () {
                         state = 45;
                     else if ((tar[i].group == "special") && (tar[i].val == ")"))
                         state = 46;
-                    else
-                        state = 0;
             }
             if (state == 0) {
                 throw JSON.stringify({ val: tar[i].val, state: state, state_str: sts[state], group: tar[i].group, ttype_str: tar[i].ttype_str, i: tar[i].i });

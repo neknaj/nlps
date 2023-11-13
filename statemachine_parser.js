@@ -39,7 +39,7 @@ function main(tokenizertransionmd,nlpts) {
         }
         ret1.push(`        ${sw} (${procCond(trans[2])}) throw this.tokenizeerror(\`\${sts[${statenamearr.indexOf(trans[0])}]} => \${sts[${statenamearr.indexOf(trans[1])}]}; ${trans[2]}\`,i);`)
     }
-    ret1.push("switch(state){")
+    ret1.push("switch(state_copy){")
     for (let transion of transionarr) { // jsコードの生成
         if (sts == statenamearr.indexOf(transion[0])) {
             procCond(transion[2]) ? retpush(transion, "else if") : ret1.push(`        else state=${statenamearr.indexOf(transion[1])};`)
