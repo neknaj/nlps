@@ -8,8 +8,8 @@ stateDiagram-v2
 ```mermaid
 stateDiagram-v2
 start --> lassign: colon&'gt
-start --> rassign: lt&'colon
-start --> split: space|colon|comma|semicolon
+start --> blank: space
+start --> split: colon|comma|semicolon
 start --> special: exclam|lparen|rparen|lbracket|rbracket
 start --> comment.start: sharp
 start --> LF: LF
@@ -72,9 +72,9 @@ string.escape2 --> string.char: *
 
 
 lassign --> lassign_: *
-rassign --> rassign_: *
 
 
+blank --> start: *
 split --> start: *
 special --> start: *
 token --> start: *
@@ -82,5 +82,4 @@ LF --> start: *
 comment.blockend --> start: *
 string.end --> start: *
 lassign_ --> start: *
-rassign_ --> start: *
 ```

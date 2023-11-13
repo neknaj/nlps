@@ -16,7 +16,7 @@ function main(tokenizertransionmd,nlpts) {
     let ret1 = []
     let ret2 = []
     let transionarr = []
-    let statenamearr = ["Error","TopLevel"] // idを固定するstate
+    let statenamearr = ["Error","TL.root","Block.root"] // idを固定するstate
     for (let line of fdata_.split("\n")) {
 
         let transion = line.replace(/\s/g, "").match(/^.*?(?=-)|(?<=>).*?(?=:)|(?<=:).+/g)
@@ -89,6 +89,8 @@ let condition = {
     "backslash": "\\\\",
     "gt": ">",
     "lt": "<",
+    "lassign": ":",
+    "lassign_": ">",
 }
 function procCond(cond) {
     let ret = []
@@ -139,8 +141,10 @@ function procCond(cond) {
                     case "special":
                     case "comment":
                     case "note":
+                    case "blank":
                     case "split":
                     case "LF":
+                    case "assign":
                         ret.push(`(tar[i].${target}${r}="${c}")`);
                         break;
                     default:
@@ -167,6 +171,8 @@ function procCond(cond) {
                     case "backslash":
                     case "lt":
                     case "gt":
+                    case "lassign":
+                    case "lassign_":
                         ret.push(`(tar[i].${target}${r}="${condition[c]}")`);
                         break;
                     case "include":
