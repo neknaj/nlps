@@ -88,3 +88,33 @@ TLDefinition.global.defname --> TLDefinition.global.EOS: $split&semicolon
 TLDefinition.global.defname --> Error: *
 TLDefinition.global.EOS --> TopLevel: *
 ```
+```mermaid
+stateDiagram-v2
+TLDefinition.func --> TLDefinition.func.colon1: $split&colon
+TLDefinition.func.colon1 --> TLDefinition.func.blank1: $split&space
+TLDefinition.func.colon1 --> TLDefinition.func.rettype: $token
+TLDefinition.func.colon1 --> Error: *
+TLDefinition.func.blank1 --> TLDefinition.func.blank1: $split&space
+TLDefinition.func.blank1 --> TLDefinition.func.rettype: $token
+TLDefinition.func.blank1 --> Error: *
+TLDefinition.func.rettype --> TLDefinition.func.blank2: $split&space
+TLDefinition.func.rettype --> TLDefinition.func.lparen: $split&lparen
+TLDefinition.func.rettype --> Error: *
+TLDefinition.func.blank2 --> TLDefinition.func.blank2: $split&space
+TLDefinition.func.blank2 --> TLDefinition.func.lparen: $split&lparen
+TLDefinition.func.blank2 --> Error: *
+TLDefinition.func.lparen --> TLDefinition.func.args.blank1: $split&space
+TLDefinition.func.lparen --> TLDefinition.func.args.argstype: $token
+TLDefinition.func.lparen --> Error: *
+TLDefinition.func.args.blank1 --> TLDefinition.func.args.blank1: $split&space
+TLDefinition.func.args.blank1 --> TLDefinition.func.args.argstype: $token
+TLDefinition.func.args.blank1 --> Error: *
+TLDefinition.func.args.argstype --> TLDefinition.func.args.colon: $split&colon
+TLDefinition.func.args.argstype --> Error: *
+TLDefinition.func.args.colon --> TLDefinition.func.args.blank2: $split&space
+TLDefinition.func.args.colon --> TLDefinition.func.args.defname: $token
+TLDefinition.func.args.colon --> Error: *
+TLDefinition.func.args.blank2 --> TLDefinition.func.args.blank2: $split&space
+TLDefinition.func.args.blank2 --> TLDefinition.func.args.defname: $token
+TLDefinition.func.args.blank2 --> Error: *
+```
