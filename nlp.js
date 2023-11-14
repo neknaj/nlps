@@ -82,13 +82,13 @@ var NLPtool = (function () {
             "lassign_": "assign",
             "rassign_": "assign",
         };
-        this.tokenizerstates = ["start", "LF", "comment.LF", "blank", "split", "special", "lassign", "comment.start", "string.start", "token", "comment.notestart", "comment.blockstart", "comment.linecomment", "comment.notebeforeblank", "comment.note", "comment.blockend1", "comment.blockcomment", "comment.blockend", "string.escape1", "string.end", "string.space", "string.char", "string.escape2", "lassign_"];
+        this.tokenizerstates = ["start", "LF", "comment.LF", "blank", "split", "special", "lassign_", "lassign", "comment.start", "string.start", "token", "comment.notestart", "comment.blockstart", "comment.linecomment", "comment.notebeforeblank", "comment.note", "comment.blockend1", "comment.blockcomment", "comment.blockend", "string.escape1", "string.end", "string.space", "string.char", "string.escape2"];
         var sts = this.tokenizerstates;
         while (i < this.code.length) {
             switch (state) {
                 case 0:
                     if ((tc[i] == ":") && (tc[i + 1] == ">"))
-                        state = 6;
+                        state = 7;
                     else if ((tc[i] == " "))
                         state = 3;
                     else if ((tc[i] == ":") || (tc[i] == ",") || (tc[i] == ";"))
@@ -96,133 +96,133 @@ var NLPtool = (function () {
                     else if ((tc[i] == "!") || (tc[i] == "(") || (tc[i] == ")") || (tc[i] == "{") || (tc[i] == "}"))
                         state = 5;
                     else if ((tc[i] == "#"))
-                        state = 7;
+                        state = 8;
                     else if ((tc[i] == "\n"))
                         state = 1;
                     else if ((tc[i] == "\""))
-                        state = 8;
-                    else
                         state = 9;
-                    break;
-                case 7:
-                    if ((tc[i] == ":"))
+                    else
                         state = 10;
-                    else if ((tc[i] == "*"))
+                    break;
+                case 8:
+                    if ((tc[i] == ":"))
                         state = 11;
+                    else if ((tc[i] == "*"))
+                        state = 12;
                     else if ((tc[i] == "\n"))
                         state = 1;
                     else
-                        state = 12;
-                    break;
-                case 10:
-                    if ((tc[i] == " "))
                         state = 13;
-                    else if ((tc[i] != "\n"))
-                        state = 14;
-                    else if ((tc[i] == "\n"))
-                        state = 1;
                     break;
-                case 13:
-                    if ((tc[i] != "\n"))
+                case 11:
+                    if ((tc[i] == " "))
                         state = 14;
+                    else if ((tc[i] != "\n"))
+                        state = 15;
                     else if ((tc[i] == "\n"))
                         state = 1;
                     break;
                 case 14:
                     if ((tc[i] != "\n"))
-                        state = 14;
+                        state = 15;
+                    else if ((tc[i] == "\n"))
+                        state = 1;
+                    break;
+                case 15:
+                    if ((tc[i] != "\n"))
+                        state = 15;
+                    else if ((tc[i] == "\n"))
+                        state = 1;
+                    break;
+                case 13:
+                    if ((tc[i] != "\n"))
+                        state = 13;
                     else if ((tc[i] == "\n"))
                         state = 1;
                     break;
                 case 12:
-                    if ((tc[i] != "\n"))
-                        state = 12;
-                    else if ((tc[i] == "\n"))
-                        state = 1;
-                    break;
-                case 11:
                     if ((tc[i] == "*") && (tc[i + 1] == "#"))
-                        state = 15;
-                    else if ((tc[i] != "#") && (tc[i] != "\n"))
                         state = 16;
+                    else if ((tc[i] != "#") && (tc[i] != "\n"))
+                        state = 17;
                     else if ((tc[i] == "\n"))
                         state = 2;
                     break;
-                case 16:
+                case 17:
                     if ((tc[i] == "*") && (tc[i + 1] == "#"))
-                        state = 15;
-                    else if ((tc[i] != "#") && (tc[i] != "\n"))
                         state = 16;
+                    else if ((tc[i] != "#") && (tc[i] != "\n"))
+                        state = 17;
                     else if ((tc[i] == "\n"))
                         state = 2;
                     break;
                 case 2:
                     if ((tc[i] == "*") && (tc[i + 1] == "#"))
-                        state = 15;
-                    else if ((tc[i] != "#") && (tc[i] != "\n"))
                         state = 16;
+                    else if ((tc[i] != "#") && (tc[i] != "\n"))
+                        state = 17;
                     else if ((tc[i] == "\n"))
                         state = 2;
                     break;
-                case 15:
-                    state = 17;
+                case 16:
+                    state = 18;
                     break;
-                case 8:
+                case 9:
                     if ((tc[i] == "\\"))
-                        state = 18;
+                        state = 19;
                     else if ((tc[i] == "\n"))
                         state = 1;
                     else if ((tc[i] == "\""))
-                        state = 19;
-                    else if ((tc[i] == " "))
                         state = 20;
-                    else
-                        state = 21;
-                    break;
-                case 21:
-                    if ((tc[i] == "\n"))
-                        state = 1;
-                    else if ((tc[i] == "\\"))
-                        state = 18;
-                    else if ((tc[i] == "\""))
-                        state = 19;
                     else if ((tc[i] == " "))
-                        state = 20;
-                    else
                         state = 21;
-                    break;
-                case 20:
-                    if ((tc[i] == "\n"))
-                        state = 1;
-                    else if ((tc[i] == "\\"))
-                        state = 18;
-                    else if ((tc[i] == "\""))
-                        state = 19;
-                    else if ((tc[i] == " "))
-                        state = 20;
-                    else
-                        state = 21;
-                    break;
-                case 18:
-                    if ((tc[i] == "\n"))
-                        state = 1;
                     else
                         state = 22;
                     break;
                 case 22:
                     if ((tc[i] == "\n"))
                         state = 1;
-                    else if ((tc[i] == "\""))
-                        state = 19;
                     else if ((tc[i] == "\\"))
-                        state = 18;
-                    else if ((tc[i] == " "))
+                        state = 19;
+                    else if ((tc[i] == "\""))
                         state = 20;
-                    else
+                    else if ((tc[i] == " "))
                         state = 21;
+                    else
+                        state = 22;
                     break;
-                case 6:
-                    state = 23;
+                case 21:
+                    if ((tc[i] == "\n"))
+                        state = 1;
+                    else if ((tc[i] == "\\"))
+                        state = 19;
+                    else if ((tc[i] == "\""))
+                        state = 20;
+                    else if ((tc[i] == " "))
+                        state = 21;
+                    else
+                        state = 22;
+                    break;
+                case 19:
+                    if ((tc[i] == "\n"))
+                        state = 1;
+                    else
+                        state = 23;
+                    break;
+                case 23:
+                    if ((tc[i] == "\n"))
+                        state = 1;
+                    else if ((tc[i] == "\""))
+                        state = 20;
+                    else if ((tc[i] == "\\"))
+                        state = 19;
+                    else if ((tc[i] == " "))
+                        state = 21;
+                    else
+                        state = 22;
+                    break;
+                case 7:
+                    state = 6;
                     break;
                 case 3:
                     state = 0;
@@ -233,24 +233,24 @@ var NLPtool = (function () {
                 case 5:
                     state = 0;
                     break;
-                case 9:
+                case 10:
                     state = 0;
                     break;
                 case 1:
                     state = 0;
                     break;
-                case 17:
+                case 18:
                     state = 0;
                     break;
-                case 19:
+                case 20:
                     state = 0;
                     break;
-                case 23:
+                case 6:
                     state = 0;
             }
             if (state != 0) {
                 var LineAndCol = this.getLineAndCol(i);
-                if (tar.length == 0 || state != tar[tar.length - 1].ttype || state == 1 || state == 2 || state == 3 || state == 4 || state == 5) {
+                if ((tar.length == 0 || state != tar[tar.length - 1].ttype || state == 1 || state == 2 || state == 3 || state == 4 || state == 5) && state != 6) {
                     tar.push({ ttype: state, ptype: null, ttype_str: sts[state], ptype_str: null, val: this.code[i], i: i, line: LineAndCol.line, col: LineAndCol.col, group: this.tokengroup[sts[state]] });
                 }
                 else {
@@ -266,7 +266,7 @@ var NLPtool = (function () {
         var state = 1;
         var i = 0;
         var tar = this.tokenarr;
-        this.parserstates = ["Error", "TL.root", "Block.root", "TLdef.exclam", "TL.comment", "TL.blank", "TL.LF", "TL.note", "TLdef.include", "TLdef.using", "TLdef.replace", "TLdef.global", "TLdef.func", "TLdef.include.colon1", "TLdef.include.blank1", "TLdef.include.filename", "TLdef.include.EOS", "TLdef.using.colon1", "TLdef.using.blank1", "TLdef.using.filename", "TLdef.using.EOS", "TLdef.replace.colon1", "TLdef.replace.blank1", "TLdef.replace.defname", "TLdef.replace.colon2", "TLdef.replace.blank2", "TLdef.replace.defval", "TLdef.replace.EOS", "TLdef.global.colon1", "TLdef.global.blank1", "TLdef.global.deftype", "TLdef.global.colon2", "TLdef.global.blank2", "TLdef.global.defname", "TLdef.global.EOS", "TLdef.func.colon1", "TLdef.func.blank1", "TLdef.func.rettype", "TLdef.func.blank2", "TLdef.func.lparen", "TLdef.func.args.blank1", "TLdef.func.args.argstype", "TLdef.func.rparen", "TLdef.func.args.colon", "TLdef.func.args.blank2", "TLdef.func.args.defname", "TLdef.func.args.blank3", "TLdef.func.args.comma", "TLdef.func.colon2", "TLdef.func.blank3", "TLdef.func.defname", "TLdef.func.blank4", "TLdef.func.lbracket", "Block.exclam", "Block.comment", "Block.blank", "Block.LF", "Block.stat.expr.token", "Block.note", "Block.stat.expr.blank", "Block.stat.end", "Block.stat.assign", "Block.stat.assign_"];
+        this.parserstates = ["Error", "TL.root", "Block.root", "TLdef.exclam", "TL.comment", "TL.blank", "TL.LF", "TL.note", "TLdef.include", "TLdef.using", "TLdef.replace", "TLdef.global", "TLdef.func", "TLdef.include.colon1", "TLdef.include.blank1", "TLdef.include.filename", "TLdef.include.EOS", "TLdef.using.colon1", "TLdef.using.blank1", "TLdef.using.filename", "TLdef.using.EOS", "TLdef.replace.colon1", "TLdef.replace.blank1", "TLdef.replace.defname", "TLdef.replace.colon2", "TLdef.replace.blank2", "TLdef.replace.defval", "TLdef.replace.EOS", "TLdef.global.colon1", "TLdef.global.blank1", "TLdef.global.deftype", "TLdef.global.colon2", "TLdef.global.blank2", "TLdef.global.defname", "TLdef.global.EOS", "TLdef.func.colon1", "TLdef.func.blank1", "TLdef.func.rettype", "TLdef.func.blank2", "TLdef.func.lparen", "TLdef.func.args.blank1", "TLdef.func.args.argstype", "TLdef.func.rparen", "TLdef.func.args.colon", "TLdef.func.args.blank2", "TLdef.func.args.defname", "TLdef.func.args.blank3", "TLdef.func.args.comma", "TLdef.func.colon2", "TLdef.func.blank3", "TLdef.func.defname", "TLdef.func.blank4", "TLdef.func.lbracket", "Block.exclam", "Block.comment", "Block.blank", "Block.LF", "Block.stat.expr.token", "Block.note", "Block.stat.expr.blank", "Block.stat.end", "Block.stat.assign"];
         var sts = this.parserstates;
         while (i < tar.length) {
             var state_copy = state;
@@ -584,12 +584,8 @@ var NLPtool = (function () {
                         state = 57;
                     else if ((tar[i].group == "split") && (tar[i].val == ";"))
                         state = 60;
-                    else if ((tar[i].group == "assign") && (tar[i].val == ":"))
+                    else if ((tar[i].group == "assign"))
                         state = 61;
-                    break;
-                case 61:
-                    if ((tar[i].group == "assign") && (tar[i].val == ">"))
-                        state = 62;
                     break;
                 case 60:
                     state = 2;
