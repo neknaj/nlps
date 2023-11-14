@@ -669,6 +669,10 @@ var NLPtool = (function () {
                 case 75:
                     if ((tar[i].group == "blank"))
                         state = 76;
+                    else if ((tar[i].group == "token") && (tar[i].val == "if"))
+                        state = 77;
+                    else if ((tar[i].group == "token") && (tar[i].val == "while"))
+                        state = 78;
                     break;
                 case 76:
                     if ((tar[i].group == "blank"))

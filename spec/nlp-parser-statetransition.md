@@ -134,6 +134,8 @@ stateDiagram-v2
 74 --> 73: $blank
 74 --> 75: $special&rparen
 75 --> 76: $blank
+75 --> 77: $token&if
+75 --> 78: $token&while
 76 --> 76: $blank
 76 --> 77: $token&if
 76 --> 78: $token&while
@@ -319,6 +321,8 @@ Block.exclam.ctrl.cond.blank --> Block.exclam.ctrl.rparen: $special&rparen
 Block.exclam.ctrl.cond.token --> Block.exclam.ctrl.cond.blank: $blank
 Block.exclam.ctrl.cond.token --> Block.exclam.ctrl.rparen: $special&rparen
 Block.exclam.ctrl.rparen --> Block.exclam.ctrl.blank2: $blank
+Block.exclam.ctrl.rparen --> Block.exclam.ctrl.type.if: $token&if
+Block.exclam.ctrl.rparen --> Block.exclam.ctrl.type.while: $token&while
 Block.exclam.ctrl.blank2 --> Block.exclam.ctrl.blank2: $blank
 Block.exclam.ctrl.blank2 --> Block.exclam.ctrl.type.if: $token&if
 Block.exclam.ctrl.blank2 --> Block.exclam.ctrl.type.while: $token&while
