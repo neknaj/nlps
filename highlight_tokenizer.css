@@ -13,12 +13,12 @@
     color: rgb(92, 168, 255);
 }
 .highlight .tokenizer.LF {
-    color: gray;
+    color: rgba(128, 128, 128, 0.4);
     user-select: none;
     -webkit-user-select: none;
 }
 .highlight .tokenizer.comment_LF {
-    color: gray;
+    color: rgba(128, 128, 128, 0.4);
     user-select: none;
     -webkit-user-select: none;
     text-decoration: underline rgba(55, 186, 92, 0.4);
@@ -43,7 +43,8 @@
     text-decoration: underline rgba(0, 242, 69, 0.4);
     -webkit-text-decoration: underline rgba(0, 242, 69, 0.4);
     border-radius: 3px;
-    padding: 2px;
+    padding: 0.1em;
+    font-size: 0.85em;
     font-family: serif;
 }
 .highlight .tokenizer.comment_notebeforeblank {
