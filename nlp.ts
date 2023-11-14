@@ -504,6 +504,7 @@ class NLPtool {
                     break;
                 case 70:
                     if ((tar[i].group=="blank")) state=71;
+                    else if ((tar[i].group=="special")&&(tar[i].val=="(")) state=72;
                     break;
                 case 71:
                     if ((tar[i].group=="blank")) state=71;

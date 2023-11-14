@@ -123,6 +123,7 @@ stateDiagram-v2
 69 --> 2: *
 62 --> 70: $split&colon
 70 --> 71: $blank
+70 --> 72: $special&lparen
 71 --> 71: $blank
 71 --> 72: $special&lparen
 72 --> 73: $blank
@@ -307,6 +308,7 @@ Block.exclam.local.end --> Block.root: *
 
 Block.exclam.ctrl --> Block.exclam.ctrl.colon1: $split&colon
 Block.exclam.ctrl.colon1 --> Block.exclam.ctrl.blank1: $blank
+Block.exclam.ctrl.colon1 --> Block.exclam.ctrl.lparen: $special&lparen
 Block.exclam.ctrl.blank1 --> Block.exclam.ctrl.blank1: $blank
 Block.exclam.ctrl.blank1 --> Block.exclam.ctrl.lparen: $special&lparen
 Block.exclam.ctrl.lparen --> Block.exclam.ctrl.cond.blank: $blank
