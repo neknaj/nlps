@@ -102,17 +102,19 @@ TLdef.func.defname --> TLdef.func.blank4: $blank
 TLdef.func.defname --> TLdef.func.lbracket: $special&lbracket
 TLdef.func.blank4 --> TLdef.func.blank4: $blank
 TLdef.func.blank4 --> TLdef.func.lbracket: $special&lbracket
-TLdef.func.lbracket --> Block.root: *
+TLdef.func.lbracket --> Block.entry: *
 
 ```
 ```mermaid
 stateDiagram-v2
 
-Block.root --> Block.exclam: $special&exclam
+Block.entry --> Block.root: *
+Block.root --> Block.exclam.decl: $special&exclam
 Block.root --> Block.comment: $comment
 Block.root --> Block.blank: $blank
 Block.root --> Block.LF: $LF
 Block.root --> Block.stat.expr.token: $token
+Block.root --> Block.exit: $special&rbracket
 
 Block.comment --> Block.note: $note
 Block.comment --> Block.root: *
@@ -120,11 +122,68 @@ Block.note --> Block.root: *
 Block.blank --> Block.root: *
 Block.LF --> Block.root: *
 
+Block.exclam.decl --> Block.exclam.local: $token&local
+Block.exclam.decl --> Block.exclam.ctrl: $token&ctrl
+
+Block.exclam.local --> Block.exclam.local.colon1: $split&colon
+Block.exclam.local.colon1 --> Block.exclam.local.deftype: $token
+Block.exclam.local.colon1 --> Block.exclam.local.blank1: $blank
+Block.exclam.local.blank1 --> Block.exclam.local.blank1: $split&colon
+Block.exclam.local.blank1 --> Block.exclam.local.deftype: $token
+Block.exclam.local.deftype --> Block.exclam.local.colon2: $split&colon
+Block.exclam.local.colon2 --> Block.exclam.local.blank2: $blank
+Block.exclam.local.colon2 --> Block.exclam.local.defname: $token
+Block.exclam.local.blank2 --> Block.exclam.local.blank2: $blank
+Block.exclam.local.blank2 --> Block.exclam.local.defname: $token
+Block.exclam.local.defname --> Block.exclam.local.end: $split&semicolon
+Block.exclam.local.end --> Block.root: *
+
+Block.exclam.ctrl --> Block.exclam.ctrl.colon1: $split&colon
+Block.exclam.ctrl.colon1 --> Block.exclam.ctrl.blank1: $blank
+Block.exclam.ctrl.blank1 --> Block.exclam.ctrl.blank1: $blank
+Block.exclam.ctrl.blank1 --> Block.exclam.ctrl.lparen: $special&lparen
+Block.exclam.ctrl.lparen --> Block.exclam.ctrl.cond.blank: $blank
+Block.exclam.ctrl.lparen --> Block.exclam.ctrl.cond.token: $token
+Block.exclam.ctrl.cond.blank --> Block.exclam.ctrl.cond.blank: $blank
+Block.exclam.ctrl.cond.blank --> Block.exclam.ctrl.cond.token: $token
+Block.exclam.ctrl.cond.blank --> Block.exclam.ctrl.rparen: $special&rparen
+Block.exclam.ctrl.cond.token --> Block.exclam.ctrl.cond.blank: $blank
+Block.exclam.ctrl.cond.token --> Block.exclam.ctrl.rparen: $special&rparen
+Block.exclam.ctrl.rparen --> Block.exclam.ctrl.blank2: $blank
+Block.exclam.ctrl.blank2 --> Block.exclam.ctrl.blank2: $blank
+Block.exclam.ctrl.blank2 --> Block.exclam.ctrl.type.if: $token&if
+Block.exclam.ctrl.blank2 --> Block.exclam.ctrl.type.while: $token&while
+    Block.exclam.ctrl.type.if --> Block.exclam.ctrl.blank3: $blank
+    Block.exclam.ctrl.type.if --> Block.exclam.lbracket: $special&lbracket
+    Block.exclam.ctrl.type.while --> Block.exclam.ctrl.blank3: $blank
+    Block.exclam.ctrl.type.while --> Block.exclam.lbracket: $special&lbracket
+Block.exclam.ctrl.blank3 --> Block.exclam.ctrl.blank3: $blank
+Block.exclam.ctrl.blank3 --> Block.exclam.lbracket: $special&lbracket
+Block.exclam.lbracket --> Block.entry: *
+
+
 Block.stat.expr.token --> Block.stat.expr.blank: $blank
 Block.stat.expr.token --> Block.stat.end: $split&semicolon
 Block.stat.expr.blank --> Block.stat.expr.token: $token
 Block.stat.expr.blank --> Block.stat.end: $split&semicolon
 Block.stat.expr.blank --> Block.stat.assign: $assign
-
+Block.stat.assign --> Block.stat.blank1: $blank
+Block.stat.blank1 --> Block.stat.blank1: $blank
+Block.stat.blank1 --> Block.stat.assignvar: $token
+Block.stat.blank1 --> Block.stat.exclam.decl: $special&exclam
+Block.stat.assignvar --> Block.stat.end: $split&semicolon
+    Block.stat.exclam.decl --> Block.stat.exclam.local: $token&local
+    Block.stat.exclam.local --> Block.stat.exclam.local.colon1: $split&colon
+    Block.stat.exclam.local.colon1 --> Block.stat.exclam.local.blank1: $blank
+    Block.stat.exclam.local.colon1 --> Block.stat.exclam.local.deftype: $token
+    Block.stat.exclam.local.blank1 --> Block.stat.exclam.local.blank1: $split&colon
+    Block.stat.exclam.local.blank1 --> Block.stat.exclam.local.deftype: $token
+    Block.stat.exclam.local.deftype --> Block.stat.exclam.local.colon2: $split&colon
+    Block.stat.exclam.local.colon2 --> Block.stat.exclam.local.blank2: $blank
+    Block.stat.exclam.local.colon2 --> Block.stat.exclam.local.defname: $token
+    Block.stat.exclam.local.blank2 --> Block.stat.exclam.local.blank2: $blank
+    Block.stat.exclam.local.blank2 --> Block.stat.exclam.local.defname: $token
+    Block.stat.exclam.local.defname --> Block.stat.exclam.local.end: $split&semicolon
+    Block.stat.exclam.local.end --> Block.root: *
 Block.stat.end --> Block.root: *
 ```

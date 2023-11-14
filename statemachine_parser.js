@@ -16,7 +16,7 @@ function main(tokenizertransionmd,nlpts) {
     let ret1 = []
     let ret2 = []
     let transionarr = []
-    let statenamearr = ["Error","TL.root","Block.root"] // idを固定するstate
+    let statenamearr = ["Error","TL.root","Block.root","Block.entry"] // idを固定するstate
     for (let line of fdata_.split("\n")) {
 
         let transion = line.replace(/\s/g, "").match(/^.*?(?=-)|(?<=>).*?(?=:)|(?<=:).+/g)
@@ -180,6 +180,10 @@ function procCond(cond) {
                     case "replace":
                     case "global":
                     case "fn":
+                    case "local":
+                    case "ctrl":
+                    case "if":
+                    case "while":
                         ret.push(`(tar[i].${target}${r}="${c}")`);
                         break;
                     case "*":
