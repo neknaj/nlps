@@ -121,8 +121,12 @@ Block.blank --> Block.root: *
 Block.LF --> Block.root: *
 
 Block.stat.expr.token --> Block.stat.expr.blank: $blank
+Block.stat.expr.token --> Block.stat.end: $split&semicolon
 Block.stat.expr.blank --> Block.stat.expr.token: $token
+Block.stat.expr.blank --> Block.stat.end: $split&semicolon
 Block.stat.expr.blank --> Block.stat.assign: $assign&lassign
 
 Block.stat.assign --> Block.stat.assign_: $assign&lassign_
+
+Block.stat.end --> Block.root: *
 ```

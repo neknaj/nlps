@@ -266,7 +266,7 @@ var NLPtool = (function () {
         var state = 1;
         var i = 0;
         var tar = this.tokenarr;
-        this.parserstates = ["Error", "TL.root", "Block.root", "TLdef.exclam", "TL.comment", "TL.blank", "TL.LF", "TL.note", "TLdef.include", "TLdef.using", "TLdef.replace", "TLdef.global", "TLdef.func", "TLdef.include.colon1", "TLdef.include.blank1", "TLdef.include.filename", "TLdef.include.EOS", "TLdef.using.colon1", "TLdef.using.blank1", "TLdef.using.filename", "TLdef.using.EOS", "TLdef.replace.colon1", "TLdef.replace.blank1", "TLdef.replace.defname", "TLdef.replace.colon2", "TLdef.replace.blank2", "TLdef.replace.defval", "TLdef.replace.EOS", "TLdef.global.colon1", "TLdef.global.blank1", "TLdef.global.deftype", "TLdef.global.colon2", "TLdef.global.blank2", "TLdef.global.defname", "TLdef.global.EOS", "TLdef.func.colon1", "TLdef.func.blank1", "TLdef.func.rettype", "TLdef.func.blank2", "TLdef.func.lparen", "TLdef.func.args.blank1", "TLdef.func.args.argstype", "TLdef.func.rparen", "TLdef.func.args.colon", "TLdef.func.args.blank2", "TLdef.func.args.defname", "TLdef.func.args.blank3", "TLdef.func.args.comma", "TLdef.func.colon2", "TLdef.func.blank3", "TLdef.func.defname", "TLdef.func.blank4", "TLdef.func.lbracket", "Block.exclam", "Block.comment", "Block.blank", "Block.LF", "Block.stat.expr.token", "Block.note", "Block.stat.expr.blank", "Block.stat.assign", "Block.stat.assign_"];
+        this.parserstates = ["Error", "TL.root", "Block.root", "TLdef.exclam", "TL.comment", "TL.blank", "TL.LF", "TL.note", "TLdef.include", "TLdef.using", "TLdef.replace", "TLdef.global", "TLdef.func", "TLdef.include.colon1", "TLdef.include.blank1", "TLdef.include.filename", "TLdef.include.EOS", "TLdef.using.colon1", "TLdef.using.blank1", "TLdef.using.filename", "TLdef.using.EOS", "TLdef.replace.colon1", "TLdef.replace.blank1", "TLdef.replace.defname", "TLdef.replace.colon2", "TLdef.replace.blank2", "TLdef.replace.defval", "TLdef.replace.EOS", "TLdef.global.colon1", "TLdef.global.blank1", "TLdef.global.deftype", "TLdef.global.colon2", "TLdef.global.blank2", "TLdef.global.defname", "TLdef.global.EOS", "TLdef.func.colon1", "TLdef.func.blank1", "TLdef.func.rettype", "TLdef.func.blank2", "TLdef.func.lparen", "TLdef.func.args.blank1", "TLdef.func.args.argstype", "TLdef.func.rparen", "TLdef.func.args.colon", "TLdef.func.args.blank2", "TLdef.func.args.defname", "TLdef.func.args.blank3", "TLdef.func.args.comma", "TLdef.func.colon2", "TLdef.func.blank3", "TLdef.func.defname", "TLdef.func.blank4", "TLdef.func.lbracket", "Block.exclam", "Block.comment", "Block.blank", "Block.LF", "Block.stat.expr.token", "Block.note", "Block.stat.expr.blank", "Block.stat.end", "Block.stat.assign", "Block.stat.assign_"];
         var sts = this.parserstates;
         while (i < tar.length) {
             var state_copy = state;
@@ -576,16 +576,23 @@ var NLPtool = (function () {
                 case 57:
                     if ((tar[i].group == "blank"))
                         state = 59;
+                    else if ((tar[i].group == "split") && (tar[i].val == ";"))
+                        state = 60;
                     break;
                 case 59:
                     if ((tar[i].group == "token"))
                         state = 57;
-                    else if ((tar[i].group == "assign") && (tar[i].val == ":"))
+                    else if ((tar[i].group == "split") && (tar[i].val == ";"))
                         state = 60;
+                    else if ((tar[i].group == "assign") && (tar[i].val == ":"))
+                        state = 61;
+                    break;
+                case 61:
+                    if ((tar[i].group == "assign") && (tar[i].val == ">"))
+                        state = 62;
                     break;
                 case 60:
-                    if ((tar[i].group == "assign") && (tar[i].val == ">"))
-                        state = 61;
+                    state = 2;
             }
             if (state == 0) {
                 throw JSON.stringify({ val: tar[i].val, state: state, state_before: state_copy, state_str: sts[state], group: tar[i].group, ttype_str: tar[i].ttype_str, i: tar[i].i });
