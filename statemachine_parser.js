@@ -54,9 +54,20 @@ function main(tokenizertransionmd,nlpts) {
     }
     ret1.splice(1, 1);
     ret1.push("}");
+    // for (let transion of transionarr) { // 全体図用mermaidコードの生成
+    //     ret2.push(`${transion[0]} --> ${transion[1]}: ${transion[2]}`);
+    // }
     for (let transion of transionarr) { // 全体図用mermaidコードの生成
-        ret2.push(`${transion[0]} --> ${transion[1]}: ${transion[2]}`);
+        ret2.push(`${statenamearr.indexOf(transion[0])} --> ${statenamearr.indexOf(transion[1])}: ${transion[2]}`);
     }
+    let fdata_new = "";
+    fdata_new += fdata.substring(0,fdata.indexOf("## 全体図")+"## 全体図".length)+"\n";
+    fdata_new += "```mermaid\nstateDiagram-v2\n";
+    fdata_new += ret2.join("\n")+"\n";
+    fdata_new += "```"+"\n"
+    fdata_new += fdata.substring(fdata.indexOf("## 部分"));
+    //console.log(fdata_new)
+    fWrite(tokenizertransionmd,fdata_new);
     
     let indent1 = Array(4*3).fill(" ").join("");
     let indent2 = Array(4*2).fill(" ").join("");
