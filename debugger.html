@@ -1,0 +1,225 @@
+<html>
+    <body>
+        <head>
+            <link href="./highlight_tokenizer.css" rel="stylesheet">
+            <link href="./highlight_parser.css" rel="stylesheet">
+        </head>
+        <main>
+            <textarea id="editor" spellcheck="false" wrap="off" class="spread">#: Neknaj Language For Programming
+
+!include: stdcalc;
+!using: stdcalc;
+
+!replace: pi: 3.1415;
+
+#* hey
+this
+
+is a block comment *#
+
+!global: 12.str: string; # this is a line comment
+
+!fn: 4.int(4.int: max): main {
+
+    0 :> !local: 4.int: x;
+    0 0 add :> !local: 4.int: y;
+    !local: 4.int: z;
+
+    !ctrl:(x max <) while {
+        y x + :> z;
+        y :> x;
+        z :> y;
+    }
+
+    "hello world" "!\n\"\\" add :> string;
+    0 :> return;
+}</textarea>
+            <div id="highlight_tokenizer" class="spread highlight"><pre></pre></div>
+            <div id="highlight_parser" class="spread highlight"><pre></pre></div>
+            <div class="spread"></div>
+        </main>
+    </body>
+</html>
+
+<script src="nlp.js"></script>
+<script>
+
+const editor = document.getElementById("editor");
+var nlpt;
+
+function makeHighLight_tokenizer(tokenarr,elmId) {
+    let output = document.getElementById(elmId).childNodes[0];
+    output.innerHTML = "";
+    //console.log(tokenarr)
+    {
+        let linen = document.createElement("span");
+        linen.classList.add("linenumber");
+        linen.innerText = 1;
+        output.appendChild(linen);
+    }
+    for (let token of tokenarr) {
+        let span = document.createElement("span");
+        output.appendChild(span);
+        span.innerText = token.val;
+        if (token.ttype!=-1) {
+            span.classList.add("tokenizer");
+            span.classList.add(token.ttype_str.split(".").join("_"));
+            if (token.val==" ") {
+                span.classList.add(`space`);
+            }
+        }
+        else {
+            span.classList.add("Error");
+        }
+        if (token.val=="\n") {
+            span.innerText = "⏎";
+            let br = document.createElement("br");
+            output.appendChild(br);
+            let linen = document.createElement("span");
+            linen.classList.add("linenumber");
+            linen.innerText = token.line+1;
+            output.appendChild(linen);
+        }
+    }
+}
+function makeHighLight_parser(tokenarr,elmId) {
+    let output = document.getElementById(elmId).childNodes[0];
+    output.innerHTML = "";
+    //console.log(tokenarr)
+    {
+        let linen = document.createElement("span");
+        linen.classList.add("linenumber");
+        linen.innerText = 1;
+        output.appendChild(linen);
+    }
+    for (let token of tokenarr) {
+        let span = document.createElement("span");
+        output.appendChild(span);
+        span.innerText = token.val;
+        if (token.ptype!=null) {
+            span.classList.add("parser");
+            span.classList.add(token.ptype_str.split(".").join("_"));
+            if (token.val==" ") {
+                span.classList.add(`space`);
+            }
+        }
+        else {
+            span.classList.add("parser");
+            span.classList.add("Error");
+        }
+        if (token.val=="\n") {
+            span.classList.add(`LF`);
+            span.innerText = "⏎";
+            let br = document.createElement("br");
+            output.appendChild(br);
+            let linen = document.createElement("span");
+            linen.classList.add("linenumber");
+            linen.innerText = token.line+1;
+            output.appendChild(linen);
+        }
+    }
+}
+editor.onchange = update;
+//editor.onkeydown = update;
+editor.oninput = update;
+
+update()
+function update() {
+    nlpt = new NLPtool(`data:text/plain;charset=UTF-8;base64,${btoa(String.fromCharCode.apply(null, new TextEncoder().encode(editor.value)))}`);
+    try {
+        nlpt.tokenize();
+    }
+    catch (e) {
+        //console.error(e)
+        { // 未解決部分追加
+            if (nlpt.tokenarr.length!=0) {
+                let lastindex = nlpt.tokenarr[nlpt.tokenarr.length-1].i + nlpt.tokenarr[nlpt.tokenarr.length-1].val.length;
+                console.log(lastindex);
+                nlpt.tokenarr.push({ type:-1, type_str:"Error", val: nlpt.code.slice(lastindex), i: lastindex })
+            }
+            else {
+                nlpt.tokenarr.push({ type:-1, type_str:"Error", val: nlpt.code, i: 0 })
+            }
+        }
+    }
+    try {
+        nlpt.parse();
+    }
+    catch (e) {
+        console.error(e)
+    }
+    //console.log(nlpt.tokenarr)
+    console.table(nlpt.tokenarr)
+    makeHighLight_tokenizer(nlpt.tokenarr,"highlight_tokenizer");
+    makeHighLight_parser(nlpt.tokenarr,"highlight_parser");
+    //console.log(nlpt)
+}
+
+</script>
+<style>
+    body {
+        background-color: black;
+        height: 100dvh;
+        padding: 0;
+        margin: 0;
+        font-size: 1.2rem;
+    }
+    main {
+        display: flex;
+        height: 100%;
+    }
+    #editor {
+        font-size: 1em;
+        background: transparent;
+        color: white;
+        outline: none;
+        border: none;
+        resize: none;
+        overflow: scroll;
+        line-height: 1.1em;
+    }
+    .highlight {
+        font-size: 1em;
+        font-family: monospace;
+        background-color: rgb(0, 4, 26);
+        color: white;
+        height: 100dvh;
+        overflow: scroll;
+        line-height: 1.1em;
+    }
+    .linenumber {
+        font-size: 1em;
+        color: rgba(255, 255, 255, 0.6);
+        display: inline-block;
+        margin: 0;
+        margin-right: 10px;
+        padding-left: 10px;
+        width: 40px;
+        border-right: 1px solid rgb(108, 68, 43);
+        background-color: rgb(0, 17, 69);
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .spread {
+        width: 100%;
+    }
+    .spread:hover {
+        width: 200%;
+    }
+</style>
+<style id="highlight_style">
+
+    .highlight pre {
+        margin: 0;
+    }
+
+    .highlight span.EOL {
+        color: rgb(135, 135, 135);
+    }
+    
+    .highlight br {
+        user-select: none;
+        -webkit-user-select: none;
+    }
+</style>
