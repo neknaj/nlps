@@ -36,22 +36,6 @@ is a block comment *#
 
     !ctrl:(x max <) if {
         y x + :> z;
-    };
-
-    !ctrl:(x max <) if {
-        y x + :> z;
-    } else {
-        y 0 + :> y;
-    };
-
-    !ctrl:(x max <) if {
-        y x + :> z;
-    } (x 0 >) elseif {
-        y 0 + :> y;
-    };
-
-    !ctrl:(x max <) if {
-        y x + :> z;
     } (x 0 >) elseif {
         y 0 + :> y;
     } else {
@@ -61,7 +45,8 @@ is a block comment *#
 }</textarea>
             <div id="highlight_tokenizer" class="spread highlight"><pre></pre></div>
             <div id="highlight_parser" class="spread highlight"><pre></pre></div>
-            <div class="spread"></div>
+            <div id="AST1" class="spread">
+            </div>
         </main>
     </body>
 </html>
@@ -142,6 +127,99 @@ function makeHighLight_parser(tokenarr,elmId) {
         }
     }
 }
+function showJSON(obj,elmID) {
+    let output = document.getElementById(elmID);
+    output.appendChild(json_child(obj));
+}
+function json_child(obj) {
+    if (obj instanceof Array) {
+        let details = document.createElement("details");
+        details.classList.add("array")
+        let summary = document.createElement("summary");
+        {
+            let type = document.createElement("span");
+            type.innerText = "Array";
+            let length = document.createElement("span");
+            length.innerHTML = `(${obj.length})`;
+            let span1 = document.createElement("span");
+            span1.innerText = "["
+            let content = document.createElement("span");
+            content.classList.add("summary_content")
+            content.innerText = obj.toString();
+            let span2 = document.createElement("span");
+            span2.innerText = "]"
+            summary.appendChild(type);
+            summary.appendChild(length);
+            summary.appendChild(span1);
+            summary.appendChild(content);
+            summary.appendChild(span2);
+        }
+        details.appendChild(summary);
+        for (let elm of obj) {
+            details.appendChild(json_child(elm))
+            let comma = document.createElement("span");
+            comma.innerText = ",";
+            details.appendChild(comma);
+            let br = document.createElement("br");
+            details.appendChild(br);
+        }
+        return details;
+    }
+    else if (obj instanceof Object) {
+        let details = document.createElement("details");
+        details.classList.add("object")
+        let summary = document.createElement("summary");
+        {
+            let type = document.createElement("span");
+            type.innerText = "Object";
+            let content = document.createElement("span");
+            content.innerText = `${obj.toString()}`;
+            summary.appendChild(type);
+            summary.appendChild(content);
+        }
+        details.appendChild(summary);
+        for (let elm in obj) {
+            let p = document.createElement("p");
+            p.appendChild(json_child(elm));
+            let span1 = document.createElement("span");
+            span1.innerText = ":";
+            p.appendChild(span1);
+            p.appendChild(json_child(obj[elm]));
+            let comma = document.createElement("span");
+            comma.innerText = ",";
+            p.appendChild(comma);
+            details.appendChild(p);
+        }
+        return details;
+    }
+    else {
+        if (typeof obj === "string") {
+            let span = document.createElement("span");
+            span.classList.add("string");
+            let span1 = document.createElement("span");
+            let span2 = document.createElement("span");
+            let span3 = document.createElement("span");
+            span1.innerText = "\"";
+            span3.innerText = "\"";
+            span2.innerText = obj.toString();
+            span.appendChild(span1);
+            span.appendChild(span2);
+            span.appendChild(span3);
+            return span;
+        }
+        else if (typeof obj === "number") {
+            let span = document.createElement("span");
+            span.classList.add("number");
+            span.innerText = obj.toString();
+            return span;
+        }
+        else {
+            let span = document.createElement("span");
+            span.innerText = obj.toString();
+            return span;
+        }
+    }
+}
 editor.onchange = update;
 //editor.onkeydown = update;
 editor.oninput = update;
@@ -161,11 +239,14 @@ function update() {
     }
     catch (e) {
         console.error(e)
+        console.info({"nlpt.ast1i":nlpt.ast1i})
+        console.log(nlpt.ast1)
     }
     //console.log(nlpt.tokenarr)
     console.table(nlpt.tokenarr)
     makeHighLight_tokenizer(nlpt.tokenarr,"highlight_tokenizer");
     makeHighLight_parser(nlpt.tokenarr,"highlight_parser");
+    showJSON(nlpt.ast1,"AST1");
     //console.log(nlpt)
 }
 
@@ -173,6 +254,7 @@ function update() {
 <style>
     body {
         background-color: black;
+        color: white;
         height: 100dvh;
         padding: 0;
         margin: 0;
@@ -213,6 +295,75 @@ function update() {
         background-color: rgb(0, 17, 69);
         user-select: none;
         -webkit-user-select: none;
+    }
+
+    #AST1 {
+        padding: 10px;
+        font-size: 80%;
+    }
+    #AST1 summary {
+        color: rgb(139, 174, 255);
+    }
+    #AST1 details {
+        border: 1px solid rgba(255, 255, 255, 0);
+        padding: 2px;
+        padding-left: 5px;
+        display: inline-block;
+    }
+    #AST1 details[open] {
+        box-shadow: inset 1px 0px 0px 0px rgba(255, 255, 255, 0.511);
+    }
+    #AST1 details:hover {
+        border: 1px solid rgba(255, 255, 255, 0.308);
+        background-color: rgba(48, 179, 212, 0.08);
+    }
+    #AST1>details:hover {
+        border: 1px solid rgba(255, 255, 255, 0);
+    }
+    #AST1 details>summary {
+        font-size: 90%;
+    }
+    #AST1 details[open]>summary {
+        color: rgb(85, 97, 123);
+        font-size: 80%;
+    }
+    #AST1>details {
+        padding-left: 2px;
+    }
+    #AST1 details span {
+        vertical-align: top;
+        padding: 1px;
+        display: inline-block;
+    }
+    #AST1 details>p>span:nth-child(1) {
+        min-width: 50px;
+    }
+    #AST1 details.object>summary>span:nth-child(2) {
+        font-size: 70%;
+    }
+    #AST1 details.array>summary>span:nth-child(2) {
+        font-size: 70%;
+    }
+    #AST1 details.array>summary>.summary_content {
+        max-width: 70%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    #AST1 details span.string span {
+        color: rgb(221, 136, 0);
+    }
+    #AST1 details span.string span:nth-child(2) {
+        color: rgb(255, 200, 0);
+    }
+    #AST1 details span.number {
+        color: rgb(183, 255, 0);
+    }
+    #AST1 details>p>span:nth-child(2) {
+        padding-right: 10px;
+    }
+    #AST1 p {
+        margin: 1px;
     }
 
     .spread {

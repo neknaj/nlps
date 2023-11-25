@@ -2,10 +2,11 @@ class NLPtool {
     private code:string;
     private filename:string;
     private fRead:Function;
+    private ast1i:number;
     tokenizerstates:Array<string>;
     parserstates:Array<string>;
     tokenarr:Array<Record<string,string|number>>;
-    ast1:Object;
+    ast1:Array<Object>;
     tokengroup:object;
     constructor(filename: string) {
         this.filename = filename;
@@ -34,16 +35,6 @@ class NLPtool {
         }
         this.code = this.fRead(filename);
         //console.log(this.code)
-    }
-    tokenizeerror(message:string,i:number): object {
-        // @ts-ignore
-        let error = new Error(message,this.filename);
-        error.name = "NLP_TokenizeError";
-        let LineAndCol:object = this.getLineAndCol(i);
-        // @ts-ignore
-        error.lineNumber = LineAndCol.line; error.columnNumber = LineAndCol.col;
-        //error.stack = ""
-        return error;
     }
     getLineAndCol(i:number): object {
         let j:number = 0;
@@ -647,13 +638,95 @@ class NLPtool {
 
     buildAST1(): Object {
         let tar = this.tokenarr;
-        let i:number = 0;
-        let ast1 = this.ast1;
-        ast1 = [];
-        while (i<tar.length) {
-            i++;
+        this.ast1i = 0;
+        this.ast1 = [];
+        while (this.ast1i<tar.length) {
+            let bfi = this.ast1i;
+            this.buildAST1_skipTokenTo("TLdef.exclam");
+            this.buildAST1_include();
+            this.buildAST1_using();
+            this.buildAST1_replace();
+            this.buildAST1_global();
+            this.buildAST1_fn();
+            // console.log(this.tokenarr[i])
+            if (bfi==this.ast1i) {
+                throw `error: ${this.ast1i} ${tar[this.ast1i].ptype_str}`
+            }
         }
+        console.log(this.ast1)
         return this;
+    }
+    // @ts-ignore
+    buildAST1_getToken(): Object {
+        if (this.tokenarr[this.ast1i].group=="token") {
+            // @ts-ignore
+            return {type:"token",val:"",txt:this.tokenarr[this.ast1i].val,range:[this.tokenarr[this.ast1i].i+1,this.tokenarr[this.ast1i].i+this.tokenarr[this.ast1i].val.length]};
+        }
+        else if (this.tokenarr[this.ast1i].group=="string") {
+            let bfi = this.ast1i;
+            let txt = "";
+            while (this.tokenarr[this.ast1i].group=="string") {
+                txt += this.tokenarr[this.ast1i].val;
+                this.ast1i++;
+            }
+            // @ts-ignore
+            return {type:"token",val:"",txt:txt,range:[this.tokenarr[bfi].i+1,this.tokenarr[bfi].i+txt.length]};
+        }
+    }
+    buildAST1_skipTokenTo(ptype_str:string): void {
+        while (this.tokenarr[this.ast1i].ptype_str!=ptype_str) {this.ast1i++;}
+    }
+    buildAST1_include(): void {
+        if (this.tokenarr[this.ast1i].ptype_str=="TLdef.exclam"&&this.tokenarr[this.ast1i+1].ptype_str=="TLdef.include") {
+            this.ast1i++;
+            let obj = {type: this.buildAST1_getToken(),filename:{}}
+            this.buildAST1_skipTokenTo("TLdef.include.filename");
+            obj.filename = this.buildAST1_getToken();
+            this.ast1.push(obj)
+            this.buildAST1_skipTokenTo("TLdef.include.EOS");
+        }
+    }
+    buildAST1_using(): void {
+        if (this.tokenarr[this.ast1i].ptype_str=="TLdef.exclam"&&this.tokenarr[this.ast1i+1].ptype_str=="TLdef.using") {
+            this.ast1i++;
+            let obj = {type: this.buildAST1_getToken(),filename:{}}
+            this.buildAST1_skipTokenTo("TLdef.using.filename");
+            obj.filename = this.buildAST1_getToken();
+            this.ast1.push(obj)
+            this.buildAST1_skipTokenTo("TLdef.using.EOS");
+        }
+    }
+    buildAST1_replace(): void {
+        if (this.tokenarr[this.ast1i].ptype_str=="TLdef.exclam"&&this.tokenarr[this.ast1i+1].ptype_str=="TLdef.replace") {
+            this.ast1i++;
+            let obj = {type: this.buildAST1_getToken(),name:{},val:{}}
+            this.buildAST1_skipTokenTo("TLdef.replace.defname");
+            obj.name = this.buildAST1_getToken();
+            this.buildAST1_skipTokenTo("TLdef.replace.defval");
+            obj.val = this.buildAST1_getToken();
+            this.ast1.push(obj)
+            this.buildAST1_skipTokenTo("TLdef.replace.EOS");
+        }
+    }
+    buildAST1_global(): void {
+        if (this.tokenarr[this.ast1i].ptype_str=="TLdef.exclam"&&this.tokenarr[this.ast1i+1].ptype_str=="TLdef.global") {
+            this.ast1i++;
+            let obj = {type: this.buildAST1_getToken(),vartype:{},varname:{}}
+            this.buildAST1_skipTokenTo("TLdef.global.deftype");
+            obj.vartype = this.buildAST1_getToken();
+            this.buildAST1_skipTokenTo("TLdef.global.defname");
+            obj.varname = this.buildAST1_getToken();
+            this.ast1.push(obj)
+            this.buildAST1_skipTokenTo("TLdef.global.EOS");
+        }
+    }
+    buildAST1_fn(): void {
+        if (this.tokenarr[this.ast1i].ptype_str=="TLdef.exclam"&&this.tokenarr[this.ast1i+1].ptype_str=="TLdef.func") {
+            this.ast1i++;
+            let obj = {type: this.buildAST1_getToken(),rettype:{},args:[],fnname:{},block:[]}
+            this.buildAST1_skipTokenTo("TLdef.global.rettype");
+            obj.rettype = this.buildAST1_getToken();
+        }
     }
 }
 
