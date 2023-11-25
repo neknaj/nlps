@@ -724,8 +724,21 @@ class NLPtool {
         if (this.tokenarr[this.ast1i].ptype_str=="TLdef.exclam"&&this.tokenarr[this.ast1i+1].ptype_str=="TLdef.func") {
             this.ast1i++;
             let obj = {type: this.buildAST1_getToken(),rettype:{},args:[],fnname:{},block:[]}
-            this.buildAST1_skipTokenTo("TLdef.global.rettype");
+            this.buildAST1_skipTokenTo("TLdef.func.rettype");
             obj.rettype = this.buildAST1_getToken();
+            while (this.tokenarr[this.ast1i].ptype_str!="TLdef.func.rparen") {
+                if (this.tokenarr[this.ast1i].ptype_str=="TLdef.func.args.argstype") {
+                    let argobj = {argtype: this.buildAST1_getToken(),argname:{}}
+                    this.buildAST1_skipTokenTo("TLdef.func.args.defname");
+                    argobj.argname = this.buildAST1_getToken();
+                    // @ts-ignore
+                    obj.args.push(argobj);
+                }
+                this.ast1i++;
+            }
+            this.buildAST1_skipTokenTo("TLdef.func.defname");
+            obj.fnname = this.buildAST1_getToken();
+            this.ast1.push(obj)
         }
     }
 }
