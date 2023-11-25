@@ -3,6 +3,11 @@
     user-select: none;
     -webkit-user-select: none;
 }
+.highlight .parser.EOF {
+    color: rgba(128, 128, 128, 0.4);
+    user-select: none;
+    -webkit-user-select: none;
+}
 
 .highlight .parser.Error {
     text-decoration: underline wavy red;

@@ -86,15 +86,10 @@ function makeHighLight_tokenizer(tokenarr,elmId) {
         let span = document.createElement("span");
         output.appendChild(span);
         span.innerText = token.val;
-        if (token.ttype!=-1) {
-            span.classList.add("tokenizer");
-            span.classList.add(token.ttype_str.split(".").join("_"));
-            if (token.val==" ") {
-                span.classList.add(`space`);
-            }
-        }
-        else {
-            span.classList.add("Error");
+        span.classList.add("tokenizer");
+        span.classList.add(token.ttype_str.split(".").join("_"));
+        if (token.val==" ") {
+            span.classList.add(`space`);
         }
         if (token.val=="\n") {
             span.innerText = "⏎";
@@ -131,6 +126,9 @@ function makeHighLight_parser(tokenarr,elmId) {
         else {
             span.classList.add("parser");
             span.classList.add("Error");
+            if (token.group=="EOF") {
+                span.classList.add("EOF")
+            }
         }
         if (token.val=="\n") {
             span.classList.add(`LF`);
@@ -155,20 +153,11 @@ function update() {
         nlpt.tokenize();
     }
     catch (e) {
-        //console.error(e)
-        { // 未解決部分追加
-            if (nlpt.tokenarr.length!=0) {
-                let lastindex = nlpt.tokenarr[nlpt.tokenarr.length-1].i + nlpt.tokenarr[nlpt.tokenarr.length-1].val.length;
-                console.log(lastindex);
-                nlpt.tokenarr.push({ type:-1, type_str:"Error", val: nlpt.code.slice(lastindex), i: lastindex })
-            }
-            else {
-                nlpt.tokenarr.push({ type:-1, type_str:"Error", val: nlpt.code, i: 0 })
-            }
-        }
+        console.error(e)
     }
     try {
         nlpt.parse();
+        nlpt.buildAST1();
     }
     catch (e) {
         console.error(e)

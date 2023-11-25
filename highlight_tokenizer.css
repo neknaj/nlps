@@ -17,6 +17,11 @@
     user-select: none;
     -webkit-user-select: none;
 }
+.highlight .tokenizer.EOF {
+    color: rgba(128, 128, 128, 0.4);
+    user-select: none;
+    -webkit-user-select: none;
+}
 .highlight .tokenizer.comment_LF {
     color: rgba(128, 128, 128, 0.4);
     user-select: none;

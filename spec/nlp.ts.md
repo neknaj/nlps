@@ -6,7 +6,7 @@
 | constructor | filename:string  | コードを取得する |
 | tokenize | | トークナイズする |
 | parse | | トークナイザの出力を元に構文を解析する |
-| buildAST | | パーサの出力を元に構文木を作る |
+| buildAST1 | | パーサの出力を元に構文木1を作る |
 
 ### constructor
 `require`が定義されている場合は、`fs.readFileSync`からファイルを取得する

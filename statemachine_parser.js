@@ -16,7 +16,7 @@ function main(tokenizertransionmd,nlpts) {
     let ret1 = []
     let ret2 = []
     let transionarr = []
-    let statenamearr = ["Error","TL.root","Block.root","Block.entry","Block.exit","Block.exit_ctrl"] // idを固定するstate
+    let statenamearr = ["EOF","Error","TL.root","Block.root","Block.entry","Block.exit","Block.exit_ctrl"] // idを固定するstate
     for (let line of fdata_.split("\n")) {
 
         let transion = line.replace(/\s/g, "").match(/^.*?(?=-)|(?<=>).*?(?=:)|(?<=:).+/g)
@@ -49,7 +49,6 @@ function main(tokenizertransionmd,nlpts) {
             ret1.push("        break;")
             ret1.push(`    case ${statenamearr.indexOf(transion[0])}:`)
             procCond(transion[2]) ? retpush(transion, "if") : ret1.push(`        state=${statenamearr.indexOf(transion[1])};`)
-
         }
     }
     ret1.splice(1, 1);
@@ -160,6 +159,7 @@ function procCond(cond) {
                     case "split":
                     case "LF":
                     case "assign":
+                    case "EOF":
                         ret.push(`(tar[i].${target}${r}="${c}")`);
                         break;
                     case "token":

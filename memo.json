@@ -1,0 +1,54 @@
+[
+
+[
+    { "type": "include", "filename": "stdcalc" },
+    { "type": "using", "filename": "stdcalc" },
+    { "type": "replace", "name": "pi", "val": "3.1415" },
+    { "type": "global", "vartype": "12.str", "varname": "string"},
+    {
+        "type": "fn",
+        "rettype": "4.int",
+        "args": [{"argtype": "4.int","argname": "max"}],
+        "fnname": "main",
+        "block": [
+            { "type": "stat", "expr":[], "assign": [{"vartype": "4.int", "varname": "z" }] },
+            { "type": "stat", "expr":["0"], "assign": [{ "vartype": "4.int", "varname": "x" }] },
+            { "type": "stat", "expr":["0"], "assign": [{ "vartype": "4.int", "varname": "y" }] },
+            { "type": "stat", "expr":["\"hello world\"","\"!\\n\\\"\\\\\""], "assign": [{ "varname": "string" }] },
+            { "type": "stat", "expr":["0"], "assign": [{ "varname": "return" }] }
+        ]
+    }
+],
+
+{
+    "lib": [
+        { "type": "include", "filename": "stdcalc" },
+        { "type": "using", "filename": "stdcalc" }
+    ],
+    "gvar": [
+        { "vartype": "12.str", "varname": "string"}
+    ],
+    "fn": [
+        {
+            "rettype": "4.int",
+            "args": [{"argtype": "4.int","argname": "max"}],
+            "fnname": "main",
+            "block": {
+                "var": [
+                    {"vartype":"4.int","varname":"z"},
+                    {"vartype":"4.int","varname":"x"},
+                    {"vartype":"4.int","varname":"y"}
+                ],
+                "content": [
+                    { "type": "stat", "expr":[], "assign": "z" },
+                    { "type": "stat", "expr":["0"], "assign": "x" },
+                    { "type": "stat", "expr":["0"], "assign": "y" },
+                    { "type": "stat", "expr":["\"hello world\"","\"!\\n\\\"\\\\\""], "assign": "string" },
+                    { "type": "stat", "expr":["0"], "assign": "return" }
+                ]
+            }
+        }
+    ]
+}
+
+]
