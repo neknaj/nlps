@@ -4,6 +4,7 @@
             <link href="./highlight_tokenizer.css" rel="stylesheet">
             <link href="./highlight_parser.css" rel="stylesheet">
             <link href="./jsonviewer.css" rel="stylesheet">
+            <script src="./jsonviewer.js"></script>
             <meta charset="UTF-8">
             <meta property="og:title" content="NLP Editor">
             <meta property="og:description" content="Neknaj Language for Programming のオンラインエディタです。">
@@ -132,99 +133,6 @@ function makeHighLight_parser(tokenarr,elmId) {
         }
     }
 }
-function showJSON(obj,elmID) {
-    let output = document.getElementById(elmID);
-    output.appendChild(json_child(obj));
-}
-function json_child(obj) {
-    if (obj instanceof Array) {
-        let details = document.createElement("details");
-        details.classList.add("array")
-        let summary = document.createElement("summary");
-        {
-            let type = document.createElement("span");
-            type.innerText = "Array";
-            let length = document.createElement("span");
-            length.innerHTML = `(${obj.length})`;
-            let span1 = document.createElement("span");
-            span1.innerText = "["
-            let content = document.createElement("span");
-            content.classList.add("summary_content")
-            content.innerText = obj.toString();
-            let span2 = document.createElement("span");
-            span2.innerText = "]"
-            summary.appendChild(type);
-            summary.appendChild(length);
-            summary.appendChild(span1);
-            summary.appendChild(content);
-            summary.appendChild(span2);
-        }
-        details.appendChild(summary);
-        for (let elm of obj) {
-            details.appendChild(json_child(elm))
-            let comma = document.createElement("span");
-            comma.innerText = ",";
-            details.appendChild(comma);
-            let br = document.createElement("br");
-            details.appendChild(br);
-        }
-        return details;
-    }
-    else if (obj instanceof Object) {
-        let details = document.createElement("details");
-        details.classList.add("object")
-        let summary = document.createElement("summary");
-        {
-            let type = document.createElement("span");
-            type.innerText = "Object";
-            let content = document.createElement("span");
-            content.innerText = `${obj.toString()}`;
-            summary.appendChild(type);
-            summary.appendChild(content);
-        }
-        details.appendChild(summary);
-        for (let elm in obj) {
-            let p = document.createElement("p");
-            p.appendChild(json_child(elm));
-            let span1 = document.createElement("span");
-            span1.innerText = ":";
-            p.appendChild(span1);
-            p.appendChild(json_child(obj[elm]));
-            let comma = document.createElement("span");
-            comma.innerText = ",";
-            p.appendChild(comma);
-            details.appendChild(p);
-        }
-        return details;
-    }
-    else {
-        if (typeof obj === "string") {
-            let span = document.createElement("span");
-            span.classList.add("string");
-            let span1 = document.createElement("span");
-            let span2 = document.createElement("span");
-            let span3 = document.createElement("span");
-            span1.innerText = "\"";
-            span3.innerText = "\"";
-            span2.innerText = obj.toString();
-            span.appendChild(span1);
-            span.appendChild(span2);
-            span.appendChild(span3);
-            return span;
-        }
-        else if (typeof obj === "number") {
-            let span = document.createElement("span");
-            span.classList.add("number");
-            span.innerText = obj.toString();
-            return span;
-        }
-        else {
-            let span = document.createElement("span");
-            span.innerText = obj.toString();
-            return span;
-        }
-    }
-}
 editor.onchange = update;
 //editor.onkeydown = update;
 editor.oninput = update;
@@ -251,7 +159,7 @@ function update() {
     console.table(nlpt.tokenarr)
     makeHighLight_tokenizer(nlpt.tokenarr,"highlight_tokenizer");
     makeHighLight_parser(nlpt.tokenarr,"highlight_parser");
-    showJSON(nlpt.ast1,"AST1");
+    showJSON(nlpt.ast1,document.getElementById("AST1"),true);
     //console.log(nlpt)
 }
 
