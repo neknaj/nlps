@@ -21,18 +21,43 @@ is a block comment *#
 
 !fn: 4.int(4.int: max): main {
 
+    !local: 4.int: z;
     0 :> !local: 4.int: x;
     0 0 add :> !local: 4.int: y;
-    !local: 4.int: z;
-
-    !ctrl:(x max <) while {
-        y x + :> z;
-        y :> x;
-        z :> y;
-    }
-
     "hello world" "!\n\"\\" add :> string;
     0 :> return;
+}
+
+!fn: 0.void(): ctrl {
+
+    !ctrl:(x max <) if {
+        y x + :> z;
+    };
+
+    !ctrl:(x max <) if {
+        y x + :> z;
+    };
+
+    !ctrl:(x max <) if {
+        y x + :> z;
+    } else {
+        y 0 + :> y;
+    };
+
+    !ctrl:(x max <) if {
+        y x + :> z;
+    } (x 0 >) elseif {
+        y 0 + :> y;
+    };
+
+    !ctrl:(x max <) if {
+        y x + :> z;
+    } (x 0 >) elseif {
+        y 0 + :> y;
+    } else {
+        x :> x;
+    };
+
 }</textarea>
             <div id="highlight_tokenizer" class="spread highlight"><pre></pre></div>
             <div id="highlight_parser" class="spread highlight"><pre></pre></div>

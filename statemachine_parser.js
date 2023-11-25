@@ -16,7 +16,7 @@ function main(tokenizertransionmd,nlpts) {
     let ret1 = []
     let ret2 = []
     let transionarr = []
-    let statenamearr = ["Error","TL.root","Block.root","Block.entry","Block.exit"] // idを固定するstate
+    let statenamearr = ["Error","TL.root","Block.root","Block.entry","Block.exit","Block.exit_ctrl"] // idを固定するstate
     for (let line of fdata_.split("\n")) {
 
         let transion = line.replace(/\s/g, "").match(/^.*?(?=-)|(?<=>).*?(?=:)|(?<=:).+/g)
@@ -122,10 +122,15 @@ function procCond(cond) {
     for (let c of split) {
         if (c[0]=="'") {
             c = c.slice(1)
+            let r = "=";
+            let target = "val"
+            if (c[0] == "!") {
+                r = "!"
+                c = c.slice(1)
+            }
             switch (c) {
-                case "colon":
-                case "gt":
-                    ret.push(`(tc[i+1]=="${condition[c]}")`);
+                case "semicolon":
+                    ret.push(`(tar[i+1].${target}${r}="${condition[c]}")`);
                     break;
                 default:
                     throw "errorrrrrrrr"
@@ -195,8 +200,8 @@ function procCond(cond) {
                     case "fn":
                     case "local":
                     case "ctrl":
-                    case "if":
-                    case "while":
+                    case "else":
+                    case "elseif":
                         ret.push(`(tar[i].${target}${r}="${c}")`);
                         break;
                     case "depth=0":
@@ -204,6 +209,11 @@ function procCond(cond) {
                         break;
                     case "depth>0":
                         ret.push(`(depth>0)`);
+                    case "depth=1":
+                        ret.push(`(depth==1)`);
+                        break;
+                    case "depth>1":
+                        ret.push(`(depth>1)`);
                     case "*":
                         break;
                     default:

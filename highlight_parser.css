@@ -49,8 +49,7 @@
 .highlight .parser.Block_stat_exclam_local_deftype {
     color: rgb(191, 243, 112)
 }
-.highlight .parser.Block_exclam_ctrl_type_while,
-.highlight .parser.Block_exclam_ctrl_type_if {
+.highlight .parser.Block_exclam_ctrl_type {
     color: rgb(255, 0, 200);
 }
 .highlight .parser.Block_exclam_local_defname,
