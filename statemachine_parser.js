@@ -148,7 +148,6 @@ function procCond(cond) {
                     case "replace":
                     case "global":
                     case "fn":
-                    case "token":
                     case "special":
                     case "comment":
                     case "note":
@@ -157,6 +156,9 @@ function procCond(cond) {
                     case "LF":
                     case "assign":
                         ret.push(`(tar[i].${target}${r}="${c}")`);
+                        break;
+                    case "token":
+                        ret.push(`(tar[i].${target}${r}="token"||tar[i].${target}${r}="string")`);
                         break;
                     default:
                         throw "error 1: \""+c+"\" has not caught";

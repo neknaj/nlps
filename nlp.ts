@@ -96,96 +96,96 @@ class NLPtool {
             "rassign_": "assign",
         }
         /*TokenizerReplace_states_start*/
-        this.tokenizerstates = ["start","LF","comment.LF","blank","split","special","lassign_","lassign","comment.start","string.start","token","comment.notestart","comment.blockstart","comment.linecomment","comment.notebeforeblank","comment.note","comment.blockend1","comment.blockcomment","comment.blockend","string.escape1","string.end","string.space","string.char","string.escape2"]
+        this.tokenizerstates = ["start","LF","comment.LF","blank","split","special","lassign_","string.start","string.end","lassign","comment.start","token","comment.notestart","comment.blockstart","comment.linecomment","comment.notebeforeblank","comment.note","comment.blockend1","comment.blockcomment","comment.blockend","string.escape1","string.space","string.char","string.escape2"]
         /*TokenizerReplace_states_end*/
         var sts = this.tokenizerstates;
         while (i<this.code.length) {
             /*TokenizerReplace_switch_start*/
             switch(state){
                 case 0:
-                    if ((tc[i]==":")&&(tc[i+1]==">")) state=7;
+                    if ((tc[i]==":")&&(tc[i+1]==">")) state=9;
                     else if ((tc[i]==" ")) state=3;
                     else if ((tc[i]==":")||(tc[i]==",")||(tc[i]==";")) state=4;
                     else if ((tc[i]=="!")||(tc[i]=="(")||(tc[i]==")")||(tc[i]=="{")||(tc[i]=="}")) state=5;
-                    else if ((tc[i]=="#")) state=8;
+                    else if ((tc[i]=="#")) state=10;
                     else if ((tc[i]=="\n")) state=1;
-                    else if ((tc[i]=="\"")) state=9;
-                    else state=10;
+                    else if ((tc[i]=="\"")) state=7;
+                    else state=11;
                     break;
-                case 8:
-                    if ((tc[i]==":")) state=11;
-                    else if ((tc[i]=="*")) state=12;
+                case 10:
+                    if ((tc[i]==":")) state=12;
+                    else if ((tc[i]=="*")) state=13;
                     else if ((tc[i]=="\n")) state=1;
-                    else state=13;
+                    else state=14;
                     break;
-                case 11:
-                    if ((tc[i]==" ")) state=14;
-                    else if ((tc[i]!="\n")) state=15;
-                    else if ((tc[i]=="\n")) state=1;
-                    break;
-                case 14:
-                    if ((tc[i]!="\n")) state=15;
+                case 12:
+                    if ((tc[i]==" ")) state=15;
+                    else if ((tc[i]!="\n")) state=16;
                     else if ((tc[i]=="\n")) state=1;
                     break;
                 case 15:
-                    if ((tc[i]!="\n")) state=15;
+                    if ((tc[i]!="\n")) state=16;
+                    else if ((tc[i]=="\n")) state=1;
+                    break;
+                case 16:
+                    if ((tc[i]!="\n")) state=16;
+                    else if ((tc[i]=="\n")) state=1;
+                    break;
+                case 14:
+                    if ((tc[i]!="\n")) state=14;
                     else if ((tc[i]=="\n")) state=1;
                     break;
                 case 13:
-                    if ((tc[i]!="\n")) state=13;
-                    else if ((tc[i]=="\n")) state=1;
-                    break;
-                case 12:
-                    if ((tc[i]=="*")&&(tc[i+1]=="#")) state=16;
-                    else if ((tc[i]!="#")&&(tc[i]!="\n")) state=17;
+                    if ((tc[i]=="*")&&(tc[i+1]=="#")) state=17;
+                    else if ((tc[i]!="#")&&(tc[i]!="\n")) state=18;
                     else if ((tc[i]=="\n")) state=2;
                     break;
-                case 17:
-                    if ((tc[i]=="*")&&(tc[i+1]=="#")) state=16;
-                    else if ((tc[i]!="#")&&(tc[i]!="\n")) state=17;
+                case 18:
+                    if ((tc[i]=="*")&&(tc[i+1]=="#")) state=17;
+                    else if ((tc[i]!="#")&&(tc[i]!="\n")) state=18;
                     else if ((tc[i]=="\n")) state=2;
                     break;
                 case 2:
-                    if ((tc[i]=="*")&&(tc[i+1]=="#")) state=16;
-                    else if ((tc[i]!="#")&&(tc[i]!="\n")) state=17;
+                    if ((tc[i]=="*")&&(tc[i+1]=="#")) state=17;
+                    else if ((tc[i]!="#")&&(tc[i]!="\n")) state=18;
                     else if ((tc[i]=="\n")) state=2;
                     break;
-                case 16:
-                    state=18;
+                case 17:
+                    state=19;
                     break;
-                case 9:
-                    if ((tc[i]=="\\")) state=19;
+                case 7:
+                    if ((tc[i]=="\\")) state=20;
                     else if ((tc[i]=="\n")) state=1;
-                    else if ((tc[i]=="\"")) state=20;
+                    else if ((tc[i]=="\"")) state=8;
                     else if ((tc[i]==" ")) state=21;
                     else state=22;
                     break;
                 case 22:
                     if ((tc[i]=="\n")) state=1;
-                    else if ((tc[i]=="\\")) state=19;
-                    else if ((tc[i]=="\"")) state=20;
+                    else if ((tc[i]=="\\")) state=20;
+                    else if ((tc[i]=="\"")) state=8;
                     else if ((tc[i]==" ")) state=21;
                     else state=22;
                     break;
                 case 21:
                     if ((tc[i]=="\n")) state=1;
-                    else if ((tc[i]=="\\")) state=19;
-                    else if ((tc[i]=="\"")) state=20;
+                    else if ((tc[i]=="\\")) state=20;
+                    else if ((tc[i]=="\"")) state=8;
                     else if ((tc[i]==" ")) state=21;
                     else state=22;
                     break;
-                case 19:
+                case 20:
                     if ((tc[i]=="\n")) state=1;
                     else state=23;
                     break;
                 case 23:
                     if ((tc[i]=="\n")) state=1;
-                    else if ((tc[i]=="\"")) state=20;
-                    else if ((tc[i]=="\\")) state=19;
+                    else if ((tc[i]=="\"")) state=8;
+                    else if ((tc[i]=="\\")) state=20;
                     else if ((tc[i]==" ")) state=21;
                     else state=22;
                     break;
-                case 7:
+                case 9:
                     state=6;
                     break;
                 case 3:
@@ -197,16 +197,16 @@ class NLPtool {
                 case 5:
                     state=0;
                     break;
-                case 10:
+                case 11:
                     state=0;
                     break;
                 case 1:
                     state=0;
                     break;
-                case 18:
+                case 19:
                     state=0;
                     break;
-                case 20:
+                case 8:
                     state=0;
                     break;
                 case 6:
@@ -267,22 +267,22 @@ class NLPtool {
                     state=1;
                     break;
                 case 5:
-                    if ((tar[i].group=="token")&&(tar[i].val=="include")) state=10;
-                    else if ((tar[i].group=="token")&&(tar[i].val=="using")) state=11;
-                    else if ((tar[i].group=="token")&&(tar[i].val=="replace")) state=12;
-                    else if ((tar[i].group=="token")&&(tar[i].val=="global")) state=13;
-                    else if ((tar[i].group=="token")&&(tar[i].val=="fn")) state=14;
+                    if ((tar[i].group=="token"||tar[i].group=="string")&&(tar[i].val=="include")) state=10;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")&&(tar[i].val=="using")) state=11;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")&&(tar[i].val=="replace")) state=12;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")&&(tar[i].val=="global")) state=13;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")&&(tar[i].val=="fn")) state=14;
                     break;
                 case 10:
                     if ((tar[i].group=="split")&&(tar[i].val==":")) state=15;
                     break;
                 case 15:
                     if ((tar[i].group=="blank")) state=16;
-                    else if ((tar[i].group=="token")) state=17;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=17;
                     break;
                 case 16:
                     if ((tar[i].group=="blank")) state=16;
-                    else if ((tar[i].group=="token")) state=17;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=17;
                     break;
                 case 17:
                     if ((tar[i].group=="split")&&(tar[i].val==";")) state=18;
@@ -295,11 +295,11 @@ class NLPtool {
                     break;
                 case 19:
                     if ((tar[i].group=="blank")) state=20;
-                    else if ((tar[i].group=="token")) state=21;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=21;
                     break;
                 case 20:
                     if ((tar[i].group=="blank")) state=20;
-                    else if ((tar[i].group=="token")) state=21;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=21;
                     break;
                 case 21:
                     if ((tar[i].group=="split")&&(tar[i].val==";")) state=22;
@@ -312,22 +312,22 @@ class NLPtool {
                     break;
                 case 23:
                     if ((tar[i].group=="blank")) state=24;
-                    else if ((tar[i].group=="token")) state=25;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=25;
                     break;
                 case 24:
                     if ((tar[i].group=="blank")) state=24;
-                    else if ((tar[i].group=="token")) state=25;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=25;
                     break;
                 case 25:
                     if ((tar[i].group=="split")&&(tar[i].val==":")) state=26;
                     break;
                 case 26:
                     if ((tar[i].group=="blank")) state=27;
-                    else if ((tar[i].group=="token")) state=28;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=28;
                     break;
                 case 27:
                     if ((tar[i].group=="blank")) state=27;
-                    else if ((tar[i].group=="token")) state=28;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=28;
                     break;
                 case 28:
                     if ((tar[i].group=="split")&&(tar[i].val==";")) state=29;
@@ -340,22 +340,22 @@ class NLPtool {
                     break;
                 case 30:
                     if ((tar[i].group=="blank")) state=31;
-                    else if ((tar[i].group=="token")) state=32;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=32;
                     break;
                 case 31:
                     if ((tar[i].group=="blank")) state=31;
-                    else if ((tar[i].group=="token")) state=32;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=32;
                     break;
                 case 32:
                     if ((tar[i].group=="split")&&(tar[i].val==":")) state=33;
                     break;
                 case 33:
                     if ((tar[i].group=="blank")) state=34;
-                    else if ((tar[i].group=="token")) state=35;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=35;
                     break;
                 case 34:
                     if ((tar[i].group=="blank")) state=34;
-                    else if ((tar[i].group=="token")) state=35;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=35;
                     break;
                 case 35:
                     if ((tar[i].group=="split")&&(tar[i].val==";")) state=36;
@@ -368,11 +368,11 @@ class NLPtool {
                     break;
                 case 37:
                     if ((tar[i].group=="blank")) state=38;
-                    else if ((tar[i].group=="token")) state=39;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=39;
                     break;
                 case 38:
                     if ((tar[i].group=="blank")) state=38;
-                    else if ((tar[i].group=="token")) state=39;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=39;
                     break;
                 case 39:
                     if ((tar[i].group=="blank")) state=40;
@@ -384,12 +384,12 @@ class NLPtool {
                     break;
                 case 41:
                     if ((tar[i].group=="blank")) state=42;
-                    else if ((tar[i].group=="token")) state=43;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=43;
                     else if ((tar[i].group=="special")&&(tar[i].val==")")) state=44;
                     break;
                 case 42:
                     if ((tar[i].group=="blank")) state=42;
-                    else if ((tar[i].group=="token")) state=43;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=43;
                     else if ((tar[i].group=="special")&&(tar[i].val==")")) state=44;
                     break;
                 case 43:
@@ -397,11 +397,11 @@ class NLPtool {
                     break;
                 case 45:
                     if ((tar[i].group=="blank")) state=46;
-                    else if ((tar[i].group=="token")) state=47;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=47;
                     break;
                 case 46:
                     if ((tar[i].group=="blank")) state=46;
-                    else if ((tar[i].group=="token")) state=47;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=47;
                     break;
                 case 47:
                     if ((tar[i].group=="blank")) state=48;
@@ -415,18 +415,18 @@ class NLPtool {
                     break;
                 case 49:
                     if ((tar[i].group=="blank")) state=42;
-                    else if ((tar[i].group=="token")) state=43;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=43;
                     break;
                 case 44:
                     if ((tar[i].group=="split")&&(tar[i].val==":")) state=50;
                     break;
                 case 50:
                     if ((tar[i].group=="blank")) state=51;
-                    else if ((tar[i].group=="token")) state=52;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=52;
                     break;
                 case 51:
                     if ((tar[i].group=="blank")) state=51;
-                    else if ((tar[i].group=="token")) state=52;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=52;
                     break;
                 case 52:
                     if ((tar[i].group=="blank")) state=53;
@@ -447,7 +447,7 @@ class NLPtool {
                     else if ((tar[i].group=="comment")) state=56;
                     else if ((tar[i].group=="blank")) state=57;
                     else if ((tar[i].group=="LF")) state=58;
-                    else if ((tar[i].group=="token")) state=59;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=59;
                     else if ((tar[i].group=="special")&&(tar[i].val=="}")) state=4;
                     break;
                 case 4:
@@ -468,30 +468,30 @@ class NLPtool {
                     state=2;
                     break;
                 case 55:
-                    if ((tar[i].group=="token")&&(tar[i].val=="local")) state=61;
-                    else if ((tar[i].group=="token")&&(tar[i].val=="ctrl")) state=62;
+                    if ((tar[i].group=="token"||tar[i].group=="string")&&(tar[i].val=="local")) state=61;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")&&(tar[i].val=="ctrl")) state=62;
                     break;
                 case 61:
                     if ((tar[i].group=="split")&&(tar[i].val==":")) state=63;
                     break;
                 case 63:
-                    if ((tar[i].group=="token")) state=64;
+                    if ((tar[i].group=="token"||tar[i].group=="string")) state=64;
                     else if ((tar[i].group=="blank")) state=65;
                     break;
                 case 65:
                     if ((tar[i].group=="split")&&(tar[i].val==":")) state=65;
-                    else if ((tar[i].group=="token")) state=64;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=64;
                     break;
                 case 64:
                     if ((tar[i].group=="split")&&(tar[i].val==":")) state=66;
                     break;
                 case 66:
                     if ((tar[i].group=="blank")) state=67;
-                    else if ((tar[i].group=="token")) state=68;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=68;
                     break;
                 case 67:
                     if ((tar[i].group=="blank")) state=67;
-                    else if ((tar[i].group=="token")) state=68;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=68;
                     break;
                 case 68:
                     if ((tar[i].group=="split")&&(tar[i].val==";")) state=69;
@@ -512,11 +512,11 @@ class NLPtool {
                     break;
                 case 72:
                     if ((tar[i].group=="blank")) state=73;
-                    else if ((tar[i].group=="token")) state=74;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=74;
                     break;
                 case 73:
                     if ((tar[i].group=="blank")) state=73;
-                    else if ((tar[i].group=="token")) state=74;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=74;
                     else if ((tar[i].group=="special")&&(tar[i].val==")")) state=75;
                     break;
                 case 74:
@@ -525,13 +525,13 @@ class NLPtool {
                     break;
                 case 75:
                     if ((tar[i].group=="blank")) state=76;
-                    else if ((tar[i].group=="token")&&(tar[i].val=="if")) state=77;
-                    else if ((tar[i].group=="token")&&(tar[i].val=="while")) state=78;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")&&(tar[i].val=="if")) state=77;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")&&(tar[i].val=="while")) state=78;
                     break;
                 case 76:
                     if ((tar[i].group=="blank")) state=76;
-                    else if ((tar[i].group=="token")&&(tar[i].val=="if")) state=77;
-                    else if ((tar[i].group=="token")&&(tar[i].val=="while")) state=78;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")&&(tar[i].val=="if")) state=77;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")&&(tar[i].val=="while")) state=78;
                     break;
                 case 77:
                     if ((tar[i].group=="blank")) state=79;
@@ -553,7 +553,7 @@ class NLPtool {
                     else if ((tar[i].group=="split")&&(tar[i].val==";")) state=82;
                     break;
                 case 81:
-                    if ((tar[i].group=="token")) state=59;
+                    if ((tar[i].group=="token"||tar[i].group=="string")) state=59;
                     else if ((tar[i].group=="split")&&(tar[i].val==";")) state=82;
                     else if ((tar[i].group=="assign")) state=83;
                     break;
@@ -562,36 +562,36 @@ class NLPtool {
                     break;
                 case 84:
                     if ((tar[i].group=="blank")) state=84;
-                    else if ((tar[i].group=="token")) state=85;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=85;
                     else if ((tar[i].group=="special")&&(tar[i].val=="!")) state=86;
                     break;
                 case 85:
                     if ((tar[i].group=="split")&&(tar[i].val==";")) state=82;
                     break;
                 case 86:
-                    if ((tar[i].group=="token")&&(tar[i].val=="local")) state=87;
+                    if ((tar[i].group=="token"||tar[i].group=="string")&&(tar[i].val=="local")) state=87;
                     break;
                 case 87:
                     if ((tar[i].group=="split")&&(tar[i].val==":")) state=88;
                     break;
                 case 88:
                     if ((tar[i].group=="blank")) state=89;
-                    else if ((tar[i].group=="token")) state=90;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=90;
                     break;
                 case 89:
                     if ((tar[i].group=="split")&&(tar[i].val==":")) state=89;
-                    else if ((tar[i].group=="token")) state=90;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=90;
                     break;
                 case 90:
                     if ((tar[i].group=="split")&&(tar[i].val==":")) state=91;
                     break;
                 case 91:
                     if ((tar[i].group=="blank")) state=92;
-                    else if ((tar[i].group=="token")) state=93;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=93;
                     break;
                 case 92:
                     if ((tar[i].group=="blank")) state=92;
-                    else if ((tar[i].group=="token")) state=93;
+                    else if ((tar[i].group=="token"||tar[i].group=="string")) state=93;
                     break;
                 case 93:
                     if ((tar[i].group=="split")&&(tar[i].val==";")) state=94;
@@ -609,7 +609,6 @@ class NLPtool {
             }
             if (!(state==1||state==2||state==3)) {
                 tar[i].ptype = state; tar[i].ptype_str = sts[state];
-                console.log({val:tar[i].val,state:state,state_str:sts[state],group:tar[i].group,ttype_str:tar[i].ttype_str,i:tar[i].i})
                 i++;
             }
             if (state==3) {
@@ -617,6 +616,14 @@ class NLPtool {
             }
             if (state==4) {
                 depth--;
+            }
+
+            while (tar[i-1].group=="string"&&tar[i].group=="string") {
+                if (tar[i-1].ttype==8&&tar[i].ttype==7) {
+                    throw JSON.stringify({val:tar[i].val,state:state,state_before:state_copy,state_str:sts[state],group:tar[i].group,ttype_str:tar[i].ttype_str,i:tar[i].i})
+                }
+                tar[i].ptype = state; tar[i].ptype_str = sts[state];
+                i++;
             }
         }
         return this;

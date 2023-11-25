@@ -70,8 +70,6 @@
 }
 
 .highlight .tokenizer.lassign,
-.highlight .tokenizer.lassign_,
-.highlight .tokenizer.rassign,
-.highlight .tokenizer.rassign_ {
+.highlight .tokenizer.lassign_ {
     color: red;
 }
