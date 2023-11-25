@@ -1,0 +1,69 @@
+.jsonviewer {
+    padding: 10px;
+    font-size: 80%;
+    overflow: scroll;
+}
+.jsonviewer summary {
+    color: rgb(139, 174, 255);
+}
+.jsonviewer details {
+    border: 1px solid rgba(255, 255, 255, 0);
+    padding: 2px;
+    padding-left: 5px;
+    display: inline-block;
+}
+.jsonviewer details[open] {
+    box-shadow: inset 1px 0px 0px 0px rgba(255, 255, 255, 0.511);
+}
+.jsonviewer details:hover {
+    border: 1px solid rgba(255, 255, 255, 0.308);
+    background-color: rgba(48, 179, 212, 0.08);
+}
+.jsonviewer>details:hover {
+    border: 1px solid rgba(255, 255, 255, 0);
+}
+.jsonviewer details>summary {
+    font-size: 90%;
+}
+.jsonviewer details[open]>summary {
+    color: rgb(85, 97, 123);
+    font-size: 80%;
+}
+.jsonviewer>details {
+    padding-left: 2px;
+}
+.jsonviewer details span {
+    vertical-align: top;
+    padding: 1px;
+    display: inline-block;
+}
+.jsonviewer details>p>span:nth-child(1) {
+    min-width: 50px;
+}
+.jsonviewer details.object>summary>span:nth-child(2) {
+    font-size: 70%;
+}
+.jsonviewer details.array>summary>span:nth-child(2) {
+    font-size: 70%;
+}
+.jsonviewer details.array>summary>.summary_content {
+    max-width: 70%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.jsonviewer details span.string span {
+    color: rgb(221, 136, 0);
+}
+.jsonviewer details span.string span:nth-child(2) {
+    color: rgb(255, 200, 0);
+}
+.jsonviewer details span.number {
+    color: rgb(183, 255, 0);
+}
+.jsonviewer details>p>span:nth-child(2) {
+    padding-right: 10px;
+}
+.jsonviewer p {
+    margin: 1px;
+}
