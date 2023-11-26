@@ -44,6 +44,7 @@
 }
 .highlight .parser.Block_exclam_local,
 .highlight .parser.Block_stat_exclam_local,
+.highlight .parser.Block_exclam_replace,
 .highlight .parser.Block_exclam_ctrl {
     color: rgb(234, 176, 255);
 }
@@ -64,7 +65,8 @@
 .highlight .parser.TLdef_global_defname {
     color: rgb(111, 231, 255);
 }
-.highlight .parser.TLdef_replace_defname {
+.highlight .parser.TLdef_replace_defname,
+.highlight .parser.Block_exclam_replace_defname {
     color: rgb(92, 182, 255);
 }
 .highlight .parser.Block_stat_assign {
@@ -80,6 +82,7 @@
     color: rgb(92, 168, 255);
 }
 .highlight .parser.TLdef_replace_defval,
+.highlight .parser.Block_exclam_replace_defval,
 .highlight .parser.Block_stat_expr_token,
 .highlight .parser.Block_exclam_ctrl_cond_token {
     color: rgb(255, 249, 167);

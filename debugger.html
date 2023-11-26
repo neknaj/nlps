@@ -26,10 +26,11 @@ is a block comment *#
 !global: 12.str: string; # this is a line comment
 
 !fn: 4.int(4.int: max): main {
+    !replace: zero: 0;
 
     !local: 4.int: z;
     0 :> !local: 4.int: x;
-    0 0 add :> !local: 4.int: y;
+    zero pi add :> !local: 4.int: y;
     "hello world" "!\n\"\\" add :> string;
     0 :> return;
 }
