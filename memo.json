@@ -11,11 +11,11 @@
         "args": [{"argtype": "4.int","argname": "max"}],
         "fnname": "main",
         "block": [
-            { "type": "stat", "expr":[], "assign": [{"vartype": "4.int", "varname": "z" }] },
-            { "type": "stat", "expr":["0"], "assign": [{ "vartype": "4.int", "varname": "x" }] },
-            { "type": "stat", "expr":["0"], "assign": [{ "vartype": "4.int", "varname": "y" }] },
-            { "type": "stat", "expr":["\"hello world\"","\"!\\n\\\"\\\\\""], "assign": [{ "varname": "string" }] },
-            { "type": "stat", "expr":["0"], "assign": [{ "varname": "return" }] }
+            { "type": "stat", "expr":[], "assign": { "assign": true , "define": true, "vartype": "4.int", "varname": "z" } },
+            { "type": "stat", "expr":["0"], "assign": { "assign": true ,"define": true, "vartype": "4.int", "varname": "x" } },
+            { "type": "stat", "expr":["0"], "assign": { "assign": true ,"define": true, "vartype": "4.int", "varname": "y" } },
+            { "type": "stat", "expr":["\"hello world\"","\"!\\n\\\"\\\\\""], "assign": { "assign": true ,"define": false, "varname": "string" } },
+            { "type": "stat", "expr":["0"], "assign": { "assign": true ,"define": false, "varname": "return" } }
         ]
     }
 ],

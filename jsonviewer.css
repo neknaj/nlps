@@ -67,10 +67,16 @@
 .jsonviewer details span.number {
     color: rgb(183, 255, 0);
 }
-.jsonviewer details span.string.key span {
+.jsonviewer details span.boolean {
+    color: rgb(255, 87, 230);
+}
+.jsonviewer details span.array_index {
+    color: rgb(100, 234, 255);
+}
+.jsonviewer details span.string.object_key span {
     color: rgb(0, 144, 221);
 }
-.jsonviewer details span.string.key span:nth-child(2) {
+.jsonviewer details span.string.object_key span:nth-child(2) {
     color: rgb(100, 255, 237);
 }
 .jsonviewer details>p>span:nth-child(2) {

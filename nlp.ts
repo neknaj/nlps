@@ -642,15 +642,18 @@ class NLPtool {
         this.ast1 = [];
         while (this.ast1i<tar.length) {
             let bfi = this.ast1i;
-            this.buildAST1_skipTokenTo("TLdef.exclam");
+            while (this.tokenarr[this.ast1i].ptype_str!="TLdef.exclam"&&this.tokenarr[this.ast1i].ptype_str!="EOF") {this.ast1i++;}
             this.buildAST1_include();
             this.buildAST1_using();
             this.buildAST1_replace();
             this.buildAST1_global();
             this.buildAST1_fn();
             // console.log(this.tokenarr[i])
+            if (tar[this.ast1i].ptype_str=="EOF") {
+                break;
+            }
             if (bfi==this.ast1i) {
-                throw `error: ${this.ast1i} ${tar[this.ast1i].ptype_str}`
+                throw `AST1 error1: ${this.ast1i} ${tar[this.ast1i].ptype_str}`
             }
         }
         console.log(this.ast1)
@@ -679,7 +682,7 @@ class NLPtool {
     buildAST1_include(): void {
         if (this.tokenarr[this.ast1i].ptype_str=="TLdef.exclam"&&this.tokenarr[this.ast1i+1].ptype_str=="TLdef.include") {
             this.ast1i++;
-            let obj = {type: this.buildAST1_getToken(),filename:{}}
+            let obj = {type: "include",filename:{}}
             this.buildAST1_skipTokenTo("TLdef.include.filename");
             obj.filename = this.buildAST1_getToken();
             this.ast1.push(obj)
@@ -689,7 +692,7 @@ class NLPtool {
     buildAST1_using(): void {
         if (this.tokenarr[this.ast1i].ptype_str=="TLdef.exclam"&&this.tokenarr[this.ast1i+1].ptype_str=="TLdef.using") {
             this.ast1i++;
-            let obj = {type: this.buildAST1_getToken(),filename:{}}
+            let obj = {type: "using",filename:{}}
             this.buildAST1_skipTokenTo("TLdef.using.filename");
             obj.filename = this.buildAST1_getToken();
             this.ast1.push(obj)
@@ -699,7 +702,7 @@ class NLPtool {
     buildAST1_replace(): void {
         if (this.tokenarr[this.ast1i].ptype_str=="TLdef.exclam"&&this.tokenarr[this.ast1i+1].ptype_str=="TLdef.replace") {
             this.ast1i++;
-            let obj = {type: this.buildAST1_getToken(),name:{},val:{}}
+            let obj = {type: "replace",name:{},val:{}}
             this.buildAST1_skipTokenTo("TLdef.replace.defname");
             obj.name = this.buildAST1_getToken();
             this.buildAST1_skipTokenTo("TLdef.replace.defval");
@@ -711,7 +714,7 @@ class NLPtool {
     buildAST1_global(): void {
         if (this.tokenarr[this.ast1i].ptype_str=="TLdef.exclam"&&this.tokenarr[this.ast1i+1].ptype_str=="TLdef.global") {
             this.ast1i++;
-            let obj = {type: this.buildAST1_getToken(),vartype:{},varname:{}}
+            let obj = {type: "global",vartype:{},varname:{}}
             this.buildAST1_skipTokenTo("TLdef.global.deftype");
             obj.vartype = this.buildAST1_getToken();
             this.buildAST1_skipTokenTo("TLdef.global.defname");
@@ -723,7 +726,7 @@ class NLPtool {
     buildAST1_fn(): void {
         if (this.tokenarr[this.ast1i].ptype_str=="TLdef.exclam"&&this.tokenarr[this.ast1i+1].ptype_str=="TLdef.func") {
             this.ast1i++;
-            let obj = {type: this.buildAST1_getToken(),rettype:{},args:[],fnname:{},block:[]}
+            let obj = {type: "fn",rettype:{},args:[],fnname:{},block:[]}
             this.buildAST1_skipTokenTo("TLdef.func.rettype");
             obj.rettype = this.buildAST1_getToken();
             while (this.tokenarr[this.ast1i].ptype_str!="TLdef.func.rparen") {
@@ -738,7 +741,57 @@ class NLPtool {
             }
             this.buildAST1_skipTokenTo("TLdef.func.defname");
             obj.fnname = this.buildAST1_getToken();
+
+            // @ts-ignore
+            obj.block = this.buildAST1_block();
             this.ast1.push(obj)
+        }
+    }
+    buildAST1_block(): Array<Object> {
+        let blockroot:Array<Object> = [];
+        let depth:number = 0;
+        while (this.ast1i<this.tokenarr.length) {
+            let bfi = this.ast1i;
+            while (this.tokenarr[this.ast1i].ptype_str!="Block.stat.expr.token"&&this.tokenarr[this.ast1i].ptype_str!="Block.exclam.decl"
+                    &&this.tokenarr[this.ast1i].ptype_str!="TLdef.func.lbracket"&&this.tokenarr[this.ast1i].ptype_str!="Block.exclam.lbracket"&&this.tokenarr[this.ast1i].ptype_str!="Block.exit_ctrl"&&this.tokenarr[this.ast1i].ptype_str!="Block.exit_"&&this.tokenarr[this.ast1i].ptype_str!="Block.exit") {this.ast1i++;}
+            this.buildAST1_block_expr(blockroot);
+            this.buildAST1_block_decl(blockroot);
+            if (this.tokenarr[this.ast1i].ptype_str=="TLdef.func.lbracket"||this.tokenarr[this.ast1i].ptype_str=="Block.exclam.lbracket") { depth++; this.ast1i++; }
+            if (this.tokenarr[this.ast1i].ptype_str=="Block.exit_ctrl"||this.tokenarr[this.ast1i].ptype_str=="Block.exit_"||this.tokenarr[this.ast1i].ptype_str=="Block.exit") {
+                depth--;
+                this.ast1i++;
+                console.log(this.ast1i,depth)
+                if (depth==0) {
+                    return blockroot;
+                }
+            }
+            if (bfi==this.ast1i) {
+                //return blockroot; // tmp
+                throw `AST1 error2: ${this.ast1i} ${this.tokenarr[this.ast1i].ptype_str}`
+            }
+        }
+        return blockroot;
+    }
+    buildAST1_block_expr(block): void {
+        if (this.tokenarr[this.ast1i].ptype_str=="Block.stat.expr.token") {
+            let obj = {type:"stat",expr:[],assign:{assign:false,define:false,vartype:"",varname:""}}
+            while (this.tokenarr[this.ast1i].ptype_str!="Block.stat.assign"&&this.tokenarr[this.ast1i].ptype_str!="Block.stat.end") {
+                if (this.tokenarr[this.ast1i].ptype_str=="Block.stat.expr.token") {
+                    // @ts-ignore
+                    obj.expr.push(this.buildAST1_getToken());
+                }
+                this.ast1i++;
+            }
+            console.log(obj)
+            block.push(obj)
+        }
+    }
+    buildAST1_block_decl(block): void {
+        if (this.tokenarr[this.ast1i].ptype_str=="Block.exclam.decl"&&this.tokenarr[this.ast1i+1].ptype_str=="Block.exclam.ctrl") {
+            this.ast1i++;
+        }
+        else if (this.tokenarr[this.ast1i].ptype_str=="Block.exclam.decl"&&this.tokenarr[this.ast1i+1].ptype_str=="Block.exclam.local") {
+            this.ast1i++;
         }
     }
 }

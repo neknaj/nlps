@@ -24,12 +24,20 @@ function json_child(obj,defaultopen=false) {
             summary.appendChild(content);
         }
         details.appendChild(summary);
-        for (let elm of obj) {
+        for (let i in obj) {
+            let elm = obj[i];
+            let index = document.createElement("span");
+            let colon = document.createElement("span");
             let comma = document.createElement("span");
             let br = document.createElement("br");
-            details.appendChild(json_child(elm,defaultopen));
             comma.classList.add("comma");
+            index.classList.add("array_index");
+            index.innerText = i;
+            colon.innerText = ":";
             comma.innerText = ",";
+            details.appendChild(index);
+            details.appendChild(colon);
+            details.appendChild(json_child(elm,defaultopen));
             details.appendChild(comma);
             details.appendChild(br);
         }
@@ -53,14 +61,14 @@ function json_child(obj,defaultopen=false) {
         for (let elm in obj) {
             let p = document.createElement("p");
             let addelm = json_child(elm,defaultopen);
-            let span1 = document.createElement("span");
+            let colon = document.createElement("span");
             let comma = document.createElement("span");
-            addelm.classList.add("key");
+            addelm.classList.add("object_key");
             comma.classList.add("comma");
-            span1.innerText = ":";
+            colon.innerText = ":";
             comma.innerText = ",";
             p.appendChild(addelm);
-            p.appendChild(span1);
+            p.appendChild(colon);
             p.appendChild(json_child(obj[elm],defaultopen));
             p.appendChild(comma);
             details.appendChild(p);
@@ -88,9 +96,17 @@ function json_child(obj,defaultopen=false) {
             span.innerText = obj.toString();
             return span;
         }
+        else if (typeof obj === "boolean") {
+            let span = document.createElement("span");
+            span.classList.add("boolean");
+            span.innerText = obj.toString();
+            return span;
+        }
         else {
             let span = document.createElement("span");
-            span.innerText = obj.toString();
+            if (obj!=null) {
+                span.innerText = obj.toString();
+            }
             return span;
         }
     }
