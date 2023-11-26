@@ -292,7 +292,7 @@ Block.root --> Block.stat.expr.token: $token
 
 Block.root --> Block.exit: depth=1&$special&rbracket
 Block.root --> Block.exit_: depth>1&$special&rbracket&'semicolon
-Block.root --> Block.exit_ctrl: depth>1&$special&rbracket
+Block.root --> Block.exit.ctrl: depth>1&$special&rbracket
 
 Block.exit_ --> Block.exit: *
 Block.exit --> TL.root: depth=0
@@ -342,9 +342,9 @@ Block.exclam.ctrl.blank3 --> Block.exclam.ctrl.blank3: $blank
 Block.exclam.ctrl.blank3 --> Block.exclam.lbracket: $special&lbracket
 Block.exclam.lbracket --> Block.entry: *
 
-Block.exit_ctrl --> Block.exclam.continue.blank1: $blank
-Block.exit_ctrl --> Block.exclam.ctrl.type: $token
-Block.exit_ctrl --> Block.exclam.ctrl.lparen: $special&lparen
+Block.exit.ctrl --> Block.exclam.continue.blank1: $blank
+Block.exit.ctrl --> Block.exclam.ctrl.type: $token
+Block.exit.ctrl --> Block.exclam.ctrl.lparen: $special&lparen
 Block.exclam.continue.blank1 --> Block.exclam.continue.blank1: $blank
 Block.exclam.continue.blank1 --> Block.exclam.ctrl.type: $token
 Block.exclam.continue.blank1 --> Block.exclam.ctrl.lparen: $special&lparen

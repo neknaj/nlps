@@ -259,7 +259,7 @@ var NLPtool = (function () {
         var i = 0;
         var depth = 0;
         var tar = this.tokenarr;
-        this.parserstates = ["EOF", "Error", "TL.root", "Block.root", "Block.entry", "Block.exit", "Block.exit_ctrl", "TLdef.exclam", "TL.comment", "TL.blank", "TL.LF", "TL.note", "TLdef.include", "TLdef.using", "TLdef.replace", "TLdef.global", "TLdef.func", "TLdef.include.colon1", "TLdef.include.blank1", "TLdef.include.filename", "TLdef.include.EOS", "TLdef.using.colon1", "TLdef.using.blank1", "TLdef.using.filename", "TLdef.using.EOS", "TLdef.replace.colon1", "TLdef.replace.blank1", "TLdef.replace.defname", "TLdef.replace.colon2", "TLdef.replace.blank2", "TLdef.replace.defval", "TLdef.replace.EOS", "TLdef.global.colon1", "TLdef.global.blank1", "TLdef.global.deftype", "TLdef.global.colon2", "TLdef.global.blank2", "TLdef.global.defname", "TLdef.global.EOS", "TLdef.func.colon1", "TLdef.func.blank1", "TLdef.func.rettype", "TLdef.func.blank2", "TLdef.func.lparen", "TLdef.func.args.blank1", "TLdef.func.args.argstype", "TLdef.func.rparen", "TLdef.func.args.colon", "TLdef.func.args.blank2", "TLdef.func.args.defname", "TLdef.func.args.blank3", "TLdef.func.args.comma", "TLdef.func.colon2", "TLdef.func.blank3", "TLdef.func.defname", "TLdef.func.blank4", "TLdef.func.lbracket", "Block.exclam.decl", "Block.comment", "Block.blank", "Block.LF", "Block.stat.expr.token", "Block.exit_", "Block.note", "Block.exclam.local", "Block.exclam.ctrl", "Block.exclam.local.colon1", "Block.exclam.local.deftype", "Block.exclam.local.blank1", "Block.exclam.local.colon2", "Block.exclam.local.blank2", "Block.exclam.local.defname", "Block.exclam.local.end", "Block.exclam.ctrl.colon1", "Block.exclam.ctrl.blank1", "Block.exclam.ctrl.lparen", "Block.exclam.ctrl.cond.blank", "Block.exclam.ctrl.cond.token", "Block.exclam.ctrl.rparen", "Block.exclam.ctrl.blank2", "Block.exclam.ctrl.type", "Block.exclam.ctrl.blank3", "Block.exclam.lbracket", "Block.exclam.continue.blank1", "Block.exclam.continue.else", "Block.exclam.continue.blank3", "Block.stat.expr.blank", "Block.stat.end", "Block.stat.assign", "Block.stat.blank1", "Block.stat.assignvar", "Block.stat.exclam.decl", "Block.stat.exclam.local", "Block.stat.exclam.local.colon1", "Block.stat.exclam.local.blank1", "Block.stat.exclam.local.deftype", "Block.stat.exclam.local.colon2", "Block.stat.exclam.local.blank2", "Block.stat.exclam.local.defname", "Block.stat.exclam.local.end"];
+        this.parserstates = ["EOF", "Error", "TL.root", "Block.root", "Block.entry", "Block.exit", "Block.exit.ctrl", "TLdef.exclam", "TL.comment", "TL.blank", "TL.LF", "TL.note", "TLdef.include", "TLdef.using", "TLdef.replace", "TLdef.global", "TLdef.func", "TLdef.include.colon1", "TLdef.include.blank1", "TLdef.include.filename", "TLdef.include.EOS", "TLdef.using.colon1", "TLdef.using.blank1", "TLdef.using.filename", "TLdef.using.EOS", "TLdef.replace.colon1", "TLdef.replace.blank1", "TLdef.replace.defname", "TLdef.replace.colon2", "TLdef.replace.blank2", "TLdef.replace.defval", "TLdef.replace.EOS", "TLdef.global.colon1", "TLdef.global.blank1", "TLdef.global.deftype", "TLdef.global.colon2", "TLdef.global.blank2", "TLdef.global.defname", "TLdef.global.EOS", "TLdef.func.colon1", "TLdef.func.blank1", "TLdef.func.rettype", "TLdef.func.blank2", "TLdef.func.lparen", "TLdef.func.args.blank1", "TLdef.func.args.argstype", "TLdef.func.rparen", "TLdef.func.args.colon", "TLdef.func.args.blank2", "TLdef.func.args.defname", "TLdef.func.args.blank3", "TLdef.func.args.comma", "TLdef.func.colon2", "TLdef.func.blank3", "TLdef.func.defname", "TLdef.func.blank4", "TLdef.func.lbracket", "Block.exclam.decl", "Block.comment", "Block.blank", "Block.LF", "Block.stat.expr.token", "Block.exit_", "Block.note", "Block.exclam.local", "Block.exclam.ctrl", "Block.exclam.local.colon1", "Block.exclam.local.deftype", "Block.exclam.local.blank1", "Block.exclam.local.colon2", "Block.exclam.local.blank2", "Block.exclam.local.defname", "Block.exclam.local.end", "Block.exclam.ctrl.colon1", "Block.exclam.ctrl.blank1", "Block.exclam.ctrl.lparen", "Block.exclam.ctrl.cond.blank", "Block.exclam.ctrl.cond.token", "Block.exclam.ctrl.rparen", "Block.exclam.ctrl.blank2", "Block.exclam.ctrl.type", "Block.exclam.ctrl.blank3", "Block.exclam.lbracket", "Block.exclam.continue.blank1", "Block.exclam.continue.else", "Block.exclam.continue.blank3", "Block.stat.expr.blank", "Block.stat.end", "Block.stat.assign", "Block.stat.blank1", "Block.stat.assignvar", "Block.stat.exclam.decl", "Block.stat.exclam.local", "Block.stat.exclam.local.colon1", "Block.stat.exclam.local.blank1", "Block.stat.exclam.local.deftype", "Block.stat.exclam.local.colon2", "Block.stat.exclam.local.blank2", "Block.stat.exclam.local.defname", "Block.stat.exclam.local.end"];
         var sts = this.parserstates;
         while (i < tar.length) {
             var state_copy = state;
@@ -929,7 +929,7 @@ var NLPtool = (function () {
         while (this.ast1i < this.tokenarr.length) {
             var bfi = this.ast1i;
             while (this.tokenarr[this.ast1i].ptype_str != "Block.stat.expr.token" && this.tokenarr[this.ast1i].ptype_str != "Block.exclam.decl"
-                && this.tokenarr[this.ast1i].ptype_str != "TLdef.func.lbracket" && this.tokenarr[this.ast1i].ptype_str != "Block.exclam.lbracket" && this.tokenarr[this.ast1i].ptype_str != "Block.exit_ctrl" && this.tokenarr[this.ast1i].ptype_str != "Block.exit_" && this.tokenarr[this.ast1i].ptype_str != "Block.exit") {
+                && this.tokenarr[this.ast1i].ptype_str != "TLdef.func.lbracket" && this.tokenarr[this.ast1i].ptype_str != "Block.exclam.lbracket" && this.tokenarr[this.ast1i].ptype_str != "Block.exit.ctrl" && this.tokenarr[this.ast1i].ptype_str != "Block.exit_" && this.tokenarr[this.ast1i].ptype_str != "Block.exit") {
                 this.ast1i++;
             }
             this.buildAST1_block_expr(blockroot);
@@ -938,10 +938,9 @@ var NLPtool = (function () {
                 depth++;
                 this.ast1i++;
             }
-            if (this.tokenarr[this.ast1i].ptype_str == "Block.exit_ctrl" || this.tokenarr[this.ast1i].ptype_str == "Block.exit_" || this.tokenarr[this.ast1i].ptype_str == "Block.exit") {
+            if (this.tokenarr[this.ast1i].ptype_str == "Block.exit.ctrl" || this.tokenarr[this.ast1i].ptype_str == "Block.exit_" || this.tokenarr[this.ast1i].ptype_str == "Block.exit") {
                 depth--;
                 this.ast1i++;
-                console.log(this.ast1i, depth);
                 if (depth == 0) {
                     return blockroot;
                 }
@@ -961,16 +960,76 @@ var NLPtool = (function () {
                 }
                 this.ast1i++;
             }
-            console.log(obj);
+            if (this.tokenarr[this.ast1i].ptype_str == "Block.stat.assign") {
+                obj.assign.assign = true;
+                while (this.tokenarr[this.ast1i].ptype_str != "Block.stat.exclam.local" && this.tokenarr[this.ast1i].ptype_str != "Block.stat.assignvar") {
+                    this.ast1i++;
+                }
+                if (this.tokenarr[this.ast1i].ptype_str == "Block.stat.exclam.local") {
+                    obj.assign.define = true;
+                    this.buildAST1_skipTokenTo("Block.stat.exclam.local.deftype");
+                    obj.assign.vartype = this.buildAST1_getToken();
+                    this.buildAST1_skipTokenTo("Block.stat.exclam.local.defname");
+                    obj.assign.varname = this.buildAST1_getToken();
+                }
+                else {
+                    obj.assign.varname = this.buildAST1_getToken();
+                }
+            }
             block.push(obj);
         }
     };
     NLPtool.prototype.buildAST1_block_decl = function (block) {
         if (this.tokenarr[this.ast1i].ptype_str == "Block.exclam.decl" && this.tokenarr[this.ast1i + 1].ptype_str == "Block.exclam.ctrl") {
             this.ast1i++;
+            var obj = { type: "ctrl", blocks: [] };
+            while (this.ast1i < this.tokenarr.length) {
+                var bfi = this.ast1i;
+                while (this.tokenarr[this.ast1i].ptype_str != "Block.exclam.ctrl.lparen" && this.tokenarr[this.ast1i].ptype_str != "Block.exclam.ctrl.type" && this.tokenarr[this.ast1i].ptype_str != "Block.exit") {
+                    this.ast1i++;
+                }
+                if (this.tokenarr[this.ast1i].ptype_str == "Block.exclam.ctrl.lparen") {
+                    var block_1 = { condition: [], type: {}, block: [] };
+                    while (this.tokenarr[this.ast1i].ptype_str != "Block.exclam.ctrl.rparen") {
+                        if (this.tokenarr[this.ast1i].ptype_str == "Block.exclam.ctrl.cond.token") {
+                            block_1.condition.push(this.buildAST1_getToken());
+                        }
+                        this.ast1i++;
+                    }
+                    while (this.tokenarr[this.ast1i].ptype_str != "Block.exclam.ctrl.type") {
+                        this.ast1i++;
+                    }
+                    block_1.type = this.buildAST1_getToken();
+                    block_1.block = this.buildAST1_block();
+                    obj.blocks.push(block_1);
+                }
+                else if (this.tokenarr[this.ast1i].ptype_str == "Block.exclam.ctrl.type") {
+                    var block_2 = { condition: [], type: {}, block: [] };
+                    while (this.tokenarr[this.ast1i].ptype_str != "Block.exclam.ctrl.type") {
+                        this.ast1i++;
+                    }
+                    block_2.type = this.buildAST1_getToken();
+                    block_2.block = this.buildAST1_block();
+                    obj.blocks.push(block_2);
+                }
+                else {
+                    this.ast1i++;
+                    block.push(obj);
+                    return;
+                }
+                if (bfi == this.ast1i) {
+                    throw "AST1 error3: ".concat(this.ast1i, " ").concat(this.tokenarr[this.ast1i].ptype_str);
+                }
+            }
         }
         else if (this.tokenarr[this.ast1i].ptype_str == "Block.exclam.decl" && this.tokenarr[this.ast1i + 1].ptype_str == "Block.exclam.local") {
             this.ast1i++;
+            var obj = { type: "local", vartype: "", varname: "" };
+            this.buildAST1_skipTokenTo("Block.exclam.local.deftype");
+            obj.vartype = this.buildAST1_getToken();
+            this.buildAST1_skipTokenTo("Block.exclam.local.defname");
+            obj.varname = this.buildAST1_getToken();
+            block.push(obj);
         }
     };
     return NLPtool;
