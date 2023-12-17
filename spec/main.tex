@@ -1,9 +1,10 @@
 \documentclass[a4paper,10.5pt]{ltjsarticle}
-\usepackage[margin=20truemm]{geometry}
+\usepackage[margin=15truemm]{geometry}
 \usepackage{url}
 \usepackage{listings, jvlisting, color, graphicx}
 \usepackage{plantuml}
 \usepackage{tikz}
+
 \lstset{
     frame={tb},
     breaklines=true,
@@ -13,13 +14,24 @@
     xrightmargin=0\zw,
     xleftmargin=3\zw,
 }
+\begin{document}
+\begin{titlepage}
 
-\title{Neknaj Language Processing System}
+\title{\Huge Neknaj Language Processing System}
 \author{Bem130}
 \date{\number\year \slash \number\month \slash \number\day}
-\begin{document}
+
 \maketitle
-\section{概要}
+
+
+\tableofcontents
+
+\end{titlepage}
+
+
+
+
+\part{概要}
 スタックマシンを基本にしたBem130の自作プログラミング言語とその処理システム
 
 \input{features.tex}
@@ -44,4 +56,6 @@
         \hline
     \end{tabular}
 \end{table}
+
+
 \end{document}
