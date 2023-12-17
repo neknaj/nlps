@@ -1,0 +1,47 @@
+\documentclass[a4paper,10.5pt]{ltjsarticle}
+\usepackage[margin=20truemm]{geometry}
+\usepackage{url}
+\usepackage{listings, jvlisting, color, graphicx}
+\usepackage{plantuml}
+\usepackage{tikz}
+\lstset{
+    frame={tb},
+    breaklines=true,
+    backgroundcolor={\color[rgb]{0.95,1,1}},
+    columns=[l]{fullflexible},
+    numbers=left,
+    xrightmargin=0\zw,
+    xleftmargin=3\zw,
+}
+
+\title{Neknaj Language Processing System}
+\author{Bem130}
+\date{\number\year \slash \number\month \slash \number\day}
+\begin{document}
+\maketitle
+\section{概要}
+スタックマシンを基本にしたBem130の自作プログラミング言語とその処理システム
+
+\input{features.tex}
+
+\input{nlp.tex}
+
+\input{nvm.tex}
+
+
+
+\begin{table}[]
+    \centering
+    \caption{略語}
+    \begin{tabular}{|c|l|}
+        \hline
+        NLPS & Neknaj Language Processing System\\
+        NLP & Neknaj Language for Programming\\
+        NLPO & Neknaj Language for Programming - Object file\\
+        NVA, NVASM & Neknaj Virtual machine - Assembly language\\
+        NVMC & Neknaj Virtual machine - Machine Code\\
+        NVM & Neknaj Virtual Machine\\
+        \hline
+    \end{tabular}
+\end{table}
+\end{document}

@@ -6,3 +6,8 @@
 *.nvmc
 *.nlp.js
 *.old*.*
+
+*.aux
+*.log
+*.fls
+*.fdb_latexmk

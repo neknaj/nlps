@@ -1,0 +1,59 @@
+\section{Nekanj Language for Programming}
+\subsection{サンプルコード}
+\begin{lstlisting}[]
+    !include: stdcalc;
+    !using: stdcalc;
+    !replace: pi: 3.1415;
+    #* block comment *#
+
+    !fn: 4.int(4.int: max): main {
+        !local: 4.int: z;  # this is a line comment
+        0 0 add :> !local: 4.int: y;
+        0 :> return;
+    }
+\end{lstlisting}
+
+\subsection{ツールキット}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lcllllll}
+        \hline
+        種類 & ファイル名 & 説明 \\
+        \hline \hline
+        仮想マシン & nve.worker.js \\
+        仮想マシン & nve.worker.cpp \\
+        \hline
+        コンパイラ類 & nlp.ts \\
+        コンパイラ類 & nlp.js & nlp.tsをコンパイルしたもの \\
+        \hline
+        エディタ & editor.html & nlp.ts向けのGUI \\
+        エディタ & debugger.html & nlp.ts向けのGUI, editor.htmlよりも多くの情報を表示 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+
+\subsection{記法}
+
+\subsubsection{コメント}
+\begin{tikzpicture}[leaf/.style={rectangle,draw},level 1/.style={level distance=30mm}]
+    \node {$コメント$} [grow=right]
+    child { node {$コメントアウト$}
+        child { node[leaf] {$インラインコメント$} }
+        child { node[leaf] {$ブロックコメント$} }
+    }
+    child { node[leaf] {$ノート$}
+    };
+\end{tikzpicture}
+\begin{lstlisting}[]
+#: ノート
+# インラインコメント
+#* ブロックコメント *#
+\end{lstlisting}
+
+\subsubsection{文}
+
+\subsubsection{式}
+
+\subsubsection{型}

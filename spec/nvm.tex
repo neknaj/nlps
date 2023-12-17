@@ -1,0 +1,49 @@
+\section{Nekanj Virtual Machine}
+\subsection{概要}
+1ワード32bits(4Bytes)のスタックマシン
+
+\subsection{命令セット}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lcllllll}
+        \hline
+        命令 & 引数 & 消費 & 追加 & スタック長 & 処理\\
+        \hline \hline
+        00 & push & v & - & v & +1 & スタックに値vを入れる\\
+        01 & fram & n & - & 0(\times n) & +n & スタックにn回0を入れる\\
+        02 & pop & - & v & - & -1 & スタックトップの値vを1つ消す\\
+        03 & popn & n &v(\times n) - &  & -n & スタックトップの値vをn個消す\\
+        \hline
+        04 & setv & l & v & - & -1 & l個目のローカル変数に値vを入れる\\
+        05 & getv & l & - & v & +1 & l個目のローカル変数から値vを複製する\\
+        06 & setgv & g & v & - & -1 & g個目のグローバル変数に値vを入れる\\
+        07 & getgv & g & - & v & +1 & g個目のグローバル変数から値vを複製する\\
+        08 & seth & - & h v & - & -2 & ヒープ領域のh番目に値vを入れる\\
+        09 & getv & - & h & v & +1 & ヒープ領域のh番目から値vを複製する\\
+        \hline
+        0a & jmp & p & - & - & ±0 & アドレスpまでジャンプする \\
+        0b & ifjmp & p & cn & - & -1 & cnがtrueならば、アドレスpまでジャンプする \\
+        0c & call & p & - & fp pc & +2 & 関数をの呼ぶ処理をし、アドレスpまでジャンプする \\
+        0d & ret & n & fp pc  v(\times n) & - & -2-n & 関数を呼ぶ前に戻って、引数分n回popする \\
+        \hline
+        10 & equ & - & a b & v & -1 & a == b \\
+        11 & les & - & a b & v & -1 & a < b \\
+        12 & grt & - & a b & v & -1 & a > b \\
+        \hline
+        13 & not & - & a & v & ±0 & not a \\
+        14 & and & - & a b & v & -1 & a and b \\
+        15 & or & - & a b & v & -1 & a or b \\
+        16 & xor & - & a b & v & -1 & a xor b \\
+        \hline
+        17 & notb & - & a & v & ±0 & not a \\
+        18 & andb & - & a b & v & -1 & a and b \\
+        19 & orb & - & a b & v & -1 & a or b \\
+        1a & xorb & - & a b & v & -1 & a xor b \\
+        1b & lsft & - & a b & v & -1 & a << b \\
+        1b & rsft & - & a b & v & -1 & a >> b \\
+        \hline
+        20 & add & - & a b & v & -1 & a + b \\
+        21 & addc & - & a b x & c s & -1 & a + b 繰り上がりはc \\
+        \hline
+    \end{tabular}
+\end{table}
