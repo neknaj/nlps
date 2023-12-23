@@ -136,12 +136,13 @@ function makeHighLight_parser(tokenarr,elmId) {
     }
 }
 function showTable(obj,elm,defaultopen=false) {
+    elm.innerHTML = ""
     if (!(obj instanceof Array)) {
         throw `given Object is not Array`;
         return false;
     }
     let index = Object.keys(obj[0])
-    console.log(index)
+    //console.log(index)
     {
         let tableelm = document.createElement("table");
         { // head
@@ -157,7 +158,7 @@ function showTable(obj,elm,defaultopen=false) {
             for (let col of obj) {
                 let trelm = document.createElement("tr");
                 for (let name of index) {
-                    console.log(col,name)
+                    //console.log(col,name)
                     let tdelm = document.createElement("td");
                     let divelm = document.createElement("div");
                     showJSON(col[name],divelm,false)
@@ -195,7 +196,7 @@ function update() {
         console.log(nlpt.ast1)
     }
     //console.log(nlpt.tokenarr)
-    console.table(nlpt.tokenarr)
+    //console.table(nlpt.tokenarr)
     makeHighLight_tokenizer(nlpt.tokenarr,"highlight_tokenizer");
     makeHighLight_parser(nlpt.tokenarr,"highlight_parser");
     showJSON(nlpt.ast1,document.getElementById("AST1"),true);
@@ -257,10 +258,15 @@ function update() {
         border-radius: 10px;
         margin: 5px;
         padding: 5px;
+        position: relative;
     }
     table>tr>th {
         border: rgba(255, 255, 255, 0.25) solid 1px;
+        background-color: rgba(0, 0, 0, 0.6);
         border-radius: 2px;
+        position: sticky;
+        top: 5px;
+        z-index: 1;
     }
     table>tr>td {
         border: rgba(255, 255, 255, 0.2) solid 1px;
@@ -280,7 +286,7 @@ function update() {
         overflow: scroll;
     }
     .spread_wide:hover {
-        width: 500%;
+        width: 700%;
     }
 </style>
 <style id="highlight_style">
