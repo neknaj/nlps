@@ -4,16 +4,16 @@
 
 \section{サンプルコード}
 \begin{lstlisting}[]
-    !include: stdcalc;
-    !using: stdcalc;
-    !replace: pi: 3.1415;
-    #* block comment *#
+!include: stdcalc;
+!using: stdcalc;
+!replace: pi: 3.1415;
+#* block comment *#
 
-    !fn: 4.int(4.int: max): main {
-        !local: 4.int: z;  # this is a line comment
-        0 0 add :> !local: 4.int: y;
-        0 :> return;
-    }
+!fn: 4.int(4.int: max): main {
+    !local: 4.int: z;  # this is a line comment
+    0 0 add :> !local: 4.int: y;
+    0 :> return;
+}
 \end{lstlisting}
 
 \section{ツールキット}
@@ -51,12 +51,120 @@ JavaScript版とC++版があるが、どちらも完成していない
 \end{tikzpicture}
 \begin{lstlisting}[]
 #: ノート
+\end{lstlisting}
+\begin{lstlisting}[]
 # インラインコメント
+\end{lstlisting}
+\begin{lstlisting}[]
 #* ブロックコメント *#
+\end{lstlisting}
+\subsection{型}
+\begin{lstlisting}[]
+サイズ.種類
+\end{lstlisting}
+
+\subsection{式}
+トークンをスペースでつないだもの
+\begin{lstlisting}[]
+トークン トークン トークン ...
 \end{lstlisting}
 
 \subsection{文}
+    \subsubsection{トップレベルの文}
+        \paragraph{include}
+\begin{lstlisting}[]
+!include: 名前;
+\end{lstlisting}
+        \paragraph{using}
+\begin{lstlisting}[]
+!using: 名前;
+\end{lstlisting}
+        \paragraph{global}
+\begin{lstlisting}[]
+!global: 型: 名前;
+\end{lstlisting}
+        \paragraph{replace}
+\begin{lstlisting}[]
+!replace: 置き換え前: 置き換え後;
+\end{lstlisting}
 
-\subsection{式}
+    \subsubsection{ブロック内の文}
+        \paragraph{式文}
+\begin{lstlisting}[]
+式;
+\end{lstlisting}
+        \paragraph{local宣言}
+\begin{lstlisting}[]
+!local: 型: 名前;
+\end{lstlisting}
+        \paragraph{代入}
+\begin{lstlisting}[]
+式 :> 名前;
+\end{lstlisting}
+        \paragraph{local宣言付代入}
+\begin{lstlisting}[]
+式 :> !local: 型: 名前;
+\end{lstlisting}
+        \paragraph{return}
+\begin{lstlisting}[]
+式 :> return;
+\end{lstlisting}
 
-\subsection{型}
+
+\subsection{ブロック}
+文,構造を複数書いたもの\\
+構造には、単ブロックと制御構造が含まれる\\
+ブロック要素には、文と構造が含まれる
+
+ブロックは入れ子にすることができる
+
+\begin{lstlisting}[]
+{
+    ブロック要素
+    ブロック要素
+    ブロック要素
+    ...
+}
+\end{lstlisting}
+
+\subsection{単ブロック}
+\begin{lstlisting}[]
+ブロック;
+\end{lstlisting}
+
+\subsection{制御構造}
+\subsubsection{基本形}
+条件式,種類,ブロック を組にしたもの\\
+種類によって細かい記法は異なる
+\begin{lstlisting}[]
+!ctrl:(式) 種類 ブロック;
+\end{lstlisting}
+\subsubsection{while}
+\begin{lstlisting}[]
+!ctrl:(式) while ブロック;
+\end{lstlisting}
+\subsubsection{if}
+基本となるifの後ろに、任意個のelseifと一つのelseを付けることができる
+\begin{lstlisting}[]
+!ctrl:(式) if ブロック;
+\end{lstlisting}
+\begin{lstlisting}[]
+!ctrl:(式) if ブロック else ブロック;
+\end{lstlisting}
+\begin{lstlisting}[]
+!ctrl:(式) if ブロック (式) elseif ブロック;
+\end{lstlisting}
+\begin{lstlisting}[]
+!ctrl:(式) if ブロック (式) elseif ブロック else ブロック;
+\end{lstlisting}
+
+\subsection{関数}
+
+\begin{lstlisting}[]
+!fn:戻り値型(引数): 名前 ブロック;
+\end{lstlisting}
+
+\subsubsection{引数}
+\begin{lstlisting}[]
+型: 名前, 型: 名前, 型: 名前, ...;
+\end{lstlisting}
