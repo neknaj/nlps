@@ -662,6 +662,7 @@ class NLPtool {
                 }
                 tar[i].ptype = state; tar[i].ptype_str = sts[state];
                 i++;
+                tar[i-1].plevel = depth;
             }
         }
         return this;
