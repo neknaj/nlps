@@ -52,8 +52,9 @@ is a block comment *#
 }</textarea>
             <div id="highlight_tokenizer" class="spread highlight"><pre></pre></div>
             <div id="highlight_parser" class="spread highlight"><pre></pre></div>
-            <div id="tokentable" class="spread"></div>
+            <div id="tokentable" class="spread spread_wide"></div>
             <div id="AST1" class="spread"></div>
+            <div id="AST2" class="spread"></div>
         </main>
     </body>
 </html>
@@ -226,6 +227,7 @@ function update() {
         resize: none;
         overflow: scroll;
         line-height: 1.1em;
+        padding-left: 5px;
     }
     .highlight {
         font-size: 1em;
@@ -271,6 +273,13 @@ function update() {
         overflow: scroll;
     }
     .spread:hover {
+        width: 200%;
+    }
+    .spread_wide {
+        width: 150%;
+        overflow: scroll;
+    }
+    .spread_wide:hover {
         width: 500%;
     }
 </style>
