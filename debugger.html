@@ -52,8 +52,8 @@ is a block comment *#
 }</textarea>
             <div id="highlight_tokenizer" class="spread highlight"><pre></pre></div>
             <div id="highlight_parser" class="spread highlight"><pre></pre></div>
-            <div id="AST1" class="spread jsonviewer"></div>
-            <div id="AST2" class="spread jsonviewer"></div>
+            <div id="tokentable" class="spread"></div>
+            <div id="AST1" class="spread"></div>
         </main>
     </body>
 </html>
@@ -134,6 +134,43 @@ function makeHighLight_parser(tokenarr,elmId) {
         }
     }
 }
+function showTable(obj,elm,defaultopen=false) {
+    if (!(obj instanceof Array)) {
+        throw `given Object is not Array`;
+        return false;
+    }
+    let index = Object.keys(obj[0])
+    console.log(index)
+    {
+        let tableelm = document.createElement("table");
+        { // head
+            let trelm = document.createElement("tr");
+            for (let name of index) {
+                let thelm = document.createElement("th");
+                thelm.innerText = name;
+                trelm.appendChild(thelm);
+            }
+            tableelm.appendChild(trelm);
+        }
+        { // body
+            for (let col of obj) {
+                let trelm = document.createElement("tr");
+                for (let name of index) {
+                    console.log(col,name)
+                    let tdelm = document.createElement("td");
+                    let divelm = document.createElement("div");
+                    showJSON(col[name],divelm,false)
+                    tdelm.appendChild(divelm)
+                    trelm.appendChild(tdelm);
+                }
+                tableelm.appendChild(trelm);
+            }
+        }
+        elm.appendChild(tableelm)
+    }
+}
+
+
 editor.onchange = update;
 //editor.onkeydown = update;
 editor.oninput = update;
@@ -161,6 +198,7 @@ function update() {
     makeHighLight_tokenizer(nlpt.tokenarr,"highlight_tokenizer");
     makeHighLight_parser(nlpt.tokenarr,"highlight_parser");
     showJSON(nlpt.ast1,document.getElementById("AST1"),true);
+    showTable(nlpt.tokenarr,document.getElementById("tokentable"),false);
     //console.log(nlpt)
 }
 
@@ -212,11 +250,28 @@ function update() {
         -webkit-user-select: none;
     }
 
+    table {
+        border: rgba(255, 255, 255, 0.3) solid 1px;
+        border-radius: 10px;
+        margin: 5px;
+        padding: 5px;
+    }
+    table>tr>th {
+        border: rgba(255, 255, 255, 0.25) solid 1px;
+        border-radius: 2px;
+    }
+    table>tr>td {
+        border: rgba(255, 255, 255, 0.2) solid 1px;
+        border-radius: 2px;
+        padding: 2px;
+    }
+
     .spread {
         width: 100%;
+        overflow: scroll;
     }
     .spread:hover {
-        width: 300%;
+        width: 500%;
     }
 </style>
 <style id="highlight_style">

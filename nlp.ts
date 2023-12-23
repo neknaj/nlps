@@ -213,7 +213,7 @@ class NLPtool {
                 //console.log(i,this.code[i].replace(/\n/g,"\\n"),sts[state],state)
                 if ((tar.length==0||state!=tar[tar.length-1].ttype||state==1||state==2||state==3||state==4||state==5)&&state!=6) {
                     // @ts-ignore
-                    tar.push({ttype:state,ptype:null,ttype_str:sts[state],ptype_str:null,val:this.code[i],i:i,line:LineAndCol.line,col:LineAndCol.col,group:this.tokengroup[sts[state]],replaced:null});
+                    tar.push({ttype:state,ptype:null,ttype_str:sts[state],ptype_str:null,val:this.code[i],replaced:null,i:i,line:LineAndCol.line,col:LineAndCol.col,plevel:null,group:this.tokengroup[sts[state]]});
                 }
                 else {
                     tar[tar.length-1].val += this.code[i];
@@ -223,8 +223,8 @@ class NLPtool {
             }
         }
         // @ts-ignore
-        tar.push({ttype:-1,ptype:null,ttype_str:"EOF",ptype_str:null,val:"<EOF>",i:i,line:LineAndCol.line,col:LineAndCol.col,group:"EOF",replaced:null});
-        //console.table(tar)
+        tar.push({ttype:-1,ptype:null,ttype_str:"EOF",ptype_str:null,val:"<EOF>",replaced:null,i:i,line:LineAndCol.line,col:LineAndCol.col,plevel:null,group:"EOF"});
+        console.table(tar)
         return this;
     }
 
@@ -654,6 +654,7 @@ class NLPtool {
             if (state==7||state==8) {
                 depth--;
             }
+            tar[i-1].plevel = depth;
 
             while (tar[i-1].group=="string"&&tar[i].group=="string") {
                 if (tar[i-1].ttype==9&&tar[i].ttype==8) {
@@ -697,6 +698,7 @@ class NLPtool {
             if (val in replacetoken) {
                 val = replacetoken[val].val;
             }
+            this.tokenarr[this.ast1i].replaced = val;
             // @ts-ignore
             return {type:"token",val:val,txt:this.tokenarr[this.ast1i].val,range:[this.tokenarr[this.ast1i].i+1,this.tokenarr[this.ast1i].i+this.tokenarr[this.ast1i].val.length]};
         }
@@ -711,6 +713,7 @@ class NLPtool {
             if (val in replacetoken) {
                 val = replacetoken[val].val;
             }
+            this.tokenarr[this.ast1i-1].replaced = val;
             // @ts-ignore
             return {type:"token",val:val,txt:txt,range:[this.tokenarr[bfi].i+1,this.tokenarr[bfi].i+txt.length]};
         }
@@ -718,6 +721,7 @@ class NLPtool {
     // @ts-ignore
     buildAST1_getToken4replaceOnly(): Object {
         if (this.tokenarr[this.ast1i].group=="token") {
+            this.tokenarr[this.ast1i].replaced = this.tokenarr[this.ast1i].val;
             // @ts-ignore
             return {type:"token",val:this.tokenarr[this.ast1i].val,txt:this.tokenarr[this.ast1i].val,range:[this.tokenarr[this.ast1i].i+1,this.tokenarr[this.ast1i].i+this.tokenarr[this.ast1i].val.length]};
         }
@@ -728,6 +732,7 @@ class NLPtool {
                 txt += this.tokenarr[this.ast1i].val;
                 this.ast1i++;
             }
+            this.tokenarr[this.ast1i-1].replaced = txt;
             // @ts-ignore
             return {type:"token",val:txt,txt:txt,range:[this.tokenarr[bfi].i+1,this.tokenarr[bfi].i+txt.length]};
         }

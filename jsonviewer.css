@@ -58,16 +58,16 @@
     white-space: nowrap;
     vertical-align: bottom;
 }
-.jsonviewer details span.string span {
+.jsonviewer span.string span {
     color: rgb(221, 136, 0);
 }
-.jsonviewer details span.string span:nth-child(2) {
+.jsonviewer span.string span:nth-child(2) {
     color: rgb(255, 200, 0);
 }
-.jsonviewer details span.number {
+.jsonviewer span.number {
     color: rgb(183, 255, 0);
 }
-.jsonviewer details span.boolean {
+.jsonviewer span.boolean {
     color: rgb(255, 87, 230);
 }
 .jsonviewer details span.array_index {
