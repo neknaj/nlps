@@ -36,6 +36,9 @@ is a block comment *#
 
     !ctrl:(x max <) if {
         y x + :> z;
+        !ctrl:(true) if {
+            null :> return;
+        };
     };
 
     !ctrl:(x max <) if {
