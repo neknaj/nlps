@@ -55,6 +55,12 @@ is a block comment *#
             <div id="tokentable" class="spread spread_wide"></div>
             <div id="AST1" class="spread"></div>
             <div id="AST2" class="spread"></div>
+            <div id="libs" class="spread">
+                <div>
+                    <p>path to search library</p>
+                    <textarea id="libpath">./</textarea>
+                </div>
+            </div>
         </main>
     </body>
 </html>
@@ -230,6 +236,18 @@ function update() {
         line-height: 1.1em;
         padding-left: 5px;
     }
+    #libpath {
+        font-size: 1em;
+        background: transparent;
+        color: white;
+        outline: none;
+        resize: none;
+        overflow: scroll;
+        padding: 10px;
+        line-height: 1.1em;
+        word-wrap: unset;
+        width: 100%;
+    }
     .highlight {
         font-size: 1em;
         font-family: monospace;
@@ -287,6 +305,9 @@ function update() {
     }
     .spread_wide:hover {
         width: 700%;
+    }
+    .spread p {
+        margin: 2px;
     }
 </style>
 <style id="highlight_style">
