@@ -1,6 +1,7 @@
 /node_modules
 /note
 *.nlp
+*.bdt
 *.nlpo
 *.nva
 *.nvmc
