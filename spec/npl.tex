@@ -1,170 +1,38 @@
-\part{B-debt --- Nekanj Programming Language}
+\documentclass[a4paper,10.5pt]{ltjsarticle}
+\usepackage[margin=15truemm]{geometry}
+\usepackage{url}
+\usepackage{listings, jvlisting, color, graphicx}
+\usepackage{plantuml}
+\usepackage{tikz}
 
-逆ポーランド記法を基本とするプログラミング言語
-
-\section{サンプルコード}
-\begin{lstlisting}[]
-!include: stdcalc;
-!using: stdcalc;
-!replace: pi: 3.1415;
-#* block comment *#
-
-!fn: 4.int(4.int: max): main {
-    !local: 4.int: z;  # this is a line comment
-    0 0 add :> !local: 4.int: y;
-    0 :> return;
+\setcounter{secnumdepth}{6}
+\lstset{
+    frame={tb},
+    breaklines=true,
+    backgroundcolor={\color[rgb]{0.95,1,1}},
+    columns=[l]{fullflexible},
+    xrightmargin=0\zw,
+    xleftmargin=4\zw,
 }
-\end{lstlisting}
+\begin{document}
+\begin{titlepage}
 
-\section{ツールキット}
-JavaScript版とC++版があるが、どちらも完成していない
-\begin{table}[h]
-    \centering
-    \begin{tabular}{lcllllll}
-        \hline
-        種類 & ファイル名 & 説明 \\
-        \hline \hline
-        仮想マシン & nve.worker.js \\
-        仮想マシン & nve.worker.cpp \\
-        \hline
-        コンパイラ類 & nlp.ts \\
-        コンパイラ類 & nlp.js & nlp.tsをコンパイルしたもの \\
-        \hline
-        エディタ & editor.html & nlp.ts向けのGUI \\
-        エディタ & debugger.html & nlp.ts向けのGUI, editor.htmlよりも多くの情報を表示 \\
-        \hline
-    \end{tabular}
-\end{table}
+\title{\Huge B-debt --- Nekanj Programming Language}
+\author{\LARGE Bem130}
+\date{\number\year \slash \number\month \slash \number\day}
+
+\maketitle
 
 
-\section{記法}
-
-\subsection{コメント}
-\begin{tikzpicture}[leaf/.style={rectangle,draw},level 1/.style={level distance=30mm}]
-    \node {$コメント$} [grow=right]
-    child { node {$コメントアウト$}
-        child { node[leaf] {$インラインコメント$} }
-        child { node[leaf] {$ブロックコメント$} }
-    }
-    child { node[leaf] {$ノート$}
-    };
-\end{tikzpicture}
-\begin{lstlisting}[]
-#: ノート
-\end{lstlisting}
-\begin{lstlisting}[]
-# インラインコメント
-\end{lstlisting}
-\begin{lstlisting}[]
-#* ブロックコメント *#
-\end{lstlisting}
-\subsection{型}
-\begin{lstlisting}[]
-サイズ.種類
-\end{lstlisting}
-
-\subsection{式}
-トークンをスペースでつないだもの
-\begin{lstlisting}[]
-トークン トークン トークン ...
-\end{lstlisting}
-
-\subsection{文}
-    \subsubsection{トップレベルの文}
-        \paragraph{include}
-\begin{lstlisting}[]
-!include: 名前;
-\end{lstlisting}
-        \paragraph{using}
-\begin{lstlisting}[]
-!using: 名前;
-\end{lstlisting}
-        \paragraph{global}
-\begin{lstlisting}[]
-!global: 型: 名前;
-\end{lstlisting}
-        \paragraph{replace}
-\begin{lstlisting}[]
-!replace: 置き換え前: 置き換え後;
-\end{lstlisting}
-
-    \subsubsection{ブロック内の文}
-        \paragraph{式文}
-\begin{lstlisting}[]
-式;
-\end{lstlisting}
-        \paragraph{local宣言}
-\begin{lstlisting}[]
-!local: 型: 名前;
-\end{lstlisting}
-        \paragraph{代入}
-\begin{lstlisting}[]
-式 :> 名前;
-\end{lstlisting}
-        \paragraph{local宣言付代入}
-\begin{lstlisting}[]
-式 :> !local: 型: 名前;
-\end{lstlisting}
-        \paragraph{return}
-\begin{lstlisting}[]
-式 :> return;
-\end{lstlisting}
+\tableofcontents
 
 
-\subsection{ブロック}
-文,構造を複数書いたもの\\
-構造には、単ブロックと制御構造が含まれる\\
-ブロック要素には、文と構造が含まれる
+\begin{figure}[b]
+    \includegraphics[width=5cm]{./logo/npl-logotype.png}
+\end{figure}
+\end{titlepage}
 
-ブロックは入れ子にすることができる
 
-\begin{lstlisting}[]
-{
-    ブロック要素
-    ブロック要素
-    ブロック要素
-    ...
-}
-\end{lstlisting}
+\input{bdebt.tex}
 
-\subsection{単ブロック}
-\begin{lstlisting}[]
-ブロック;
-\end{lstlisting}
-
-\subsection{制御構造}
-\subsubsection{基本形}
-条件式,種類,ブロック を組にしたもの\\
-種類によって細かい記法は異なる
-\begin{lstlisting}[]
-!ctrl:(式) 種類 ブロック;
-\end{lstlisting}
-\subsubsection{while}
-\begin{lstlisting}[]
-!ctrl:(式) while ブロック;
-\end{lstlisting}
-\subsubsection{if}
-基本となるifの後ろに、任意個のelseifと一つのelseを付けることができる
-\begin{lstlisting}[]
-!ctrl:(式) if ブロック;
-\end{lstlisting}
-\begin{lstlisting}[]
-!ctrl:(式) if ブロック else ブロック;
-\end{lstlisting}
-\begin{lstlisting}[]
-!ctrl:(式) if ブロック (式) elseif ブロック;
-\end{lstlisting}
-\begin{lstlisting}[]
-!ctrl:(式) if ブロック (式) elseif ブロック else ブロック;
-\end{lstlisting}
-
-\subsection{関数}
-
-\begin{lstlisting}[]
-!fn:戻り値型(引数): 名前 ブロック;
-\end{lstlisting}
-
-\subsubsection{引数}
-\begin{lstlisting}[]
-型: 名前, 型: 名前, 型: 名前, ...;
-\end{lstlisting}
+\end{document}

@@ -5,7 +5,7 @@
 *.nlpo
 *.nva
 *.nvmc
-*.nlp.js
+*.bdt.js
 *.old*.*
 
 *.aux

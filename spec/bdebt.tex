@@ -1,0 +1,169 @@
+\section{名称}
+当初NLP(Neknaj Language for Programming)としていたが、NML(Neknaj Markup Language)との統一や、NLP(Natural Language for Programming，自然言語処理)との混同防止の為、NPL(Neknaj Programming Language)と改名した。\\
+また、NPLへの改名によって、NPL(Non-Performing Loan，不良債権)と被った為、英語愛称を「Bdebt」「B-debt」(bad debtより)、日本語愛称を「不債」とする。
+
+\section{サンプルコード}
+\begin{lstlisting}[]
+!include: stdcalc;
+!using: stdcalc;
+!replace: pi: 3.1415; #* this is a block comment *#
+
+!fn: 4.int(4.int: max): main {
+    !local: 4.int: z;  # this is a line comment
+    0 0 add :> !local: 4.int: y;
+    0 :> return;
+}
+\end{lstlisting}
+
+\section{ツールキット}
+JavaScript版とC++版があるが、どちらも完成していない
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lcllllll}
+        \hline
+        種類 & ファイル名 & 説明 \\
+        \hline \hline
+        仮想マシン & nve.worker.js \\
+        仮想マシン & nve.worker.cpp \\
+        \hline
+        コンパイラ類 & nlp.ts \\
+        コンパイラ類 & nlp.js & nlp.tsをコンパイルしたもの \\
+        \hline
+        エディタ & editor.html & nlp.ts向けのGUI \\
+        エディタ & debugger.html & nlp.ts向けのGUI, editor.htmlよりも多くの情報を表示 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+
+\section{記法}
+
+\subsection{コメント}
+\begin{tikzpicture}[leaf/.style={rectangle,draw},level 1/.style={level distance=30mm}]
+    \node {$コメント$} [grow=right]
+    child { node {$コメントアウト$}
+        child { node[leaf] {$インラインコメント$} }
+        child { node[leaf] {$ブロックコメント$} }
+    }
+    child { node[leaf] {$ノート$}
+    };
+\end{tikzpicture}
+\begin{lstlisting}[]
+#: ノート
+\end{lstlisting}
+\begin{lstlisting}[]
+# インラインコメント
+\end{lstlisting}
+\begin{lstlisting}[]
+#* ブロックコメント *#
+\end{lstlisting}
+\subsection{型}
+\begin{lstlisting}[]
+サイズ.種類
+\end{lstlisting}
+
+\subsection{式}
+トークンをスペースでつないだもの
+\begin{lstlisting}[]
+トークン トークン トークン ...
+\end{lstlisting}
+
+\subsection{文}
+    \subsubsection{トップレベルの文}
+        \paragraph{include}
+\begin{lstlisting}[]
+!include: 名前;
+\end{lstlisting}
+        \paragraph{using}
+\begin{lstlisting}[]
+!using: 名前;
+\end{lstlisting}
+        \paragraph{global}
+\begin{lstlisting}[]
+!global: 型: 名前;
+\end{lstlisting}
+        \paragraph{replace}
+\begin{lstlisting}[]
+!replace: 置き換え前: 置き換え後;
+\end{lstlisting}
+
+    \subsubsection{ブロック内の文}
+        \paragraph{式文}
+\begin{lstlisting}[]
+式;
+\end{lstlisting}
+        \paragraph{local宣言}
+\begin{lstlisting}[]
+!local: 型: 名前;
+\end{lstlisting}
+        \paragraph{代入}
+\begin{lstlisting}[]
+式 :> 名前;
+\end{lstlisting}
+        \paragraph{local宣言付代入}
+\begin{lstlisting}[]
+式 :> !local: 型: 名前;
+\end{lstlisting}
+        \paragraph{return}
+\begin{lstlisting}[]
+式 :> return;
+\end{lstlisting}
+
+
+\subsection{ブロック}
+文,構造を複数書いたもの\\
+構造には、単ブロックと制御構造が含まれる\\
+ブロック要素には、文と構造が含まれる
+
+ブロックは入れ子にすることができる
+
+\begin{lstlisting}[]
+{
+    ブロック要素
+    ブロック要素
+    ブロック要素
+    ...
+}
+\end{lstlisting}
+
+\subsection{単ブロック}
+\begin{lstlisting}[]
+ブロック;
+\end{lstlisting}
+
+\subsection{制御構造}
+\subsubsection{基本形}
+条件式,種類,ブロック を組にしたもの\\
+種類によって細かい記法は異なる
+\begin{lstlisting}[]
+!ctrl:(式) 種類 ブロック;
+\end{lstlisting}
+\subsubsection{while}
+\begin{lstlisting}[]
+!ctrl:(式) while ブロック;
+\end{lstlisting}
+\subsubsection{if}
+基本となるifの後ろに、任意個のelseifと一つのelseを付けることができる
+\begin{lstlisting}[]
+!ctrl:(式) if ブロック;
+\end{lstlisting}
+\begin{lstlisting}[]
+!ctrl:(式) if ブロック else ブロック;
+\end{lstlisting}
+\begin{lstlisting}[]
+!ctrl:(式) if ブロック (式) elseif ブロック;
+\end{lstlisting}
+\begin{lstlisting}[]
+!ctrl:(式) if ブロック (式) elseif ブロック else ブロック;
+\end{lstlisting}
+
+\subsection{関数}
+
+\begin{lstlisting}[]
+!fn:戻り値型(引数): 名前 ブロック;
+\end{lstlisting}
+
+\subsubsection{引数}
+\begin{lstlisting}[]
+型: 名前, 型: 名前, 型: 名前, ...;
+\end{lstlisting}

@@ -3,6 +3,7 @@ all:
 	node statemachine_parser.js
 	npx tsc nlp.ts --removeComments
 	cd ./spec/ && lualatex main.tex && lualatex main.tex
+	cd ./spec/ && lualatex npl.tex && lualatex npl.tex
 
 nlpjs: ./spec/nlp-tokenizer-statetransition.md ./spec/nlp-parser-statetransition.md nlp.ts
 	node statemachine_tokenizer.js
@@ -19,3 +20,6 @@ parser_stat: ./spec/nlp-parser-statetransition.md nlp.ts
 
 spec_main:
 	cd ./spec/ && lualatex main.tex && lualatex main.tex
+
+spec_npl:
+	cd ./spec/ && lualatex npl.tex && lualatex npl.tex
