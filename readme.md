@@ -1,5 +1,5 @@
 # Neknaj Language Processing System
-<img width="100%" src="./spec/logo/npl-logotype.png">
+<img width="100%" src="./spec/logo/npl-all2.png">
 スタックマシンを基にした自作プログラミング言語、B-debtとその処理システム
 
 雑に拡張し続けて把握不可能になった前のプログラムたちを整理して作り直すプロジェクト  
